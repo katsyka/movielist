@@ -46,10 +46,17 @@
     .menu-trigger span { display: inline-block; width: 16px; height: 2px; background: #000; }
     .brand-logo-img { height: 36px; object-fit: contain; cursor: pointer; display: block; }
     
-    .header-actions { justify-self: end; }
+    .header-actions { justify-self: end; display: flex; gap: 0.6rem; align-items: center; }
+    .outline-btn {
+      background: #fff; color: #000; border: 1px solid #000;
+      padding: 0.6rem 1.1rem; font-weight: 800; text-transform: uppercase;
+      font-size: 0.75rem; letter-spacing: 0.08em; cursor: pointer;
+      transition: background 0.15s;
+    }
+    .outline-btn:hover { background: #f0f0f0; }
     .log-btn {
       background: #000; color: #fff; border: 1px solid #000;
-      padding: 0.6rem 1.4rem; font-weight: 800; text-transform: uppercase;
+      padding: 0.6rem 1.3rem; font-weight: 800; text-transform: uppercase;
       font-size: 0.78rem; letter-spacing: 0.08em; cursor: pointer;
       transition: opacity 0.15s ease;
     }
@@ -91,7 +98,7 @@
     }
     .tab-btn.active { color: #000; border-color: #000; }
 
-    /* TRADITIONAL LEFT-TO-RIGHT ROW GRID WITH NATURAL POSTER SIZES */
+    /* TRADITIONAL LEFT-TO-RIGHT ROW GRID */
     .film-row-feed {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -104,6 +111,7 @@
       display: flex;
       flex-direction: column;
       width: 100%;
+      position: relative;
     }
     .film-art-wrapper {
       position: relative;
@@ -142,6 +150,19 @@
       letter-spacing: 0.04em; text-transform: uppercase;
       margin-top: 0.2rem;
     }
+
+    /* TOP RANK TIE-BREAKER / REORDER ACTION BAR ON CARDS */
+    .rank-reorder-bar {
+      display: flex; gap: 0.4rem; margin-top: 0.75rem; border-top: 1px solid var(--border);
+      padding-top: 0.6rem; align-items: center; justify-content: space-between;
+    }
+    .rank-shift-btn {
+      background: #fff; border: 1px solid #ccc; font-size: 0.7rem; font-weight: 800;
+      padding: 0.35rem 0.6rem; cursor: pointer; text-transform: uppercase;
+      transition: all 0.15s;
+    }
+    .rank-shift-btn:hover { background: #000; color: #fff; border-color: #000; }
+    .crown-btn { background: #000; color: #fff; border-color: #000; }
 
     /* DEDICATED FILM DETAIL VIEW */
     #filmPageView { display: none; }
@@ -199,7 +220,7 @@
     }
     .synopsis-text { font-size: 1.3rem; line-height: 1.6; font-weight: 500; }
     
-    /* GALLERY / ART PICKER */
+    /* GALLERY */
     .gallery-section { padding: 3.5rem 2.5rem; }
     .section-heading { font-size: 1.4rem; font-weight: 900; letter-spacing: -0.02em; text-transform: uppercase; margin-bottom: 1.5rem; }
     .gallery-grid {
@@ -258,7 +279,14 @@
     }
     .art-thumb.selected { border-color: #000; opacity: 1; transform: scale(1.04); }
 
-    /* RESPONSIVE LAYOUT (Left-to-Right preserved) */
+    /* JSON EXPORT PREVIEW TEXTAREA */
+    .json-code-box {
+      width: 100%; height: 220px; font-family: monospace; font-size: 0.8rem;
+      background: #f7f7f7; border: 1px solid #000; padding: 1rem;
+      margin: 1rem 0; resize: vertical; outline: none; white-space: pre;
+    }
+
+    /* RESPONSIVE LAYOUT */
     @media (max-width: 1024px) {
       .film-row-feed { grid-template-columns: repeat(2, 1fr); column-gap: 2rem; padding: 1.75rem; }
     }
@@ -286,6 +314,7 @@
         <a class="drawer-link" onclick="navigateHome('watchlist')">Watchlist</a>
         <a class="drawer-link" onclick="navigateHome('top')">Top Ranked</a>
         <a class="drawer-link" onclick="openSearchModal(); toggleDrawer(false);">Search TMDB</a>
+        <a class="drawer-link" onclick="openExportModal(); toggleDrawer(false);">Export / Backup</a>
       </nav>
     </div>
     <div style="font-size: 0.75rem; color: #666; text-transform: uppercase; letter-spacing: 0.06em;">
@@ -302,6 +331,7 @@
       <img src="https://images.seeklogo.com/logo-png/31/2/a24-films-logo-png_seeklogo-316223.png" alt="A24" class="brand-logo-img">
     </a>
     <div class="header-actions">
+      <button class="outline-btn" onclick="openExportModal()">↓ Export</button>
       <button class="log-btn" onclick="openSearchModal()">+ Search & Add</button>
     </div>
   </header>
@@ -367,13 +397,13 @@
         </div>
       </div>
 
-      <!-- WATCHED MULTI-METRIC SCORING SECTION (Breaks 10/10 ties) -->
+      <!-- WATCHED MULTI-METRIC SCORING SECTION -->
       <div id="watchedFields">
         <div style="border-top: 1px solid var(--border); padding-top: 1rem; margin-top: 1rem;">
           <p style="font-size:0.75rem; font-weight:800; text-transform:uppercase; color:var(--muted); margin-bottom:0.5rem;">Psychological & Aesthetic Scoring</p>
           
           <div class="slider-row">
-            <label><span>Gut Rating (Decimals Allowed)</span><span id="gutVal">9.4 / 10</span></label>
+            <label><span>Gut Rating</span><span id="gutVal">9.4 / 10</span></label>
             <input type="range" id="gutInput" min="5.0" max="10.0" step="0.1" value="9.4" oninput="document.getElementById('gutVal').innerText = parseFloat(this.value).toFixed(1) + ' / 10'">
           </div>
 
@@ -391,10 +421,45 @@
             <label><span>Narrative Mindfuck / Obsession</span><span id="mindVal">8/10</span></label>
             <input type="range" id="mindInput" min="1" max="10" value="8" oninput="document.getElementById('mindVal').innerText = this.value + '/10'">
           </div>
+
+          <!-- TIE-BREAKER MANUAL PRIORITY SLIDER -->
+          <div class="slider-row" style="background:#fafafa; border:1px dashed #000; padding:0.75rem;">
+            <label><span>Curator Tie-Breaker Priority (For Identical Scores)</span><span id="tieBreakVal">50</span></label>
+            <input type="range" id="tieBreakInput" min="1" max="100" value="50" oninput="document.getElementById('tieBreakVal').innerText = this.value">
+            <p style="font-size:0.68rem; color:var(--muted); margin-top:4px;">Higher value wins #1 placement if two films both reach identical Index scores.</p>
+          </div>
         </div>
       </div>
 
       <button class="log-btn" style="width: 100%; padding: 1.1rem; font-size: 0.85rem; margin-top: 1rem;" onclick="confirmSaveFilm()">Save to Collection</button>
+    </div>
+  </div>
+
+  <!-- EXPORT & CUSTOM JSON MODAL -->
+  <div class="modal-overlay" id="exportModal">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeModal('exportModal')">✕</button>
+      <h2 style="font-size: 1.4rem; font-weight: 900; text-transform: uppercase; margin-bottom: 0.5rem;">Export Archive / JSON</h2>
+      <p style="font-size: 0.85rem; color: var(--muted); margin-bottom: 1.2rem;">Choose what to export, download the curated JSON file, or restore from a previous backup.</p>
+
+      <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1rem;">
+        <button class="outline-btn" id="scope-all" onclick="updateExportView('all')">All Archive</button>
+        <button class="outline-btn" id="scope-top" onclick="updateExportView('top')">Top Ranked Only</button>
+        <button class="outline-btn" id="scope-watched" onclick="updateExportView('watched')">Watched Only</button>
+        <button class="outline-btn" id="scope-watchlist" onclick="updateExportView('watchlist')">Watchlist Only</button>
+      </div>
+
+      <textarea id="jsonOutputArea" class="json-code-box" readonly></textarea>
+
+      <div style="display: flex; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 1.5rem;">
+        <button class="log-btn" style="flex:1;" onclick="downloadJsonFile()">↓ Download .JSON File</button>
+        <button class="outline-btn" style="flex:1;" onclick="copyJsonToClipboard()">⎘ Copy JSON</button>
+      </div>
+
+      <div style="border-top: 1px solid var(--border); padding-top: 1.2rem;">
+        <h4 style="font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: var(--muted); margin-bottom: 0.5rem;">Restore / Import Backup</h4>
+        <input type="file" id="importFileInput" accept=".json" onchange="importJsonFile(event)" style="font-size: 0.8rem;">
+      </div>
     </div>
   </div>
 
@@ -413,6 +478,7 @@
         dreadScore: 10,
         atmoScore: 10,
         mindScore: 9,
+        tieBreakPriority: 90,
         compositeScore: 97.5,
         displayArtwork: "https://image.tmdb.org/t/p/w1280/yV04qP2u233P8x9P1p2iW3pL3O7.jpg"
       }
@@ -420,6 +486,7 @@
 
     let myFilms = JSON.parse(localStorage.getItem('a24_saved_films')) || DEFAULT_SEED_FILMS;
     let currentFilter = 'all';
+    let currentExportScope = 'all';
     let selectedFilm = null;
     let activeArtworkChoice = "";
     let debounceTimer;
@@ -565,7 +632,7 @@
             </div>
           </section>
 
-          <!-- SCORECARD (If Watched) -->
+          <!-- SCORECARD -->
           ${saved && saved.status === 'watched' ? `
             <div class="scorecard-banner">
               <div class="score-stat">
@@ -609,7 +676,7 @@
             </div>
           </section>
 
-          <!-- POSTER ARCHIVE & MOVIE STILL PICKER -->
+          <!-- POSTER ARCHIVE -->
           <section class="gallery-section">
             <h3 class="section-heading">Poster Archive & Stills (${(film.posters || []).length + (film.backdrops || []).length} VARIANTS)</h3>
             <p style="font-size:0.85rem; color:var(--muted); margin-bottom:1.5rem;">Click any artwork below to set it as this movie's cover on your main archive feed.</p>
@@ -685,6 +752,10 @@
         document.getElementById('mindInput').value = saved.mindScore;
         document.getElementById('mindVal').innerText = saved.mindScore + '/10';
       }
+      if (saved.tieBreakPriority !== undefined) {
+        document.getElementById('tieBreakInput').value = saved.tieBreakPriority;
+        document.getElementById('tieBreakVal').innerText = saved.tieBreakPriority;
+      }
 
       toggleStatusFields();
       document.getElementById('saveModal').classList.add('active');
@@ -704,6 +775,7 @@
       const atmoScore = parseInt(document.getElementById('atmoInput').value);
       const mindScore = parseInt(document.getElementById('mindInput').value);
       const hypeScore = parseInt(document.getElementById('hypeInput').value);
+      const tieBreakPriority = parseInt(document.getElementById('tieBreakInput').value) || 50;
 
       const compositeScore = status === 'watched' 
         ? parseFloat(((gutRating * 4.0) + (dreadScore * 2.0) + (atmoScore * 2.0) + (mindScore * 2.0)).toFixed(1))
@@ -718,6 +790,7 @@
         atmoScore: atmoScore,
         mindScore: mindScore,
         hypeScore: hypeScore,
+        tieBreakPriority: tieBreakPriority,
         compositeScore: compositeScore
       };
 
@@ -737,7 +810,117 @@
       openFilmPage(film.id);
     }
 
-    // RENDER TRADITIONAL LEFT-TO-RIGHT ROW-BASED ORDER
+    // TIE-BREAKER RANKING REORDER FUNCTIONS
+    function promoteToTop(filmId, event) {
+      event.stopPropagation();
+      const film = myFilms.find(f => f.id === filmId);
+      if (!film) return;
+
+      // Find highest tieBreakPriority and add 10 to guarantee #1 spot
+      const highestPriority = Math.max(...myFilms.map(f => f.tieBreakPriority || 50), 50);
+      film.tieBreakPriority = highestPriority + 10;
+      
+      localStorage.setItem('a24_saved_films', JSON.stringify(myFilms));
+      renderGrid();
+    }
+
+    function shiftRank(filmId, direction, event) {
+      event.stopPropagation();
+      const sortedWatched = myFilms
+        .filter(f => f.status === 'watched')
+        .sort((a,b) => (b.compositeScore || 0) - (a.compositeScore || 0) || (b.tieBreakPriority || 50) - (a.tieBreakPriority || 50));
+
+      const currentIndex = sortedWatched.findIndex(f => f.id === filmId);
+      const targetIndex = currentIndex + direction;
+
+      if (targetIndex < 0 || targetIndex >= sortedWatched.length) return;
+
+      const currentFilm = sortedWatched[currentIndex];
+      const targetFilm = sortedWatched[targetIndex];
+
+      // Swap priorities to flip positions cleanly
+      const temp = currentFilm.tieBreakPriority || 50;
+      currentFilm.tieBreakPriority = (targetFilm.tieBreakPriority || 50) + (direction === -1 ? 1 : -1);
+
+      localStorage.setItem('a24_saved_films', JSON.stringify(myFilms));
+      renderGrid();
+    }
+
+    // EXPORT & IMPORT SYSTEM
+    function openExportModal() {
+      updateExportView('all');
+      document.getElementById('exportModal').classList.add('active');
+    }
+
+    function getExportData(scope) {
+      let data = [...myFilms];
+      if (scope === 'watched') data = data.filter(f => f.status === 'watched');
+      if (scope === 'watchlist') data = data.filter(f => f.status === 'watchlist');
+      if (scope === 'top') {
+        data = data.filter(f => f.status === 'watched')
+                   .sort((a,b) => (b.compositeScore || 0) - (a.compositeScore || 0) || (b.tieBreakPriority || 50) - (a.tieBreakPriority || 50));
+      }
+      return {
+        exportDate: new Date().toISOString(),
+        archiveType: "A24 Psychological Archive",
+        scope: scope,
+        totalFilms: data.length,
+        films: data
+      };
+    }
+
+    function updateExportView(scope) {
+      currentExportScope = scope;
+      document.querySelectorAll('#exportModal .outline-btn').forEach(b => b.style.background = '#fff');
+      const activeBtn = document.getElementById(`scope-${scope}`);
+      if (activeBtn) activeBtn.style.background = '#e6e6e6';
+
+      const json = JSON.stringify(getExportData(scope), null, 2);
+      document.getElementById('jsonOutputArea').value = json;
+    }
+
+    function downloadJsonFile() {
+      const data = getExportData(currentExportScope);
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `A24-Archive-${currentExportScope}-${new Date().toISOString().split('T')[0]}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function copyJsonToClipboard() {
+      const text = document.getElementById('jsonOutputArea').value;
+      navigator.clipboard.writeText(text);
+      alert('Archive JSON copied to clipboard!');
+    }
+
+    function importJsonFile(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const parsed = JSON.parse(e.target.result);
+          const importedFilms = Array.isArray(parsed) ? parsed : (parsed.films || []);
+
+          if (!Array.isArray(importedFilms)) throw new Error('Invalid JSON schema');
+
+          myFilms = importedFilms;
+          localStorage.setItem('a24_saved_films', JSON.stringify(myFilms));
+          alert(`Successfully imported ${myFilms.length} films!`);
+          closeModal('exportModal');
+          renderGrid();
+        } catch (err) {
+          alert('Failed to import JSON: ' + err.message);
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    // RENDER TRADITIONAL LEFT-TO-RIGHT ORDER WITH TIE-BREAKERS
     function renderGrid() {
       const grid = document.getElementById('filmGrid');
       const countLabel = document.getElementById('itemCountLabel');
@@ -746,7 +929,12 @@
       if (currentFilter === 'watched') list = list.filter(f => f.status === 'watched');
       if (currentFilter === 'watchlist') list = list.filter(f => f.status === 'watchlist');
       if (currentFilter === 'top') {
-        list = list.filter(f => f.status === 'watched').sort((a,b) => (b.compositeScore || 0) - (a.compositeScore || 0));
+        list = list.filter(f => f.status === 'watched').sort((a,b) => {
+          // Sort by composite score first; if tied, sort by tieBreakPriority
+          const scoreDiff = (b.compositeScore || 0) - (a.compositeScore || 0);
+          if (scoreDiff !== 0) return scoreDiff;
+          return (b.tieBreakPriority || 50) - (a.tieBreakPriority || 50);
+        });
       }
 
       countLabel.innerText = `${list.length} ${list.length === 1 ? 'FILM' : 'FILMS'}`;
@@ -756,7 +944,6 @@
         return;
       }
 
-      // Left-to-Right Row Output: #1 top-left, #2 top-middle, #3 top-right, #4 second-row-left...
       grid.innerHTML = list.map((f, idx) => `
         <article class="film-item" onclick="openFilmPage('${f.id}')">
           <div class="film-art-wrapper">
@@ -768,6 +955,17 @@
             <span>${currentFilter === 'top' ? `TOP #${idx + 1}` : (f.status === 'watchlist' ? 'WATCHLIST' : 'WATCHED')}</span>
             <span>${f.status === 'watched' ? `${f.compositeScore} INDEX` : `HYPE: ${f.hypeScore || 9}/10`}</span>
           </div>
+
+          <!-- TIE-BREAKER AND REORDER BAR (TOP RANKED VIEW) -->
+          ${currentFilter === 'top' ? `
+            <div class="rank-reorder-bar" onclick="event.stopPropagation()">
+              <div style="display:flex; gap:4px;">
+                <button class="rank-shift-btn" onclick="shiftRank('${f.id}', -1, event)" title="Move Up">▲</button>
+                <button class="rank-shift-btn" onclick="shiftRank('${f.id}', 1, event)" title="Move Down">▼</button>
+              </div>
+              <button class="rank-shift-btn crown-btn" onclick="promoteToTop('${f.id}', event)" title="Set as #1 Masterpiece">👑 MAKE #1</button>
+            </div>
+          ` : ''}
         </article>
       `).join('');
     }
