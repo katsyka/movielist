@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>A24 — Film Archive</title>
+  <title>A24 — Film Archive & Catalog</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -81,12 +81,13 @@
     }
     .drawer-nav { display: flex; flex-direction: column; gap: 1.2rem; margin-top: 2.5rem; }
     .drawer-link {
-      color: #fff; font-size: 2.4rem; font-weight: 900; letter-spacing: -0.04em;
+      color: #fff; font-size: 2.3rem; font-weight: 900; letter-spacing: -0.04em;
       line-height: 1; cursor: pointer; transition: opacity 0.15s;
     }
     .drawer-link:hover { opacity: 0.6; }
+    .drawer-badge { font-size: 0.75rem; background: #fff; color: #000; padding: 2px 6px; font-weight: 900; vertical-align: middle; margin-left: 8px; border-radius: 2px; }
 
-    /* CONTROLS */
+    /* CONTROLS BAR */
     .controls {
       padding: 1.25rem 2.5rem; display: flex; justify-content: space-between;
       align-items: center; border-bottom: 1px solid var(--border); flex-wrap: wrap; gap: 1rem;
@@ -98,7 +99,17 @@
     }
     .tab-btn.active { color: #000; border-color: #000; }
 
-    /* TRADITIONAL LEFT-TO-RIGHT ROW GRID */
+    /* A24 CATALOG FILTER SECTION */
+    .catalog-filter-bar {
+      padding: 1.5rem 2.5rem; background: #fafafa; border-bottom: 1px solid var(--border);
+      display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 1rem; align-items: center;
+    }
+    .filter-input, .filter-select {
+      width: 100%; border: 1px solid #000; padding: 0.75rem 1rem;
+      font-weight: 700; font-size: 0.85rem; background: #fff; outline: none;
+    }
+
+    /* TRADITIONAL LEFT-TO-RIGHT ROW GRID WITH NATURAL POSTER SIZES */
     .film-row-feed {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -151,21 +162,8 @@
       margin-top: 0.2rem;
     }
 
-    /* TOP RANK TIE-BREAKER / REORDER ACTION BAR ON CARDS */
-    .rank-reorder-bar {
-      display: flex; gap: 0.4rem; margin-top: 0.75rem; border-top: 1px solid var(--border);
-      padding-top: 0.6rem; align-items: center; justify-content: space-between;
-    }
-    .rank-shift-btn {
-      background: #fff; border: 1px solid #ccc; font-size: 0.7rem; font-weight: 800;
-      padding: 0.35rem 0.6rem; cursor: pointer; text-transform: uppercase;
-      transition: all 0.15s;
-    }
-    .rank-shift-btn:hover { background: #000; color: #fff; border-color: #000; }
-    .crown-btn { background: #000; color: #fff; border-color: #000; }
-
-    /* DEDICATED FILM DETAIL VIEW */
-    #filmPageView { display: none; }
+    /* FILM DETAIL VIEW (HERO & EXTENDED CREW) */
+    #filmPageView, #catalogView { display: none; }
     .film-hero {
       position: relative; width: 100%; min-height: 70vh; max-height: 85vh;
       background: #000; overflow: hidden; display: flex; align-items: flex-end;
@@ -214,6 +212,14 @@
     .score-stat h5 { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; color: #888; letter-spacing: 0.08em; }
     .score-stat .val { font-size: 1.8rem; font-weight: 900; }
 
+    /* DEEP CREW CREDITS GRID */
+    .crew-grid {
+      padding: 3.5rem 2.5rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 2.5rem 2rem; border-bottom: 1px solid var(--border);
+    }
+    .crew-block h5 { font-size: 0.72rem; font-weight: 800; text-transform: uppercase; color: var(--muted); letter-spacing: 0.08em; margin-bottom: 0.35rem; }
+    .crew-block p { font-size: 1.15rem; font-weight: 800; line-height: 1.25; }
+
     .film-body-grid {
       padding: 3.5rem 2.5rem; display: grid; grid-template-columns: 2fr 1fr;
       gap: 3.5rem; border-bottom: 1px solid var(--border);
@@ -253,6 +259,16 @@
       position: absolute; top: 1.5rem; right: 1.5rem; background: none;
       border: none; font-weight: 900; font-size: 1.4rem; cursor: pointer;
     }
+
+    /* LEFT-CLICK FILM ACTION MENU MODAL */
+    .action-menu-list { display: flex; flex-direction: column; gap: 0.5rem; margin-top: 1.5rem; }
+    .action-menu-item {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1rem 1.25rem; border: 1px solid var(--border); font-size: 0.9rem;
+      font-weight: 800; text-transform: uppercase; cursor: pointer; transition: 0.15s;
+    }
+    .action-menu-item:hover { background: #000; color: #fff; border-color: #000; }
+
     .api-search-box {
       width: 100%; border: 2px solid #000; padding: 1rem; font-size: 1.1rem;
       font-weight: 700; outline: none; margin-bottom: 1.2rem;
@@ -279,7 +295,6 @@
     }
     .art-thumb.selected { border-color: #000; opacity: 1; transform: scale(1.04); }
 
-    /* JSON EXPORT PREVIEW TEXTAREA */
     .json-code-box {
       width: 100%; height: 220px; font-family: monospace; font-size: 0.8rem;
       background: #f7f7f7; border: 1px solid #000; padding: 1rem;
@@ -289,14 +304,16 @@
     /* RESPONSIVE LAYOUT */
     @media (max-width: 1024px) {
       .film-row-feed { grid-template-columns: repeat(2, 1fr); column-gap: 2rem; padding: 1.75rem; }
+      .catalog-filter-bar { grid-template-columns: 1fr 1fr; }
     }
     @media (max-width: 700px) {
       header { padding: 0.9rem 1.25rem; }
       .brand-logo-img { height: 28px; }
-      .controls { padding: 1rem 1.25rem; }
+      .controls, .catalog-filter-bar { padding: 1rem 1.25rem; }
+      .catalog-filter-bar { grid-template-columns: 1fr; }
       .film-row-feed { grid-template-columns: 1fr; padding: 1.25rem; gap: 2.5rem; }
       .film-name { font-size: 1.8rem; }
-      .film-meta-grid, .film-body-grid, .gallery-section, .scorecard-banner { padding-left: 1.25rem; padding-right: 1.25rem; }
+      .film-meta-grid, .film-body-grid, .gallery-section, .scorecard-banner, .crew-grid { padding-left: 1.25rem; padding-right: 1.25rem; }
       .film-meta-grid, .film-body-grid { grid-template-columns: 1fr; gap: 2rem; }
     }
   </style>
@@ -309,10 +326,11 @@
     <div>
       <button class="drawer-close" onclick="toggleDrawer(false)">✕ CLOSE</button>
       <nav class="drawer-nav">
-        <a class="drawer-link" onclick="navigateHome('all')">Films</a>
+        <a class="drawer-link" onclick="showCatalogView()">A24 Catalog <span class="drawer-badge">ALL</span></a>
+        <a class="drawer-link" onclick="navigateHome('all')">My Archive</a>
+        <a class="drawer-link" onclick="navigateHome('top')">Top Ranked</a>
         <a class="drawer-link" onclick="navigateHome('watched')">Watched</a>
         <a class="drawer-link" onclick="navigateHome('watchlist')">Watchlist</a>
-        <a class="drawer-link" onclick="navigateHome('top')">Top Ranked</a>
         <a class="drawer-link" onclick="openSearchModal(); toggleDrawer(false);">Search TMDB</a>
         <a class="drawer-link" onclick="openExportModal(); toggleDrawer(false);">Export / Backup</a>
       </nav>
@@ -331,16 +349,17 @@
       <img src="https://images.seeklogo.com/logo-png/31/2/a24-films-logo-png_seeklogo-316223.png" alt="A24" class="brand-logo-img">
     </a>
     <div class="header-actions">
+      <button class="outline-btn" onclick="showCatalogView()">A24 Catalog</button>
       <button class="outline-btn" onclick="openExportModal()">↓ Export</button>
-      <button class="log-btn" onclick="openSearchModal()">+ Search & Add</button>
+      <button class="log-btn" onclick="openSearchModal()">+ Search</button>
     </div>
   </header>
 
-  <!-- HOME VIEW -->
+  <!-- 1. HOME VIEW (MY PERSONAL COLLECTION) -->
   <div id="homeView">
     <section class="controls">
       <div>
-        <button class="tab-btn active" id="tab-all" onclick="setFilter('all')">All Films</button>
+        <button class="tab-btn active" id="tab-all" onclick="setFilter('all')">My Archive</button>
         <button class="tab-btn" id="tab-top" onclick="setFilter('top')">Top Ranked</button>
         <button class="tab-btn" id="tab-watched" onclick="setFilter('watched')">Watched</button>
         <button class="tab-btn" id="tab-watchlist" onclick="setFilter('watchlist')">Watchlist</button>
@@ -350,14 +369,95 @@
       </div>
     </section>
 
-    <!-- TRADITIONAL LEFT-TO-RIGHT ROW-BASED FEED -->
+    <!-- TRADITIONAL LEFT-TO-RIGHT ROW FEED -->
     <main class="film-row-feed" id="filmGrid"></main>
   </div>
 
-  <!-- SINGLE DEDICATED FILM PAGE VIEW -->
+  <!-- 2. FULL A24 STUDIO CATALOG EXPLORER (SEARCH ALL REAL A24 FILMS) -->
+  <div id="catalogView">
+    <section class="controls">
+      <div style="font-size: 0.9rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.06em;">
+        A24 Complete Filmography Database
+      </div>
+      <button class="outline-btn" onclick="showHomeView()">← Back to My Archive</button>
+    </section>
+
+    <!-- FLEXIBLE FILTERS -->
+    <section class="catalog-filter-bar">
+      <input type="text" id="catSearchQuery" class="filter-input" placeholder="Search A24 films: Hereditary, Talk to Me..." oninput="handleCatalogFilter()">
+      
+      <select id="catGenreFilter" class="filter-select" onchange="fetchA24Catalog()">
+        <option value="">All Genres</option>
+        <option value="27">Horror</option>
+        <option value="53">Thriller / Psychological</option>
+        <option value="18">Drama</option>
+        <option value="878">Sci-Fi</option>
+        <option value="9648">Mystery</option>
+        <option value="35">Comedy</option>
+        <option value="10749">Romance</option>
+        <option value="80">Crime</option>
+      </select>
+
+      <select id="catYearFilter" class="filter-select" onchange="fetchA24Catalog()">
+        <option value="">All Years</option>
+        <option value="2026">2026</option>
+        <option value="2025">2025</option>
+        <option value="2024">2024</option>
+        <option value="2023">2023</option>
+        <option value="2022">2022</option>
+        <option value="2021">2021</option>
+        <option value="2019">2019</option>
+        <option value="2018">2018</option>
+        <option value="2016">2016</option>
+        <option value="2015">2015</option>
+      </select>
+
+      <select id="catSortFilter" class="filter-select" onchange="fetchA24Catalog()">
+        <option value="popularity.desc">Most Popular</option>
+        <option value="vote_average.desc">Highest Rated</option>
+        <option value="primary_release_date.desc">Newest Release</option>
+        <option value="title.asc">A - Z</option>
+      </select>
+    </section>
+
+    <main class="film-row-feed" id="catalogGrid"></main>
+  </div>
+
+  <!-- 3. SINGLE DEDICATED FILM PAGE VIEW -->
   <div id="filmPageView"></div>
 
-  <!-- SEARCH MODAL -->
+  <!-- LEFT-CLICK INTERACTIVE CARD ACTION MENU (Tie-Breaker / Reordering / Actions) -->
+  <div class="modal-overlay" id="filmActionModal">
+    <div class="modal-content" style="max-width: 480px;">
+      <button class="modal-close" onclick="closeModal('filmActionModal')">✕</button>
+      <div id="actionModalPreview"></div>
+      
+      <div class="action-menu-list">
+        <div class="action-menu-item" onclick="viewSelectedFilmPage()">
+          <span>📖 View Full Film Page & Gallery</span>
+          <span>→</span>
+        </div>
+        <div class="action-menu-item" onclick="actionPromoteToTop()">
+          <span>👑 Set as #1 Top Masterpiece</span>
+          <span>#1</span>
+        </div>
+        <div class="action-menu-item" onclick="actionShiftRank(-1)">
+          <span>▲ Move Up in Rank</span>
+          <span>UP</span>
+        </div>
+        <div class="action-menu-item" onclick="actionShiftRank(1)">
+          <span>▼ Move Down in Rank</span>
+          <span>DOWN</span>
+        </div>
+        <div class="action-menu-item" onclick="openSaveModal(); closeModal('filmActionModal');">
+          <span>⭐ Re-Score & Change Status</span>
+          <span>EDIT</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEARCH TMDB MODAL -->
   <div class="modal-overlay" id="searchModal">
     <div class="modal-content">
       <button class="modal-close" onclick="closeModal('searchModal')">✕</button>
@@ -422,11 +522,11 @@
             <input type="range" id="mindInput" min="1" max="10" value="8" oninput="document.getElementById('mindVal').innerText = this.value + '/10'">
           </div>
 
-          <!-- TIE-BREAKER MANUAL PRIORITY SLIDER -->
+          <!-- TIE-BREAKER MANUAL PRIORITY -->
           <div class="slider-row" style="background:#fafafa; border:1px dashed #000; padding:0.75rem;">
             <label><span>Curator Tie-Breaker Priority (For Identical Scores)</span><span id="tieBreakVal">50</span></label>
             <input type="range" id="tieBreakInput" min="1" max="100" value="50" oninput="document.getElementById('tieBreakVal').innerText = this.value">
-            <p style="font-size:0.68rem; color:var(--muted); margin-top:4px;">Higher value wins #1 placement if two films both reach identical Index scores.</p>
+            <p style="font-size:0.68rem; color:var(--muted); margin-top:4px;">Higher value wins #1 placement if two films reach identical Index scores.</p>
           </div>
         </div>
       </div>
@@ -435,12 +535,12 @@
     </div>
   </div>
 
-  <!-- EXPORT & CUSTOM JSON MODAL -->
+  <!-- EXPORT & JSON MODAL -->
   <div class="modal-overlay" id="exportModal">
     <div class="modal-content">
       <button class="modal-close" onclick="closeModal('exportModal')">✕</button>
       <h2 style="font-size: 1.4rem; font-weight: 900; text-transform: uppercase; margin-bottom: 0.5rem;">Export Archive / JSON</h2>
-      <p style="font-size: 0.85rem; color: var(--muted); margin-bottom: 1.2rem;">Choose what to export, download the curated JSON file, or restore from a previous backup.</p>
+      <p style="font-size: 0.85rem; color: var(--muted); margin-bottom: 1.2rem;">Export customized archive data, download JSON file, or restore backup.</p>
 
       <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1rem;">
         <button class="outline-btn" id="scope-all" onclick="updateExportView('all')">All Archive</button>
@@ -472,7 +572,7 @@
         title: "Hereditary",
         year: 2018,
         director: "Ari Aster",
-        starring: "Toni Collette, Alex Wolff",
+        starring: "Toni Collette, Alex Wolff, Milly Shapiro",
         status: "watched",
         gutRating: 9.8,
         dreadScore: 10,
@@ -488,8 +588,10 @@
     let currentFilter = 'all';
     let currentExportScope = 'all';
     let selectedFilm = null;
+    let clickedCardFilmId = null;
     let activeArtworkChoice = "";
     let debounceTimer;
+    let cachedA24Catalog = [];
 
     function toggleDrawer(open) {
       document.getElementById('sideDrawer').classList.toggle('active', open);
@@ -504,9 +606,19 @@
 
     function showHomeView() {
       document.getElementById('filmPageView').style.display = 'none';
+      document.getElementById('catalogView').style.display = 'none';
       document.getElementById('homeView').style.display = 'block';
       window.scrollTo({ top: 0, behavior: 'smooth' });
       renderGrid();
+    }
+
+    function showCatalogView() {
+      toggleDrawer(false);
+      document.getElementById('homeView').style.display = 'none';
+      document.getElementById('filmPageView').style.display = 'none';
+      document.getElementById('catalogView').style.display = 'block';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      if (!cachedA24Catalog.length) fetchA24Catalog();
     }
 
     function openSearchModal() {
@@ -520,7 +632,7 @@
 
     function setFilter(filter) {
       currentFilter = filter;
-      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('#homeView .tab-btn').forEach(b => b.classList.remove('active'));
       const btn = document.getElementById(`tab-${filter}`);
       if (btn) btn.classList.add('active');
       renderGrid();
@@ -532,6 +644,120 @@
       document.getElementById('watchedFields').style.display = isWatchlist ? 'none' : 'block';
     }
 
+    // LEFT-CLICK CARD HANDLER: In 'top' ranking view, opens the Action Menu on left-click; in other views, opens Movie Page directly.
+    function handleCardClick(filmId) {
+      clickedCardFilmId = filmId;
+      const film = myFilms.find(f => f.id === filmId);
+      if (!film) {
+        openFilmPage(filmId);
+        return;
+      }
+
+      if (currentFilter === 'top') {
+        selectedFilm = film;
+        document.getElementById('actionModalPreview').innerHTML = `
+          <div style="display:flex; gap:1rem; align-items:center; border-bottom:1px solid var(--border); padding-bottom:1rem;">
+            <img src="${film.displayArtwork || film.poster}" style="width:70px; height:50px; object-fit:cover;">
+            <div>
+              <h3 style="font-size:1.2rem; font-weight:900;">${film.title}</h3>
+              <p style="font-size:0.75rem; color:var(--muted);">Index: ${film.compositeScore} / 100 • Year: ${film.year}</p>
+            </div>
+          </div>
+        `;
+        document.getElementById('filmActionModal').classList.add('active');
+      } else {
+        openFilmPage(filmId);
+      }
+    }
+
+    function viewSelectedFilmPage() {
+      closeModal('filmActionModal');
+      if (clickedCardFilmId) openFilmPage(clickedCardFilmId);
+    }
+
+    function actionPromoteToTop() {
+      const film = myFilms.find(f => f.id === clickedCardFilmId);
+      if (film) {
+        const highest = Math.max(...myFilms.map(f => f.tieBreakPriority || 50), 50);
+        film.tieBreakPriority = highest + 10;
+        localStorage.setItem('a24_saved_films', JSON.stringify(myFilms));
+        renderGrid();
+      }
+      closeModal('filmActionModal');
+    }
+
+    function actionShiftRank(dir) {
+      const sorted = myFilms
+        .filter(f => f.status === 'watched')
+        .sort((a,b) => (b.compositeScore || 0) - (a.compositeScore || 0) || (b.tieBreakPriority || 50) - (a.tieBreakPriority || 50));
+      
+      const idx = sorted.findIndex(f => f.id === clickedCardFilmId);
+      const targetIdx = idx + dir;
+      if (targetIdx >= 0 && targetIdx < sorted.length) {
+        const cur = sorted[idx];
+        const tgt = sorted[targetIdx];
+        cur.tieBreakPriority = (tgt.tieBreakPriority || 50) + (dir === -1 ? 1 : -1);
+        localStorage.setItem('a24_saved_films', JSON.stringify(myFilms));
+        renderGrid();
+      }
+      closeModal('filmActionModal');
+    }
+
+    // A24 CATALOG QUERYING (ALL REAL A24 FILMS)
+    async function fetchA24Catalog() {
+      const genre = document.getElementById('catGenreFilter').value;
+      const year = document.getElementById('catYearFilter').value;
+      const sort = document.getElementById('catSortFilter').value;
+      const grid = document.getElementById('catalogGrid');
+
+      grid.innerHTML = `<div style="grid-column: 1/-1; padding: 6rem 0; text-align:center; font-weight:800;">LOADING A24 STUDIO CATALOG...</div>`;
+
+      try {
+        const res = await fetch(`${WORKER_URL}/api/a24-catalog?genre=${genre}&year=${year}&sort=${sort}`);
+        const films = await res.json();
+        cachedA24Catalog = films || [];
+        renderCatalogGrid(cachedA24Catalog);
+      } catch (err) {
+        grid.innerHTML = `<div style="grid-column: 1/-1; padding: 4rem; color:red; text-align:center;">Failed to load catalog: ${err.message}</div>`;
+      }
+    }
+
+    function handleCatalogFilter() {
+      const q = document.getElementById('catSearchQuery').value.toLowerCase().trim();
+      if (!q) {
+        renderCatalogGrid(cachedA24Catalog);
+        return;
+      }
+      const filtered = cachedA24Catalog.filter(f => f.title.toLowerCase().includes(q));
+      renderCatalogGrid(filtered);
+    }
+
+    function renderCatalogGrid(films) {
+      const grid = document.getElementById('catalogGrid');
+      if (!films || !films.length) {
+        grid.innerHTML = `<div style="grid-column: 1/-1; padding: 5rem 0; text-align: center; color: var(--muted); text-transform:uppercase; font-weight:800;">No A24 films found matching this criteria.</div>`;
+        return;
+      }
+
+      grid.innerHTML = films.map(f => {
+        const isSaved = myFilms.find(m => m.id === f.id.toString());
+        return `
+          <article class="film-item" onclick="openFilmPage('${f.id}')">
+            <div class="film-art-wrapper">
+              <img src="${f.backdrop_path ? 'https://image.tmdb.org/t/p/w1280' + f.backdrop_path : (f.poster_path ? 'https://image.tmdb.org/t/p/w780' + f.poster_path : 'https://placehold.co/1280x720/000/fff?text=A24')}" alt="${f.title}" loading="lazy">
+            </div>
+            <span class="film-year">${f.release_date ? f.release_date.split('-')[0] : 'N/A'}</span>
+            <h2 class="film-name">${f.title}</h2>
+            <div class="film-meta-bar">
+              <span>${isSaved ? `IN ARCHIVE (${isSaved.status.toUpperCase()})` : 'A24 PRODUCTION'}</span>
+              <span>★ ${f.vote_average ? f.vote_average.toFixed(1) : 'N/A'}</span>
+            </div>
+          </article>
+        `;
+      }).join('');
+    }
+
+    // LIVE SEARCH
     function handleTyping() {
       clearTimeout(debounceTimer);
       const query = document.getElementById('tmdbQuery').value.trim();
@@ -569,15 +795,17 @@
       }, 300);
     }
 
-    // DEDICATED FILM PAGE
+    // DEDICATED FILM PAGE (HERO + DEEP CREW CREDITS + GALLERY)
     async function openFilmPage(tmdbId) {
       closeModal('searchModal');
       toggleDrawer(false);
 
       const filmPageView = document.getElementById('filmPageView');
       const homeView = document.getElementById('homeView');
+      const catalogView = document.getElementById('catalogView');
 
       homeView.style.display = 'none';
+      catalogView.style.display = 'none';
       filmPageView.style.display = 'block';
       filmPageView.innerHTML = `<div style="padding: 8rem 2rem; text-align: center; font-weight: 800; letter-spacing:0.1em;">ACCESSING ARCHIVE RECORD...</div>`;
       window.scrollTo(0, 0);
@@ -658,6 +886,26 @@
             </div>
           ` : ''}
 
+          <!-- FULL CREW & FILMMAKERS BREAKDOWN -->
+          <section class="crew-grid">
+            <div class="crew-block">
+              <h5>Written By (Screenplay)</h5>
+              <p>${film.writers || film.director}</p>
+            </div>
+            <div class="crew-block">
+              <h5>Director of Photography (DP)</h5>
+              <p>${film.cinematography || 'N/A'}</p>
+            </div>
+            <div class="crew-block">
+              <h5>Original Score & Music</h5>
+              <p>${film.music || 'N/A'}</p>
+            </div>
+            <div class="crew-block">
+              <h5>Producers</h5>
+              <p>${film.producers || film.production || 'A24'}</p>
+            </div>
+          </section>
+
           <!-- SYNOPSIS -->
           <section class="film-body-grid">
             <div>
@@ -666,17 +914,21 @@
             </div>
             <div style="display:flex; flex-direction:column; gap:1.2rem;">
               <div style="border-bottom:1px solid var(--border); padding-bottom:0.6rem;">
-                <span style="font-size:0.75rem; font-weight:800; text-transform:uppercase; color:var(--muted); display:block;">Production</span>
+                <span style="font-size:0.75rem; font-weight:800; text-transform:uppercase; color:var(--muted); display:block;">Production Companies</span>
                 <span style="font-weight:700;">${film.production || 'A24 / Independent'}</span>
               </div>
               <div style="border-bottom:1px solid var(--border); padding-bottom:0.6rem;">
                 <span style="font-size:0.75rem; font-weight:800; text-transform:uppercase; color:var(--muted); display:block;">Original Language</span>
                 <span style="font-weight:700;">${(film.language || 'English').toUpperCase()}</span>
               </div>
+              <div style="border-bottom:1px solid var(--border); padding-bottom:0.6rem;">
+                <span style="font-size:0.75rem; font-weight:800; text-transform:uppercase; color:var(--muted); display:block;">Budget / Box Office</span>
+                <span style="font-weight:700;">${film.budget ? '$' + (film.budget/1000000).toFixed(1) + 'M' : 'N/A'} / ${film.revenue ? '$' + (film.revenue/1000000).toFixed(1) + 'M' : 'N/A'}</span>
+              </div>
             </div>
           </section>
 
-          <!-- POSTER ARCHIVE -->
+          <!-- POSTER ARCHIVE & MOVIE STILL PICKER -->
           <section class="gallery-section">
             <h3 class="section-heading">Poster Archive & Stills (${(film.posters || []).length + (film.backdrops || []).length} VARIANTS)</h3>
             <p style="font-size:0.85rem; color:var(--muted); margin-bottom:1.5rem;">Click any artwork below to set it as this movie's cover on your main archive feed.</p>
@@ -810,43 +1062,7 @@
       openFilmPage(film.id);
     }
 
-    // TIE-BREAKER RANKING REORDER FUNCTIONS
-    function promoteToTop(filmId, event) {
-      event.stopPropagation();
-      const film = myFilms.find(f => f.id === filmId);
-      if (!film) return;
-
-      // Find highest tieBreakPriority and add 10 to guarantee #1 spot
-      const highestPriority = Math.max(...myFilms.map(f => f.tieBreakPriority || 50), 50);
-      film.tieBreakPriority = highestPriority + 10;
-      
-      localStorage.setItem('a24_saved_films', JSON.stringify(myFilms));
-      renderGrid();
-    }
-
-    function shiftRank(filmId, direction, event) {
-      event.stopPropagation();
-      const sortedWatched = myFilms
-        .filter(f => f.status === 'watched')
-        .sort((a,b) => (b.compositeScore || 0) - (a.compositeScore || 0) || (b.tieBreakPriority || 50) - (a.tieBreakPriority || 50));
-
-      const currentIndex = sortedWatched.findIndex(f => f.id === filmId);
-      const targetIndex = currentIndex + direction;
-
-      if (targetIndex < 0 || targetIndex >= sortedWatched.length) return;
-
-      const currentFilm = sortedWatched[currentIndex];
-      const targetFilm = sortedWatched[targetIndex];
-
-      // Swap priorities to flip positions cleanly
-      const temp = currentFilm.tieBreakPriority || 50;
-      currentFilm.tieBreakPriority = (targetFilm.tieBreakPriority || 50) + (direction === -1 ? 1 : -1);
-
-      localStorage.setItem('a24_saved_films', JSON.stringify(myFilms));
-      renderGrid();
-    }
-
-    // EXPORT & IMPORT SYSTEM
+    // EXPORT & BACKUP
     function openExportModal() {
       updateExportView('all');
       document.getElementById('exportModal').classList.add('active');
@@ -920,7 +1136,7 @@
       reader.readAsText(file);
     }
 
-    // RENDER TRADITIONAL LEFT-TO-RIGHT ORDER WITH TIE-BREAKERS
+    // RENDER MY ARCHIVE GRID
     function renderGrid() {
       const grid = document.getElementById('filmGrid');
       const countLabel = document.getElementById('itemCountLabel');
@@ -930,7 +1146,6 @@
       if (currentFilter === 'watchlist') list = list.filter(f => f.status === 'watchlist');
       if (currentFilter === 'top') {
         list = list.filter(f => f.status === 'watched').sort((a,b) => {
-          // Sort by composite score first; if tied, sort by tieBreakPriority
           const scoreDiff = (b.compositeScore || 0) - (a.compositeScore || 0);
           if (scoreDiff !== 0) return scoreDiff;
           return (b.tieBreakPriority || 50) - (a.tieBreakPriority || 50);
@@ -940,12 +1155,12 @@
       countLabel.innerText = `${list.length} ${list.length === 1 ? 'FILM' : 'FILMS'}`;
 
       if (!list.length) {
-        grid.innerHTML = `<div style="grid-column: 1/-1; padding: 5rem 0; text-align: center; color: var(--muted); text-transform:uppercase; letter-spacing:0.08em; font-weight:800;">No films in this view. Click "+ Search & Add" above to start your archive.</div>`;
+        grid.innerHTML = `<div style="grid-column: 1/-1; padding: 5rem 0; text-align: center; color: var(--muted); text-transform:uppercase; letter-spacing:0.08em; font-weight:800;">No films in this view. Click "A24 Catalog" or "+ Search" to add films.</div>`;
         return;
       }
 
       grid.innerHTML = list.map((f, idx) => `
-        <article class="film-item" onclick="openFilmPage('${f.id}')">
+        <article class="film-item" onclick="handleCardClick('${f.id}')">
           <div class="film-art-wrapper">
             <img src="${f.displayArtwork || f.poster}" alt="${f.title}" loading="lazy">
           </div>
@@ -955,17 +1170,6 @@
             <span>${currentFilter === 'top' ? `TOP #${idx + 1}` : (f.status === 'watchlist' ? 'WATCHLIST' : 'WATCHED')}</span>
             <span>${f.status === 'watched' ? `${f.compositeScore} INDEX` : `HYPE: ${f.hypeScore || 9}/10`}</span>
           </div>
-
-          <!-- TIE-BREAKER AND REORDER BAR (TOP RANKED VIEW) -->
-          ${currentFilter === 'top' ? `
-            <div class="rank-reorder-bar" onclick="event.stopPropagation()">
-              <div style="display:flex; gap:4px;">
-                <button class="rank-shift-btn" onclick="shiftRank('${f.id}', -1, event)" title="Move Up">▲</button>
-                <button class="rank-shift-btn" onclick="shiftRank('${f.id}', 1, event)" title="Move Down">▼</button>
-              </div>
-              <button class="rank-shift-btn crown-btn" onclick="promoteToTop('${f.id}', event)" title="Set as #1 Masterpiece">👑 MAKE #1</button>
-            </div>
-          ` : ''}
         </article>
       `).join('');
     }
