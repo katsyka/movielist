@@ -44,8 +44,6 @@
       justify-self: start; display: inline-flex; align-items: center; gap: 9px;
     }
     .menu-trigger span { display: inline-block; width: 16px; height: 2px; background: #000; }
-    
-    /* ENLARGED REAL LOGO */
     .brand-logo-img { height: 36px; object-fit: contain; cursor: pointer; display: block; }
     
     .header-actions { justify-self: end; }
@@ -93,18 +91,19 @@
     }
     .tab-btn.active { color: #000; border-color: #000; }
 
-    /* AUTHENTIC A24 EDITORIAL MASONRY FEED */
-    .film-masonry-feed {
-      column-count: 3;
-      column-gap: 2.5rem;
+    /* TRADITIONAL LEFT-TO-RIGHT ROW GRID WITH NATURAL POSTER SIZES */
+    .film-row-feed {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      align-items: start;
+      gap: 3.5rem 2.5rem;
       padding: 2.5rem;
     }
     .film-item {
-      break-inside: avoid;
-      margin-bottom: 3.5rem;
       cursor: pointer;
       display: flex;
       flex-direction: column;
+      width: 100%;
     }
     .film-art-wrapper {
       position: relative;
@@ -116,10 +115,13 @@
     .film-art-wrapper img {
       width: 100%;
       height: auto;
+      max-height: 520px;
+      object-fit: cover;
       display: block;
-      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    .film-item:hover .film-art-wrapper img { transform: scale(1.04); }
+    .film-item:hover .film-art-wrapper img { transform: scale(1.035); }
+    
     .film-year {
       font-size: 0.8rem;
       font-weight: 800;
@@ -182,7 +184,7 @@
     }
     .action-select-btn:hover { background: #000; color: #fff; }
 
-    /* SCORECARD BREAKDOWN */
+    /* SCORECARD BANNER */
     .scorecard-banner {
       background: #0f0f0f; color: #fff; padding: 2rem 2.5rem;
       display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -246,7 +248,6 @@
     .slider-row label { display: flex; justify-content: space-between; font-weight: 800; font-size: 0.8rem; text-transform: uppercase; margin-bottom: 0.4rem; }
     .slider-row input[type="range"] { width: 100%; accent-color: #000; }
 
-    /* THUMBNAIL SELECTOR STRIP IN MODAL */
     .art-picker-strip {
       display: flex; gap: 0.75rem; overflow-x: auto; padding: 0.5rem 0 1rem;
       margin-bottom: 1rem; scrollbar-width: thin;
@@ -257,16 +258,15 @@
     }
     .art-thumb.selected { border-color: #000; opacity: 1; transform: scale(1.04); }
 
-    /* MOBILE BREAKPOINTS */
+    /* RESPONSIVE LAYOUT (Left-to-Right preserved) */
     @media (max-width: 1024px) {
-      .film-masonry-feed { column-count: 2; column-gap: 1.75rem; padding: 1.75rem; }
+      .film-row-feed { grid-template-columns: repeat(2, 1fr); column-gap: 2rem; padding: 1.75rem; }
     }
     @media (max-width: 700px) {
       header { padding: 0.9rem 1.25rem; }
       .brand-logo-img { height: 28px; }
       .controls { padding: 1rem 1.25rem; }
-      .film-masonry-feed { column-count: 1; padding: 1.25rem; }
-      .film-item { margin-bottom: 2.5rem; }
+      .film-row-feed { grid-template-columns: 1fr; padding: 1.25rem; gap: 2.5rem; }
       .film-name { font-size: 1.8rem; }
       .film-meta-grid, .film-body-grid, .gallery-section, .scorecard-banner { padding-left: 1.25rem; padding-right: 1.25rem; }
       .film-meta-grid, .film-body-grid { grid-template-columns: 1fr; gap: 2rem; }
@@ -306,7 +306,7 @@
     </div>
   </header>
 
-  <!-- HOME VIEW: EDITORIAL MASONRY WALL -->
+  <!-- HOME VIEW -->
   <div id="homeView">
     <section class="controls">
       <div>
@@ -320,7 +320,8 @@
       </div>
     </section>
 
-    <main class="film-masonry-feed" id="filmGrid"></main>
+    <!-- TRADITIONAL LEFT-TO-RIGHT ROW-BASED FEED -->
+    <main class="film-row-feed" id="filmGrid"></main>
   </div>
 
   <!-- SINGLE DEDICATED FILM PAGE VIEW -->
@@ -400,7 +401,6 @@
   <script>
     const WORKER_URL = "https://a24.kviappsgames.workers.dev";
     
-    // Default starter films
     const DEFAULT_SEED_FILMS = [
       {
         id: "493922",
@@ -502,7 +502,7 @@
       }, 300);
     }
 
-    // OPEN DEDICATED FILM PAGE (A24 STYLE)
+    // DEDICATED FILM PAGE
     async function openFilmPage(tmdbId) {
       closeModal('searchModal');
       toggleDrawer(false);
@@ -534,7 +534,7 @@
             </div>
           </section>
 
-          <!-- 3-COLUMN METADATA (A24 LAYOUT) -->
+          <!-- 3-COLUMN METADATA -->
           <section class="film-meta-grid">
             <div class="meta-block">
               <h4>DIRECTED BY</h4>
@@ -565,7 +565,7 @@
             </div>
           </section>
 
-          <!-- SCORECARD BANNER (If Watched) -->
+          <!-- SCORECARD (If Watched) -->
           ${saved && saved.status === 'watched' ? `
             <div class="scorecard-banner">
               <div class="score-stat">
@@ -591,7 +591,7 @@
             </div>
           ` : ''}
 
-          <!-- SYNOPSIS & SIDE DETAILS -->
+          <!-- SYNOPSIS -->
           <section class="film-body-grid">
             <div>
               <h4 style="font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: var(--muted); margin-bottom: 1rem;">SYNOPSIS</h4>
@@ -609,7 +609,7 @@
             </div>
           </section>
 
-          <!-- POSTER & MOVIE MOMENT ARCHIVE WITH 1-CLICK SELECTOR -->
+          <!-- POSTER ARCHIVE & MOVIE STILL PICKER -->
           <section class="gallery-section">
             <h3 class="section-heading">Poster Archive & Stills (${(film.posters || []).length + (film.backdrops || []).length} VARIANTS)</h3>
             <p style="font-size:0.85rem; color:var(--muted); margin-bottom:1.5rem;">Click any artwork below to set it as this movie's cover on your main archive feed.</p>
@@ -663,7 +663,6 @@
         </div>
       `;
 
-      // Build thumbnail picker strip
       const allImages = [...(selectedFilm.posters || []), ...(selectedFilm.backdrops || [])];
       document.getElementById('modalArtPicker').innerHTML = allImages.map(img => `
         <img src="${img}" class="art-thumb ${img === activeArtworkChoice ? 'selected' : ''}" onclick="selectModalArtwork('${img}', this)">
@@ -706,7 +705,6 @@
       const mindScore = parseInt(document.getElementById('mindInput').value);
       const hypeScore = parseInt(document.getElementById('hypeInput').value);
 
-      // Weighted Composite Index: (Gut * 4.0) + (Dread * 2.0) + (Atmosphere * 2.0) + (Mindfuck * 2.0) = 100 max
       const compositeScore = status === 'watched' 
         ? parseFloat(((gutRating * 4.0) + (dreadScore * 2.0) + (atmoScore * 2.0) + (mindScore * 2.0)).toFixed(1))
         : 0;
@@ -739,7 +737,7 @@
       openFilmPage(film.id);
     }
 
-    // RENDER AUTHENTIC EDITORIAL MASONRY GRID (Variable Aspect Ratio)
+    // RENDER TRADITIONAL LEFT-TO-RIGHT ROW-BASED ORDER
     function renderGrid() {
       const grid = document.getElementById('filmGrid');
       const countLabel = document.getElementById('itemCountLabel');
@@ -758,6 +756,7 @@
         return;
       }
 
+      // Left-to-Right Row Output: #1 top-left, #2 top-middle, #3 top-right, #4 second-row-left...
       grid.innerHTML = list.map((f, idx) => `
         <article class="film-item" onclick="openFilmPage('${f.id}')">
           <div class="film-art-wrapper">
