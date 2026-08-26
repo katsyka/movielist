@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>A24 — Psychological Film Archive</title>
+  <title>A24 — Film Archive</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -13,7 +13,7 @@
       --bg: #ffffff;
       --fg: #000000;
       --border: #e6e6e6;
-      --muted: #737373;
+      --muted: #6e6e6e;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
@@ -24,261 +24,215 @@
       -webkit-font-smoothing: antialiased;
       overflow-x: hidden;
     }
-
     a { color: inherit; text-decoration: none; }
-    button, select, input { font-family: inherit; }
+    button, input, select { font-family: inherit; }
 
     /* HEADER */
     header {
-      position: sticky; top: 0; background: rgba(255,255,255,0.98);
+      position: sticky; top: 0; background: rgba(255,255,255,0.97);
       backdrop-filter: blur(10px);
-      z-index: 90;
+      z-index: 100;
       border-bottom: 1px solid var(--border);
-      padding: 1.1rem 2rem;
+      padding: 1.1rem 2.5rem;
       display: grid;
       grid-template-columns: 1fr auto 1fr;
       align-items: center;
     }
     .menu-trigger {
-      background: none; border: none;
-      font-size: 0.85rem; font-weight: 800;
-      letter-spacing: 0.08em; text-transform: uppercase;
-      cursor: pointer; justify-self: start;
-      display: inline-flex; align-items: center; gap: 8px;
+      background: none; border: none; font-size: 0.85rem; font-weight: 800;
+      letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer;
+      justify-self: start; display: inline-flex; align-items: center; gap: 9px;
     }
-    .menu-trigger-bar { width: 16px; height: 2px; background: #000; display: block; }
+    .menu-trigger span { display: inline-block; width: 16px; height: 2px; background: #000; }
     
-    /* ENLARGED A24 LOGO */
-    .brand-logo-img {
-      height: 38px;
-      width: auto;
-      object-fit: contain;
-      cursor: pointer;
-      display: block;
-      transition: opacity 0.2s;
-    }
-    .brand-logo-img:hover { opacity: 0.8; }
-
-    .header-actions { justify-self: end; display: flex; gap: 0.75rem; align-items: center; }
+    /* ENLARGED REAL LOGO */
+    .brand-logo-img { height: 36px; object-fit: contain; cursor: pointer; display: block; }
+    
+    .header-actions { justify-self: end; }
     .log-btn {
       background: #000; color: #fff; border: 1px solid #000;
-      padding: 0.6rem 1.3rem; font-weight: 800; text-transform: uppercase;
-      font-size: 0.75rem; letter-spacing: 0.06em; cursor: pointer;
-      transition: background 0.15s ease;
+      padding: 0.6rem 1.4rem; font-weight: 800; text-transform: uppercase;
+      font-size: 0.78rem; letter-spacing: 0.08em; cursor: pointer;
+      transition: opacity 0.15s ease;
     }
-    .log-btn:hover { background: #222; }
+    .log-btn:hover { opacity: 0.85; }
 
-    /* A24 SIDE DRAWER MENU */
+    /* SIDE DRAWER */
     .drawer-overlay {
       position: fixed; inset: 0; background: rgba(0,0,0,0.65);
-      z-index: 250; opacity: 0; visibility: hidden;
-      transition: opacity 0.3s ease, visibility 0.3s ease;
+      z-index: 250; opacity: 0; visibility: hidden; transition: 0.3s ease;
     }
     .drawer-overlay.active { opacity: 1; visibility: visible; }
     .side-drawer {
-      position: fixed; top: 0; left: 0; bottom: 0;
-      width: 100%; max-width: 360px;
-      background: #000000; color: #ffffff;
-      z-index: 300;
-      transform: translateX(-100%);
-      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-      display: flex; flex-direction: column;
-      padding: 2.5rem 2rem; justify-content: space-between;
+      position: fixed; top: 0; left: 0; bottom: 0; width: 100%; max-width: 360px;
+      background: #000; color: #fff; z-index: 300;
+      transform: translateX(-100%); transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex; flex-direction: column; justify-content: space-between; padding: 2.5rem 2rem;
     }
     .side-drawer.active { transform: translateX(0); }
     .drawer-close {
-      background: none; border: none; color: #fff;
-      font-size: 0.85rem; font-weight: 800; letter-spacing: 0.1em;
-      text-transform: uppercase; cursor: pointer; display: flex; align-items: center; gap: 8px;
+      background: none; border: none; color: #fff; font-size: 0.85rem;
+      font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer;
     }
-    .drawer-nav { display: flex; flex-direction: column; gap: 1.15rem; margin-top: 2.5rem; }
+    .drawer-nav { display: flex; flex-direction: column; gap: 1.2rem; margin-top: 2.5rem; }
     .drawer-link {
-      color: #fff; font-size: 2.2rem; font-weight: 900;
-      letter-spacing: -0.03em; line-height: 1.05; text-decoration: none;
-      cursor: pointer; transition: opacity 0.15s ease;
+      color: #fff; font-size: 2.4rem; font-weight: 900; letter-spacing: -0.04em;
+      line-height: 1; cursor: pointer; transition: opacity 0.15s;
     }
     .drawer-link:hover { opacity: 0.6; }
-    .drawer-footer { font-size: 0.75rem; color: #777; text-transform: uppercase; letter-spacing: 0.05em; }
 
-    /* CONTROLS BAR */
+    /* CONTROLS */
     .controls {
-      padding: 1.25rem 2rem; display: flex; justify-content: space-between;
-      align-items: center; border-bottom: 1px solid var(--border);
-      flex-wrap: wrap; gap: 1rem;
+      padding: 1.25rem 2.5rem; display: flex; justify-content: space-between;
+      align-items: center; border-bottom: 1px solid var(--border); flex-wrap: wrap; gap: 1rem;
     }
-    .tab-group { display: flex; flex-wrap: wrap; gap: 1.25rem; }
     .tab-btn {
-      background: none; border: none; font-weight: 800;
-      text-transform: uppercase; font-size: 0.8rem; letter-spacing: 0.08em;
-      cursor: pointer; color: var(--muted); padding-bottom: 4px;
-      border-bottom: 2px solid transparent; transition: color 0.15s ease, border-color 0.15s ease;
+      background: none; border: none; font-weight: 800; text-transform: uppercase;
+      font-size: 0.82rem; letter-spacing: 0.08em; cursor: pointer; color: var(--muted);
+      margin-right: 1.75rem; padding-bottom: 4px; border-bottom: 2px solid transparent;
     }
     .tab-btn.active { color: #000; border-color: #000; }
 
-    .sort-select {
-      border: 1px solid #000; padding: 0.4rem 0.8rem;
-      font-size: 0.75rem; font-weight: 800; text-transform: uppercase;
-      background: #fff; cursor: pointer;
-    }
-
-    /* A24 EDITORIAL DYNAMIC MASONRY GRID (Screenshot exact match) */
-    .masonry-container {
-      padding: 2.5rem 2rem;
+    /* AUTHENTIC A24 EDITORIAL MASONRY FEED */
+    .film-masonry-feed {
       column-count: 3;
       column-gap: 2.5rem;
+      padding: 2.5rem;
     }
-    .film-card {
+    .film-item {
       break-inside: avoid;
       margin-bottom: 3.5rem;
       cursor: pointer;
-      display: block;
+      display: flex;
+      flex-direction: column;
     }
-    .card-media {
+    .film-art-wrapper {
       position: relative;
       width: 100%;
-      background: #111;
+      background: #0f0f0f;
       overflow: hidden;
       margin-bottom: 0.85rem;
     }
-    .card-media img {
+    .film-art-wrapper img {
       width: 100%;
       height: auto;
       display: block;
-      transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    .film-card:hover .card-media img { transform: scale(1.035); }
-    
-    .card-rank-badge {
-      position: absolute; top: 12px; left: 12px;
-      background: #000; color: #fff;
-      font-size: 0.7rem; font-weight: 900;
-      padding: 4px 8px; letter-spacing: 0.05em;
-    }
-    .card-score-badge {
-      position: absolute; top: 12px; right: 12px;
-      background: rgba(0,0,0,0.85); color: #fff;
-      font-size: 0.7rem; font-weight: 800;
-      padding: 4px 8px; backdrop-filter: blur(4px);
-    }
-
-    .card-year {
-      font-size: 0.85rem;
-      font-weight: 700;
-      color: var(--muted);
-      margin-bottom: 0.3rem;
-    }
-    .card-title {
-      font-size: 1.85rem;
-      font-weight: 900;
-      letter-spacing: -0.03em;
-      line-height: 1.05;
-      color: #000;
-    }
-    .card-details {
-      margin-top: 0.4rem;
+    .film-item:hover .film-art-wrapper img { transform: scale(1.04); }
+    .film-year {
       font-size: 0.8rem;
+      font-weight: 800;
       color: var(--muted);
-      font-weight: 500;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.2rem;
+    }
+    .film-name {
+      font-size: 2.1rem;
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      line-height: 1.05;
+      margin-bottom: 0.35rem;
+    }
+    .film-meta-bar {
+      display: flex; justify-content: space-between;
+      font-size: 0.78rem; font-weight: 800; color: #000;
+      letter-spacing: 0.04em; text-transform: uppercase;
+      margin-top: 0.2rem;
     }
 
-    /* DEDICATED FILM PAGE VIEW */
+    /* DEDICATED FILM DETAIL VIEW */
     #filmPageView { display: none; }
     .film-hero {
-      position: relative; width: 100%; min-height: 60vh; max-height: 75vh;
+      position: relative; width: 100%; min-height: 70vh; max-height: 85vh;
       background: #000; overflow: hidden; display: flex; align-items: flex-end;
     }
     .film-hero-bg {
       position: absolute; inset: 0; width: 100%; height: 100%;
-      object-fit: cover; opacity: 0.9;
+      object-fit: cover; opacity: 0.88;
     }
     .film-hero-gradient {
       position: absolute; inset: 0;
-      background: linear-gradient(to top, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.2) 60%, transparent 100%);
+      background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.15) 50%, transparent 100%);
     }
     .film-hero-title-wrap {
-      position: relative; z-index: 10; padding: 3rem 2.5rem; color: #fff;
+      position: relative; z-index: 10; padding: 3.5rem 2.5rem; color: #fff;
     }
     .film-hero-title {
-      font-size: clamp(2.8rem, 6vw, 6rem); font-weight: 900;
+      font-size: clamp(3rem, 7vw, 6.5rem); font-weight: 900;
       letter-spacing: -0.04em; line-height: 0.95; margin-bottom: 0.5rem;
     }
-    .film-hero-tagline { font-size: 1.1rem; font-style: italic; opacity: 0.85; }
 
-    /* 3-COLUMN A24 METADATA */
     .film-meta-grid {
-      padding: 3rem 2.5rem;
-      display: grid;
-      grid-template-columns: 1.2fr 1fr 1fr;
-      gap: 3rem 2rem;
-      border-bottom: 1px solid var(--border);
+      padding: 3rem 2.5rem; display: grid; grid-template-columns: 1.2fr 1fr 1fr;
+      gap: 3rem 2rem; border-bottom: 1px solid var(--border);
     }
     .meta-block h4 {
       font-size: 0.75rem; font-weight: 800; text-transform: uppercase;
       letter-spacing: 0.1em; color: var(--muted); margin-bottom: 0.5rem;
     }
-    .meta-block p, .meta-block .val {
-      font-size: 1.5rem; font-weight: 900; letter-spacing: -0.02em; line-height: 1.2;
+    .meta-block p, .meta-block div {
+      font-size: 1.6rem; font-weight: 900; letter-spacing: -0.02em; line-height: 1.2;
     }
-    
     .action-select-btn {
-      width: 100%; border: 1px solid #000; padding: 0.9rem 1.2rem;
-      font-size: 0.85rem; font-weight: 800; text-transform: uppercase;
+      width: 100%; border: 1px solid #000; padding: 1rem 1.2rem;
+      font-size: 0.85rem; font-weight: 900; text-transform: uppercase;
       letter-spacing: 0.05em; background: #fff; cursor: pointer;
       display: flex; justify-content: space-between; align-items: center;
-      transition: background 0.15s, color 0.15s;
     }
     .action-select-btn:hover { background: #000; color: #fff; }
 
-    /* MULTI-CRITERIA SCORE CARD */
-    .criteria-card {
-      background: #fafafa; border: 1px solid var(--border); padding: 1.5rem;
-      margin: 2.5rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 1.5rem;
+    /* SCORECARD BREAKDOWN */
+    .scorecard-banner {
+      background: #0f0f0f; color: #fff; padding: 2rem 2.5rem;
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1.5rem; align-items: center; border-bottom: 1px solid #222;
     }
-    .crit-item span:first-child { display: block; font-size: 0.7rem; font-weight: 800; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
-    .crit-item span:last-child { font-size: 1.35rem; font-weight: 900; }
+    .score-stat h5 { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; color: #888; letter-spacing: 0.08em; }
+    .score-stat .val { font-size: 1.8rem; font-weight: 900; }
 
-    /* GALLERY & COVER PICKER */
-    .gallery-section { padding: 3rem 2.5rem; }
+    .film-body-grid {
+      padding: 3.5rem 2.5rem; display: grid; grid-template-columns: 2fr 1fr;
+      gap: 3.5rem; border-bottom: 1px solid var(--border);
+    }
+    .synopsis-text { font-size: 1.3rem; line-height: 1.6; font-weight: 500; }
+    
+    /* GALLERY / ART PICKER */
+    .gallery-section { padding: 3.5rem 2.5rem; }
     .section-heading { font-size: 1.4rem; font-weight: 900; letter-spacing: -0.02em; text-transform: uppercase; margin-bottom: 1.5rem; }
     .gallery-grid {
-      display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
       gap: 1.5rem;
     }
     .gallery-item {
-      position: relative; background: #eee; border: 1px solid var(--border); overflow: hidden;
-      display: flex; flex-direction: column;
+      position: relative; background: #000; overflow: hidden; border: 1px solid var(--border);
+      cursor: pointer;
     }
-    .gallery-item img { width: 100%; height: auto; object-fit: cover; display: block; }
-    .gallery-actions {
-      padding: 0.75rem; background: #fff; display: flex; justify-content: space-between; align-items: center;
-      border-top: 1px solid var(--border);
+    .gallery-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .gallery-label {
+      padding: 0.6rem; font-size: 0.7rem; font-weight: 800; text-transform: uppercase;
+      background: #fff; border-top: 1px solid var(--border); display: flex; justify-content: space-between;
     }
-    .set-cover-btn {
-      background: #000; color: #fff; border: none; font-size: 0.65rem; font-weight: 800;
-      text-transform: uppercase; padding: 5px 9px; cursor: pointer;
-    }
-    .set-cover-btn.active-cover { background: #00a344; }
 
     /* MODAL */
     .modal-overlay {
-      position: fixed; inset: 0; background: rgba(0,0,0,0.65);
-      backdrop-filter: blur(4px); z-index: 400; display: flex;
+      position: fixed; inset: 0; background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(5px); z-index: 400; display: flex;
       align-items: center; justify-content: center; opacity: 0;
-      visibility: hidden; transition: 0.2s ease; padding: 1.25rem;
+      visibility: hidden; transition: 0.2s ease; padding: 1.5rem;
     }
     .modal-overlay.active { opacity: 1; visibility: visible; }
     .modal-content {
-      background: #fff; width: 100%; max-width: 650px; max-height: 90vh;
+      background: #fff; width: 100%; max-width: 720px; max-height: 90vh;
       overflow-y: auto; border: 1px solid #000; padding: 2rem; position: relative;
     }
     .modal-close {
       position: absolute; top: 1.5rem; right: 1.5rem; background: none;
-      border: none; font-weight: 800; font-size: 1.3rem; cursor: pointer;
+      border: none; font-weight: 900; font-size: 1.4rem; cursor: pointer;
     }
     .api-search-box {
       width: 100%; border: 2px solid #000; padding: 1rem; font-size: 1.1rem;
-      font-weight: 700; outline: none; margin-bottom: 1.2rem; font-family: inherit;
+      font-weight: 700; outline: none; margin-bottom: 1.2rem;
     }
     .search-results { display: flex; flex-direction: column; gap: 0.75rem; max-height: 380px; overflow-y: auto; }
     .search-item {
@@ -286,54 +240,63 @@
       border: 1px solid var(--border); cursor: pointer; transition: 0.15s;
     }
     .search-item:hover { background: #000; color: #fff; }
-    .search-item img { width: 50px; height: 75px; object-fit: cover; background: #ddd; }
+    .search-item img { width: 50px; height: 75px; object-fit: cover; }
 
-    .slider-group { margin: 1.1rem 0; }
-    .slider-group label { display: flex; justify-content: space-between; font-weight: 800; font-size: 0.78rem; text-transform: uppercase; margin-bottom: 0.35rem; }
-    .slider-group input[type="range"] { width: 100%; accent-color: #000; }
+    .slider-row { margin: 1.2rem 0; }
+    .slider-row label { display: flex; justify-content: space-between; font-weight: 800; font-size: 0.8rem; text-transform: uppercase; margin-bottom: 0.4rem; }
+    .slider-row input[type="range"] { width: 100%; accent-color: #000; }
+
+    /* THUMBNAIL SELECTOR STRIP IN MODAL */
+    .art-picker-strip {
+      display: flex; gap: 0.75rem; overflow-x: auto; padding: 0.5rem 0 1rem;
+      margin-bottom: 1rem; scrollbar-width: thin;
+    }
+    .art-thumb {
+      flex: 0 0 110px; height: 75px; border: 2px solid transparent;
+      cursor: pointer; object-fit: cover; opacity: 0.6; transition: 0.15s;
+    }
+    .art-thumb.selected { border-color: #000; opacity: 1; transform: scale(1.04); }
 
     /* MOBILE BREAKPOINTS */
-    @media (max-width: 992px) {
-      .masonry-container { column-count: 2; column-gap: 1.75rem; padding: 1.75rem 1.25rem; }
-      .film-meta-grid { grid-template-columns: 1fr; gap: 2rem; padding: 2rem 1.25rem; }
-      .criteria-card { margin: 1.5rem 1.25rem; }
-      .gallery-section { padding: 2rem 1.25rem; }
-      header { padding: 0.9rem 1.25rem; }
-      .brand-logo-img { height: 30px; }
+    @media (max-width: 1024px) {
+      .film-masonry-feed { column-count: 2; column-gap: 1.75rem; padding: 1.75rem; }
     }
-    @media (max-width: 600px) {
-      .masonry-container { column-count: 1; }
-      .card-title { font-size: 1.6rem; }
+    @media (max-width: 700px) {
+      header { padding: 0.9rem 1.25rem; }
+      .brand-logo-img { height: 28px; }
       .controls { padding: 1rem 1.25rem; }
-      .modal-content { padding: 1.5rem; }
+      .film-masonry-feed { column-count: 1; padding: 1.25rem; }
+      .film-item { margin-bottom: 2.5rem; }
+      .film-name { font-size: 1.8rem; }
+      .film-meta-grid, .film-body-grid, .gallery-section, .scorecard-banner { padding-left: 1.25rem; padding-right: 1.25rem; }
+      .film-meta-grid, .film-body-grid { grid-template-columns: 1fr; gap: 2rem; }
     }
   </style>
 </head>
 <body>
 
-  <!-- SIDE DRAWER MENU -->
+  <!-- SIDE MENU DRAWER -->
   <div class="drawer-overlay" id="drawerOverlay" onclick="toggleDrawer(false)"></div>
   <aside class="side-drawer" id="sideDrawer">
     <div>
       <button class="drawer-close" onclick="toggleDrawer(false)">✕ CLOSE</button>
       <nav class="drawer-nav">
         <a class="drawer-link" onclick="navigateHome('all')">Films</a>
-        <a class="drawer-link" onclick="navigateHome('top')">Top Ranked</a>
         <a class="drawer-link" onclick="navigateHome('watched')">Watched</a>
         <a class="drawer-link" onclick="navigateHome('watchlist')">Watchlist</a>
-        <a class="drawer-link" onclick="openSearchModal(); toggleDrawer(false);">+ Add Film</a>
+        <a class="drawer-link" onclick="navigateHome('top')">Top Ranked</a>
+        <a class="drawer-link" onclick="openSearchModal(); toggleDrawer(false);">Search TMDB</a>
       </nav>
     </div>
-    <div class="drawer-footer">
+    <div style="font-size: 0.75rem; color: #666; text-transform: uppercase; letter-spacing: 0.06em;">
       <p>© A24 PSYCHOLOGICAL ARCHIVE</p>
-      <p style="margin-top: 4px; font-size: 0.65rem;">REAL-TIME TMDB SYNC & MULTI-METRIC RANKING</p>
     </div>
   </aside>
 
-  <!-- HEADER WITH LARGER REAL A24 LOGO -->
+  <!-- HEADER -->
   <header>
     <button class="menu-trigger" onclick="toggleDrawer(true)">
-      <span class="menu-trigger-bar"></span> MENU
+      <span></span> MENU
     </button>
     <a href="#" onclick="showHomeView()">
       <img src="https://images.seeklogo.com/logo-png/31/2/a24-films-logo-png_seeklogo-316223.png" alt="A24" class="brand-logo-img">
@@ -343,32 +306,21 @@
     </div>
   </header>
 
-  <!-- HOME ARCHIVE VIEW -->
+  <!-- HOME VIEW: EDITORIAL MASONRY WALL -->
   <div id="homeView">
     <section class="controls">
-      <div class="tab-group">
+      <div>
         <button class="tab-btn active" id="tab-all" onclick="setFilter('all')">All Films</button>
         <button class="tab-btn" id="tab-top" onclick="setFilter('top')">Top Ranked</button>
         <button class="tab-btn" id="tab-watched" onclick="setFilter('watched')">Watched</button>
         <button class="tab-btn" id="tab-watchlist" onclick="setFilter('watchlist')">Watchlist</button>
       </div>
-
-      <div style="display: flex; align-items: center; gap: 1rem;">
-        <select class="sort-select" id="sortSelect" onchange="renderGrid()">
-          <option value="composite">Sort: A24 Index Score</option>
-          <option value="dread">Sort: Dread & Tension</option>
-          <option value="aesthetic">Sort: Cinematography</option>
-          <option value="existential">Sort: Existential Impact</option>
-          <option value="year">Sort: Year (Newest)</option>
-        </select>
-        <div style="font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: var(--muted);" id="itemCountLabel">
-          0 FILMS
-        </div>
+      <div style="font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: var(--muted);" id="itemCountLabel">
+        0 FILMS
       </div>
     </section>
 
-    <!-- MASONRY EDITORIAL FILM FEED (A24 STYLE) -->
-    <main class="masonry-container" id="filmGrid"></main>
+    <main class="film-masonry-feed" id="filmGrid"></main>
   </div>
 
   <!-- SINGLE DEDICATED FILM PAGE VIEW -->
@@ -378,114 +330,99 @@
   <div class="modal-overlay" id="searchModal">
     <div class="modal-content">
       <button class="modal-close" onclick="closeModal('searchModal')">✕</button>
-      <h2 style="font-size: 1.35rem; font-weight: 900; margin-bottom: 1rem; text-transform: uppercase;">Search TMDB Database</h2>
-      <input type="text" class="api-search-box" id="tmdbQuery" placeholder="Type title: Tony, Hereditary, The Lighthouse, Civil War..." oninput="handleTyping()">
+      <h2 style="font-size: 1.4rem; font-weight: 900; margin-bottom: 1rem; text-transform: uppercase;">Search Real Film Database</h2>
+      <input type="text" class="api-search-box" id="tmdbQuery" placeholder="Type title: Hereditary, The Lighthouse, Tony..." oninput="handleTyping()">
       <div class="search-results" id="searchResults">
         <p style="color: var(--muted); font-size: 0.85rem; text-transform: uppercase;">Start typing any movie title above...</p>
       </div>
     </div>
   </div>
 
-  <!-- MULTI-VECTOR RANKING & LOG MODAL -->
+  <!-- SAVE & MULTI-METRIC SCORING MODAL -->
   <div class="modal-overlay" id="saveModal">
     <div class="modal-content">
       <button class="modal-close" onclick="closeModal('saveModal')">✕</button>
-      <div id="savePreview"></div>
       
-      <h3 style="font-size: 0.95rem; font-weight: 900; text-transform: uppercase; margin-bottom: 0.5rem;">Precision Evaluation (Tie-Breaker Engine)</h3>
-      <p style="font-size: 0.78rem; color: var(--muted); margin-bottom: 1.25rem;">Rate each dimension 1–10 to formulate the composite A24 Index Score.</p>
+      <div id="savePreview"></div>
 
-      <div class="slider-group">
-        <label><span>Psychological Dread & Tension</span><span id="v_dread">9/10</span></label>
-        <input type="range" id="in_dread" min="1" max="10" value="9" oninput="updateRankPreview()">
+      <div style="margin: 1rem 0;">
+        <label style="font-weight: 800; font-size: 0.75rem; text-transform: uppercase; display: block; margin-bottom: 0.4rem;">Choose Display Artwork / Still</label>
+        <div class="art-picker-strip" id="modalArtPicker"></div>
       </div>
 
-      <div class="slider-group">
-        <label><span>Cinematography & Aesthetic Direction</span><span id="v_aesthetic">10/10</span></label>
-        <input type="range" id="in_aesthetic" min="1" max="10" value="10" oninput="updateRankPreview()">
-      </div>
-
-      <div class="slider-group">
-        <label><span>Existential & Emotional Impact</span><span id="v_existential">9/10</span></label>
-        <input type="range" id="in_existential" min="1" max="10" value="9" oninput="updateRankPreview()">
-      </div>
-
-      <div class="slider-group">
-        <label><span>Originality & Unpredictability</span><span id="v_originality">9/10</span></label>
-        <input type="range" id="in_originality" min="1" max="10" value="9" oninput="updateRankPreview()">
-      </div>
-
-      <div class="slider-group">
-        <label><span>Obsession & Rewatchability</span><span id="v_obsession">8/10</span></label>
-        <input type="range" id="in_obsession" min="1" max="10" value="8" oninput="updateRankPreview()">
-      </div>
-
-      <div style="background: #000; color: #fff; padding: 0.9rem 1.2rem; display: flex; justify-content: space-between; align-items: center; margin: 1.25rem 0;">
-        <span style="font-size: 0.75rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em;">Calculated A24 Composite Index:</span>
-        <span id="compositeDisplay" style="font-size: 1.4rem; font-weight: 900;">9.00 / 10</span>
-      </div>
-
-      <div style="margin-bottom: 1.25rem;">
-        <label style="font-weight: 800; font-size: 0.75rem; text-transform: uppercase; display: block; margin-bottom: 0.4rem;">Status</label>
-        <select id="saveStatus" style="width: 100%; padding: 0.75rem; border: 1px solid #000; font-weight: 700;">
-          <option value="watched">Mark as Watched</option>
-          <option value="watchlist">Save to Watchlist</option>
+      <div style="margin: 1.25rem 0;">
+        <label style="font-weight: 800; font-size: 0.75rem; text-transform: uppercase; display: block; margin-bottom: 0.4rem;">Collection Status</label>
+        <select id="saveStatus" onchange="toggleStatusFields()" style="width: 100%; padding: 0.8rem; border: 1px solid #000; font-weight: 800;">
+          <option value="watched">Mark as Watched (Rate & Rank)</option>
+          <option value="watchlist">Save to Watchlist (No Rating Yet)</option>
         </select>
       </div>
 
-      <button class="log-btn" style="width: 100%; padding: 1rem; font-size: 0.85rem;" onclick="confirmSaveFilm()">Save to Collection</button>
+      <!-- WATCHLIST SECTION -->
+      <div id="watchlistFields" style="display:none; margin: 1.25rem 0;">
+        <div class="slider-row">
+          <label><span>Anticipation / Hype Level</span><span id="hypeVal">9/10</span></label>
+          <input type="range" id="hypeInput" min="1" max="10" value="9" oninput="document.getElementById('hypeVal').innerText = this.value + '/10'">
+        </div>
+      </div>
+
+      <!-- WATCHED MULTI-METRIC SCORING SECTION (Breaks 10/10 ties) -->
+      <div id="watchedFields">
+        <div style="border-top: 1px solid var(--border); padding-top: 1rem; margin-top: 1rem;">
+          <p style="font-size:0.75rem; font-weight:800; text-transform:uppercase; color:var(--muted); margin-bottom:0.5rem;">Psychological & Aesthetic Scoring</p>
+          
+          <div class="slider-row">
+            <label><span>Gut Rating (Decimals Allowed)</span><span id="gutVal">9.4 / 10</span></label>
+            <input type="range" id="gutInput" min="5.0" max="10.0" step="0.1" value="9.4" oninput="document.getElementById('gutVal').innerText = parseFloat(this.value).toFixed(1) + ' / 10'">
+          </div>
+
+          <div class="slider-row">
+            <label><span>Existential Dread & Tension</span><span id="dreadVal">9/10</span></label>
+            <input type="range" id="dreadInput" min="1" max="10" value="9" oninput="document.getElementById('dreadVal').innerText = this.value + '/10'">
+          </div>
+
+          <div class="slider-row">
+            <label><span>Atmosphere & Soundscape</span><span id="atmoVal">9/10</span></label>
+            <input type="range" id="atmoInput" min="1" max="10" value="9" oninput="document.getElementById('atmoVal').innerText = this.value + '/10'">
+          </div>
+
+          <div class="slider-row">
+            <label><span>Narrative Mindfuck / Obsession</span><span id="mindVal">8/10</span></label>
+            <input type="range" id="mindInput" min="1" max="10" value="8" oninput="document.getElementById('mindVal').innerText = this.value + '/10'">
+          </div>
+        </div>
+      </div>
+
+      <button class="log-btn" style="width: 100%; padding: 1.1rem; font-size: 0.85rem; margin-top: 1rem;" onclick="confirmSaveFilm()">Save to Collection</button>
     </div>
   </div>
 
   <script>
     const WORKER_URL = "https://a24.kviappsgames.workers.dev";
-
-    // Initial curated seeds to demonstrate dynamic aspect ratios
+    
+    // Default starter films
     const DEFAULT_SEED_FILMS = [
       {
         id: "493922",
         title: "Hereditary",
         year: 2018,
         director: "Ari Aster",
-        starring: "Toni Collette, Alex Wolff, Milly Shapiro",
+        starring: "Toni Collette, Alex Wolff",
         status: "watched",
-        dread: 10,
-        aesthetic: 9,
-        existential: 10,
-        originality: 9,
-        obsession: 9,
-        composite: 9.40,
-        selectedCover: "https://image.tmdb.org/t/p/w780/p9fmuz2Oj3b3J8Q0w8Vp3n33v8g.jpg", // Portrait
-        heroBackdrop: "https://image.tmdb.org/t/p/original/yV04qP2u233P8x9P1p2iW3pL3O7.jpg"
-      },
-      {
-        id: "503919",
-        title: "The Lighthouse",
-        year: 2019,
-        director: "Robert Eggers",
-        starring: "Willem Dafoe, Robert Pattinson",
-        status: "watched",
-        dread: 9,
-        aesthetic: 10,
-        existential: 9,
-        originality: 10,
-        obsession: 9,
-        composite: 9.40,
-        selectedCover: "https://image.tmdb.org/t/p/w1280/h7G5A9y2s1i4K3gGgKk1y9A8b7w.jpg", // Wide cinematic still
-        heroBackdrop: "https://image.tmdb.org/t/p/original/h7G5A9y2s1i4K3gGgKk1y9A8b7w.jpg"
+        gutRating: 9.8,
+        dreadScore: 10,
+        atmoScore: 10,
+        mindScore: 9,
+        compositeScore: 97.5,
+        displayArtwork: "https://image.tmdb.org/t/p/w1280/yV04qP2u233P8x9P1p2iW3pL3O7.jpg"
       }
     ];
 
-    let myFilms = JSON.parse(localStorage.getItem('a24_saved_films_v2')) || DEFAULT_SEED_FILMS;
+    let myFilms = JSON.parse(localStorage.getItem('a24_saved_films')) || DEFAULT_SEED_FILMS;
     let currentFilter = 'all';
     let selectedFilm = null;
+    let activeArtworkChoice = "";
     let debounceTimer;
-
-    function calculateComposite(d, a, e, o, ob) {
-      // Weighted index: Dread 25%, Aesthetic 25%, Existential 20%, Originality 15%, Obsession 15%
-      const val = (d * 0.25) + (a * 0.25) + (e * 0.20) + (o * 0.15) + (ob * 0.15);
-      return Math.round(val * 100) / 100;
-    }
 
     function toggleDrawer(open) {
       document.getElementById('sideDrawer').classList.toggle('active', open);
@@ -505,6 +442,15 @@
       renderGrid();
     }
 
+    function openSearchModal() {
+      document.getElementById('searchModal').classList.add('active');
+      document.getElementById('tmdbQuery').focus();
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).classList.remove('active');
+    }
+
     function setFilter(filter) {
       currentFilter = filter;
       document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -513,13 +459,10 @@
       renderGrid();
     }
 
-    function openSearchModal() {
-      document.getElementById('searchModal').classList.add('active');
-      document.getElementById('tmdbQuery').focus();
-    }
-
-    function closeModal(id) {
-      document.getElementById(id).classList.remove('active');
+    function toggleStatusFields() {
+      const isWatchlist = document.getElementById('saveStatus').value === 'watchlist';
+      document.getElementById('watchlistFields').style.display = isWatchlist ? 'block' : 'none';
+      document.getElementById('watchedFields').style.display = isWatchlist ? 'none' : 'block';
     }
 
     function handleTyping() {
@@ -532,7 +475,7 @@
         return;
       }
 
-      container.innerHTML = '<p style="color:var(--muted); font-size:0.85rem; text-transform:uppercase;">Querying TMDB database...</p>';
+      container.innerHTML = '<p style="color:var(--muted); font-size:0.85rem; text-transform:uppercase;">Searching TMDB...</p>';
 
       debounceTimer = setTimeout(async () => {
         try {
@@ -544,7 +487,7 @@
             return;
           }
 
-          container.innerHTML = data.slice(0, 8).map(m => `
+          container.innerHTML = data.slice(0, 10).map(m => `
             <div class="search-item" onclick="openFilmPage('${m.id}')">
               <img src="${m.poster_path ? 'https://image.tmdb.org/t/p/w92' + m.poster_path : 'https://placehold.co/92x138/000/fff?text=No+Img'}">
               <div>
@@ -554,12 +497,12 @@
             </div>
           `).join('');
         } catch (err) {
-          container.innerHTML = `<div style="color:red; padding:0.5rem;">Error connecting to TMDB Worker</div>`;
+          container.innerHTML = `<div style="color:red; font-size:0.85rem;">Error: ${err.message}</div>`;
         }
       }, 300);
     }
 
-    // OPEN DEDICATED FILM PAGE
+    // OPEN DEDICATED FILM PAGE (A24 STYLE)
     async function openFilmPage(tmdbId) {
       closeModal('searchModal');
       toggleDrawer(false);
@@ -569,252 +512,263 @@
 
       homeView.style.display = 'none';
       filmPageView.style.display = 'block';
-      filmPageView.innerHTML = `<div style="padding: 6rem 2rem; text-align: center; font-weight: 800; letter-spacing: 0.08em;">LOADING ARCHIVE RECORD...</div>`;
+      filmPageView.innerHTML = `<div style="padding: 8rem 2rem; text-align: center; font-weight: 800; letter-spacing:0.1em;">ACCESSING ARCHIVE RECORD...</div>`;
       window.scrollTo(0, 0);
 
       try {
         const res = await fetch(`${WORKER_URL}/api/fetch-movie/${tmdbId}`);
         const film = await res.json();
-        
-        // Merge with saved data if available
+        selectedFilm = film;
+        activeArtworkChoice = film.displayArtwork || film.heroBackdrop || film.poster;
+
         const saved = myFilms.find(f => f.id === film.id);
-        selectedFilm = saved ? { ...film, ...saved } : {
-          ...film,
-          selectedCover: film.poster,
-          dread: 8, aesthetic: 9, existential: 8, originality: 8, obsession: 8,
-          composite: 8.25
-        };
 
-        renderFilmPageContent();
-      } catch (err) {
-        filmPageView.innerHTML = `<div style="padding:4rem; color:red;">Failed to load film details.</div>`;
-      }
-    }
+        filmPageView.innerHTML = `
+          <!-- HERO -->
+          <section class="film-hero">
+            <img src="${film.heroBackdrop || film.poster}" class="film-hero-bg" alt="${film.title}">
+            <div class="film-hero-gradient"></div>
+            <div class="film-hero-title-wrap">
+              <h1 class="film-hero-title">${film.title}</h1>
+              ${film.tagline ? `<p style="font-size:1.1rem; font-style:italic; opacity:0.85;">“${film.tagline}”</p>` : ''}
+            </div>
+          </section>
 
-    function renderFilmPageContent() {
-      const film = selectedFilm;
-      const isSaved = myFilms.some(f => f.id === film.id);
-      const filmPageView = document.getElementById('filmPageView');
+          <!-- 3-COLUMN METADATA (A24 LAYOUT) -->
+          <section class="film-meta-grid">
+            <div class="meta-block">
+              <h4>DIRECTED BY</h4>
+              <p>${film.director}</p>
+            </div>
+            
+            <div class="meta-block">
+              <h4>YEAR</h4>
+              <p>${film.year}</p>
+            </div>
 
-      filmPageView.innerHTML = `
-        <!-- HERO BANNER -->
-        <section class="film-hero">
-          <img src="${film.heroBackdrop || film.poster}" class="film-hero-bg" alt="${film.title}">
-          <div class="film-hero-gradient"></div>
-          <div class="film-hero-title-wrap">
-            <h1 class="film-hero-title">${film.title}</h1>
-            ${film.tagline ? `<p class="film-hero-tagline">“${film.tagline}”</p>` : ''}
-          </div>
-        </section>
+            <div class="meta-block">
+              <h4>ARCHIVE STATUS</h4>
+              <button class="action-select-btn" onclick="openSaveModal()">
+                <span>${saved ? `${saved.status.toUpperCase()} (${saved.compositeScore ? saved.compositeScore + ' INDEX' : 'WAITLIST'})` : 'LOG TO MY ARCHIVE'}</span>
+                <span>↓</span>
+              </button>
+            </div>
 
-        <!-- 3 COLUMN METADATA -->
-        <section class="film-meta-grid">
-          <div class="meta-block">
-            <h4>DIRECTED BY</h4>
-            <p>${film.director}</p>
-          </div>
-          
-          <div class="meta-block">
-            <h4>YEAR</h4>
-            <p>${film.year}</p>
-          </div>
+            <div class="meta-block" style="grid-column: 1 / span 2;">
+              <h4>STARRING</h4>
+              <div style="font-size: 1.4rem; font-weight: 800;">${film.starring}</div>
+            </div>
 
-          <div class="meta-block">
-            <h4>LOG / EVALUATION</h4>
-            <button class="action-select-btn" onclick="openSaveModal()">
-              <span>${isSaved ? `SAVED (${film.composite ? film.composite.toFixed(2) : '8.00'} / 10)` : 'LOG & SCORE FILM'}</span>
-              <span>↓</span>
-            </button>
-          </div>
+            <div class="meta-block">
+              <h4>GENRE / RUNTIME</h4>
+              <div style="font-size: 1.1rem; font-weight:700;">${film.genres || 'Drama'} • ${film.runtime ? film.runtime + ' MIN' : 'N/A'}</div>
+            </div>
+          </section>
 
-          <div class="meta-block" style="grid-column: 1 / span 2;">
-            <h4>STARRING</h4>
-            <div class="val" style="font-size: 1.3rem;">${film.starring}</div>
-          </div>
-
-          <div class="meta-block">
-            <h4>GENRE & RUNTIME</h4>
-            <div style="font-size: 1.15rem; font-weight:800;">${film.genres || 'Drama'} • ${film.runtime ? film.runtime + ' MIN' : 'N/A'}</div>
-          </div>
-        </section>
-
-        <!-- MULTI-VECTOR SCORE SUMMARY (If logged) -->
-        <section class="criteria-card">
-          <div class="crit-item"><span>Composite A24 Index</span><span>${film.composite ? film.composite.toFixed(2) : '8.00'}/10</span></div>
-          <div class="crit-item"><span>Dread & Tension</span><span>${film.dread || 8}/10</span></div>
-          <div class="crit-item"><span>Cinematography</span><span>${film.aesthetic || 9}/10</span></div>
-          <div class="crit-item"><span>Existential Weight</span><span>${film.existential || 8}/10</span></div>
-          <div class="crit-item"><span>Originality</span><span>${film.originality || 8}/10</span></div>
-          <div class="crit-item"><span>Obsession Level</span><span>${film.obsession || 8}/10</span></div>
-        </section>
-
-        <!-- SYNOPSIS -->
-        <section style="padding: 0 2.5rem 3rem 2.5rem; max-width: 900px;">
-          <h4 style="font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: var(--muted); margin-bottom: 0.8rem; letter-spacing: 0.08em;">SYNOPSIS</h4>
-          <p style="font-size: 1.25rem; line-height: 1.6; font-weight: 500;">${film.synopsis}</p>
-        </section>
-
-        <!-- POSTERS & BACKDROPS GALLERY + COVER PICKER -->
-        <section class="gallery-section">
-          <h3 class="section-heading">Key Art & Poster Archive — Click to Set Feed Cover</h3>
-          <div class="gallery-grid">
-            ${(film.posters || []).map(p => `
-              <div class="gallery-item">
-                <img src="${p}" loading="lazy">
-                <div class="gallery-actions">
-                  <span style="font-size:0.7rem; font-weight:800;">POSTER</span>
-                  <button class="set-cover-btn ${film.selectedCover === p ? 'active-cover' : ''}" onclick="setCoverImage('${p}')">
-                    ${film.selectedCover === p ? '✓ Current Cover' : 'Set as List Cover'}
-                  </button>
-                </div>
+          <!-- SCORECARD BANNER (If Watched) -->
+          ${saved && saved.status === 'watched' ? `
+            <div class="scorecard-banner">
+              <div class="score-stat">
+                <h5>Composite A24 Rank Score</h5>
+                <div class="val">${saved.compositeScore} / 100</div>
               </div>
-            `).join('')}
-          </div>
-        </section>
+              <div class="score-stat">
+                <h5>Gut Rating</h5>
+                <div class="val">${saved.gutRating} / 10</div>
+              </div>
+              <div class="score-stat">
+                <h5>Dread & Tension</h5>
+                <div class="val">${saved.dreadScore} / 10</div>
+              </div>
+              <div class="score-stat">
+                <h5>Atmosphere</h5>
+                <div class="val">${saved.atmoScore} / 10</div>
+              </div>
+              <div class="score-stat">
+                <h5>Mindfuck Impact</h5>
+                <div class="val">${saved.mindScore} / 10</div>
+              </div>
+            </div>
+          ` : ''}
 
-        <!-- MOVIE MOMENTS & STILLS GALLERY -->
-        ${(film.backdrops && film.backdrops.length > 0) ? `
-          <section class="gallery-section" style="padding-top: 0;">
-            <h3 class="section-heading">Cinematic Stills & Moments — Click to Set Feed Cover</h3>
-            <div class="gallery-grid" style="grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));">
-              ${film.backdrops.map(b => `
-                <div class="gallery-item">
-                  <img src="${b}" loading="lazy">
-                  <div class="gallery-actions">
-                    <span style="font-size:0.7rem; font-weight:800;">STILL</span>
-                    <button class="set-cover-btn ${film.selectedCover === b ? 'active-cover' : ''}" onclick="setCoverImage('${b}')">
-                      ${film.selectedCover === b ? '✓ Current Cover' : 'Set as List Cover'}
-                    </button>
+          <!-- SYNOPSIS & SIDE DETAILS -->
+          <section class="film-body-grid">
+            <div>
+              <h4 style="font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: var(--muted); margin-bottom: 1rem;">SYNOPSIS</h4>
+              <p class="synopsis-text">${film.synopsis}</p>
+            </div>
+            <div style="display:flex; flex-direction:column; gap:1.2rem;">
+              <div style="border-bottom:1px solid var(--border); padding-bottom:0.6rem;">
+                <span style="font-size:0.75rem; font-weight:800; text-transform:uppercase; color:var(--muted); display:block;">Production</span>
+                <span style="font-weight:700;">${film.production || 'A24 / Independent'}</span>
+              </div>
+              <div style="border-bottom:1px solid var(--border); padding-bottom:0.6rem;">
+                <span style="font-size:0.75rem; font-weight:800; text-transform:uppercase; color:var(--muted); display:block;">Original Language</span>
+                <span style="font-weight:700;">${(film.language || 'English').toUpperCase()}</span>
+              </div>
+            </div>
+          </section>
+
+          <!-- POSTER & MOVIE MOMENT ARCHIVE WITH 1-CLICK SELECTOR -->
+          <section class="gallery-section">
+            <h3 class="section-heading">Poster Archive & Stills (${(film.posters || []).length + (film.backdrops || []).length} VARIANTS)</h3>
+            <p style="font-size:0.85rem; color:var(--muted); margin-bottom:1.5rem;">Click any artwork below to set it as this movie's cover on your main archive feed.</p>
+            
+            <div class="gallery-grid">
+              ${[...(film.posters || []), ...(film.backdrops || [])].map((imgUrl, i) => `
+                <div class="gallery-item" onclick="setCoverArtwork('${imgUrl}')">
+                  <img src="${imgUrl}" loading="lazy">
+                  <div class="gallery-label">
+                    <span>Option #${i+1}</span>
+                    <span style="font-weight:900; text-decoration:underline;">SET COVER</span>
                   </div>
                 </div>
               `).join('')}
             </div>
           </section>
-        ` : ''}
-      `;
+        `;
+      } catch (err) {
+        filmPageView.innerHTML = `<div style="padding: 4rem; color: red;">Failed to load film: ${err.message}</div>`;
+      }
     }
 
-    // SELECT COVER TO DISPLAY ON HOME FEED
-    function setCoverImage(imgUrl) {
-      selectedFilm.selectedCover = imgUrl;
-      const idx = myFilms.findIndex(f => f.id === selectedFilm.id);
-      if (idx !== -1) {
-        myFilms[idx].selectedCover = imgUrl;
-        localStorage.setItem('a24_saved_films_v2', JSON.stringify(myFilms));
+    function setCoverArtwork(imgUrl) {
+      activeArtworkChoice = imgUrl;
+      if (selectedFilm) {
+        selectedFilm.displayArtwork = imgUrl;
+        const saved = myFilms.find(f => f.id === selectedFilm.id);
+        if (saved) {
+          saved.displayArtwork = imgUrl;
+          localStorage.setItem('a24_saved_films', JSON.stringify(myFilms));
+          alert('Artwork updated for your archive feed!');
+        } else {
+          openSaveModal();
+        }
       }
-      renderFilmPageContent();
     }
 
     function openSaveModal() {
       if (!selectedFilm) return;
+      const saved = myFilms.find(f => f.id === selectedFilm.id) || selectedFilm;
+
+      activeArtworkChoice = saved.displayArtwork || selectedFilm.displayArtwork || selectedFilm.poster;
 
       document.getElementById('savePreview').innerHTML = `
-        <div style="display:flex; gap: 1.25rem; margin-bottom: 1.25rem; border-bottom: 1px solid var(--border); padding-bottom: 1.25rem;">
-          <img src="${selectedFilm.selectedCover || selectedFilm.poster}" style="width: 100px; height: auto; object-fit: cover;">
+        <div style="display:flex; gap: 1.2rem; align-items:center; margin-bottom: 1.2rem;">
+          <img src="${activeArtworkChoice}" id="modalActiveCoverPreview" style="width: 100px; height: 65px; object-fit: cover;">
           <div>
-            <h2 style="font-size: 1.35rem; font-weight: 900;">${selectedFilm.title} (${selectedFilm.year})</h2>
-            <p style="font-size: 0.85rem; color: var(--muted); margin: 0.25rem 0;"><b>Director:</b> ${selectedFilm.director}</p>
+            <h3 style="font-size: 1.25rem; font-weight: 900;">${selectedFilm.title} (${selectedFilm.year})</h3>
+            <p style="font-size: 0.8rem; color: var(--muted);">Dir. ${selectedFilm.director}</p>
           </div>
         </div>
       `;
 
-      document.getElementById('in_dread').value = selectedFilm.dread || 8;
-      document.getElementById('in_aesthetic').value = selectedFilm.aesthetic || 9;
-      document.getElementById('in_existential').value = selectedFilm.existential || 8;
-      document.getElementById('in_originality').value = selectedFilm.originality || 8;
-      document.getElementById('in_obsession').value = selectedFilm.obsession || 8;
-      if (selectedFilm.status) document.getElementById('saveStatus').value = selectedFilm.status;
+      // Build thumbnail picker strip
+      const allImages = [...(selectedFilm.posters || []), ...(selectedFilm.backdrops || [])];
+      document.getElementById('modalArtPicker').innerHTML = allImages.map(img => `
+        <img src="${img}" class="art-thumb ${img === activeArtworkChoice ? 'selected' : ''}" onclick="selectModalArtwork('${img}', this)">
+      `).join('');
 
-      updateRankPreview();
+      if (saved.status) document.getElementById('saveStatus').value = saved.status;
+      if (saved.gutRating) {
+        document.getElementById('gutInput').value = saved.gutRating;
+        document.getElementById('gutVal').innerText = parseFloat(saved.gutRating).toFixed(1) + ' / 10';
+      }
+      if (saved.dreadScore) {
+        document.getElementById('dreadInput').value = saved.dreadScore;
+        document.getElementById('dreadVal').innerText = saved.dreadScore + '/10';
+      }
+      if (saved.atmoScore) {
+        document.getElementById('atmoInput').value = saved.atmoScore;
+        document.getElementById('atmoVal').innerText = saved.atmoScore + '/10';
+      }
+      if (saved.mindScore) {
+        document.getElementById('mindInput').value = saved.mindScore;
+        document.getElementById('mindVal').innerText = saved.mindScore + '/10';
+      }
+
+      toggleStatusFields();
       document.getElementById('saveModal').classList.add('active');
     }
 
-    function updateRankPreview() {
-      const d = parseInt(document.getElementById('in_dread').value);
-      const a = parseInt(document.getElementById('in_aesthetic').value);
-      const e = parseInt(document.getElementById('in_existential').value);
-      const o = parseInt(document.getElementById('in_originality').value);
-      const ob = parseInt(document.getElementById('in_obsession').value);
-
-      document.getElementById('v_dread').innerText = d + '/10';
-      document.getElementById('v_aesthetic').innerText = a + '/10';
-      document.getElementById('v_existential').innerText = e + '/10';
-      document.getElementById('v_originality').innerText = o + '/10';
-      document.getElementById('v_obsession').innerText = ob + '/10';
-
-      const composite = calculateComposite(d, a, e, o, ob);
-      document.getElementById('compositeDisplay').innerText = composite.toFixed(2) + ' / 10';
+    function selectModalArtwork(url, el) {
+      activeArtworkChoice = url;
+      document.querySelectorAll('.art-thumb').forEach(t => t.classList.remove('selected'));
+      el.classList.add('selected');
+      document.getElementById('modalActiveCoverPreview').src = url;
     }
 
-    async function confirmSaveFilm() {
-      const d = parseInt(document.getElementById('in_dread').value);
-      const a = parseInt(document.getElementById('in_aesthetic').value);
-      const e = parseInt(document.getElementById('in_existential').value);
-      const o = parseInt(document.getElementById('in_originality').value);
-      const ob = parseInt(document.getElementById('in_obsession').value);
-      const comp = calculateComposite(d, a, e, o, ob);
+    function confirmSaveFilm() {
+      const status = document.getElementById('saveStatus').value;
+      const gutRating = parseFloat(document.getElementById('gutInput').value);
+      const dreadScore = parseInt(document.getElementById('dreadInput').value);
+      const atmoScore = parseInt(document.getElementById('atmoInput').value);
+      const mindScore = parseInt(document.getElementById('mindInput').value);
+      const hypeScore = parseInt(document.getElementById('hypeInput').value);
+
+      // Weighted Composite Index: (Gut * 4.0) + (Dread * 2.0) + (Atmosphere * 2.0) + (Mindfuck * 2.0) = 100 max
+      const compositeScore = status === 'watched' 
+        ? parseFloat(((gutRating * 4.0) + (dreadScore * 2.0) + (atmoScore * 2.0) + (mindScore * 2.0)).toFixed(1))
+        : 0;
 
       const film = {
         ...selectedFilm,
-        dread: d,
-        aesthetic: a,
-        existential: e,
-        originality: o,
-        obsession: ob,
-        composite: comp,
-        selectedCover: selectedFilm.selectedCover || selectedFilm.poster,
-        status: document.getElementById('saveStatus').value
+        displayArtwork: activeArtworkChoice || selectedFilm.poster,
+        status: status,
+        gutRating: gutRating,
+        dreadScore: dreadScore,
+        atmoScore: atmoScore,
+        mindScore: mindScore,
+        hypeScore: hypeScore,
+        compositeScore: compositeScore
       };
 
       myFilms = myFilms.filter(f => f.id !== film.id);
       myFilms.unshift(film);
-      localStorage.setItem('a24_saved_films_v2', JSON.stringify(myFilms));
+      localStorage.setItem('a24_saved_films', JSON.stringify(myFilms));
+
+      try {
+        fetch(`${WORKER_URL}/api/films`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(film)
+        });
+      } catch (e) {}
 
       closeModal('saveModal');
-      selectedFilm = film;
-      renderFilmPageContent();
+      openFilmPage(film.id);
     }
 
-    // RENDER MASONRY GRID (Screenshot exact match with non-uniform aspect ratios)
+    // RENDER AUTHENTIC EDITORIAL MASONRY GRID (Variable Aspect Ratio)
     function renderGrid() {
       const grid = document.getElementById('filmGrid');
-      const sortType = document.getElementById('sortSelect').value;
       const countLabel = document.getElementById('itemCountLabel');
       let list = [...myFilms];
 
       if (currentFilter === 'watched') list = list.filter(f => f.status === 'watched');
       if (currentFilter === 'watchlist') list = list.filter(f => f.status === 'watchlist');
-
-      // Sorting
-      if (sortType === 'composite' || currentFilter === 'top') {
-        list.sort((a,b) => (b.composite || 0) - (a.composite || 0));
-      } else if (sortType === 'dread') {
-        list.sort((a,b) => (b.dread || 0) - (a.dread || 0));
-      } else if (sortType === 'aesthetic') {
-        list.sort((a,b) => (b.aesthetic || 0) - (a.aesthetic || 0));
-      } else if (sortType === 'existential') {
-        list.sort((a,b) => (b.existential || 0) - (a.existential || 0));
-      } else if (sortType === 'year') {
-        list.sort((a,b) => (b.year || 0) - (a.year || 0));
+      if (currentFilter === 'top') {
+        list = list.filter(f => f.status === 'watched').sort((a,b) => (b.compositeScore || 0) - (a.compositeScore || 0));
       }
 
       countLabel.innerText = `${list.length} ${list.length === 1 ? 'FILM' : 'FILMS'}`;
 
       if (!list.length) {
-        grid.innerHTML = `<div style="column-span: all; padding: 5rem 0; text-align: center; color: var(--muted); text-transform:uppercase; letter-spacing:0.08em; font-weight:800;">No films logged. Click "+ Search & Add" above to start your archive.</div>`;
+        grid.innerHTML = `<div style="grid-column: 1/-1; padding: 5rem 0; text-align: center; color: var(--muted); text-transform:uppercase; letter-spacing:0.08em; font-weight:800;">No films in this view. Click "+ Search & Add" above to start your archive.</div>`;
         return;
       }
 
       grid.innerHTML = list.map((f, idx) => `
-        <article class="film-card" onclick="openFilmPage('${f.id}')">
-          <div class="card-media">
-            <img src="${f.selectedCover || f.poster}" alt="${f.title}" loading="lazy">
-            ${currentFilter === 'top' || sortType === 'composite' ? `<div class="card-rank-badge">#${idx + 1}</div>` : ''}
-            <div class="card-score-badge">INDEX: ${(f.composite || 8.00).toFixed(2)}</div>
+        <article class="film-item" onclick="openFilmPage('${f.id}')">
+          <div class="film-art-wrapper">
+            <img src="${f.displayArtwork || f.poster}" alt="${f.title}" loading="lazy">
           </div>
-          <div class="card-year">${f.year}</div>
-          <h3 class="card-title">${f.title}</h3>
-          <p class="card-details">${f.director} • ${f.status === 'watched' ? 'WATCHED' : 'WATCHLIST'}</p>
+          <span class="film-year">${f.year}</span>
+          <h2 class="film-name">${f.title}</h2>
+          <div class="film-meta-bar">
+            <span>${currentFilter === 'top' ? `TOP #${idx + 1}` : (f.status === 'watchlist' ? 'WATCHLIST' : 'WATCHED')}</span>
+            <span>${f.status === 'watched' ? `${f.compositeScore} INDEX` : `HYPE: ${f.hypeScore || 9}/10`}</span>
+          </div>
         </article>
       `).join('');
     }
