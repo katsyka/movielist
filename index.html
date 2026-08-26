@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>A24 / PSYCHOLOGICAL ARCHIVE</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800;900&family=Cinzel:wght@800&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg: #ffffff;
+      --fg: #000000;
+      --border: #e8e8e8;
+      --muted: #737373;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--bg); color: var(--fg); font-family: 'Inter', sans-serif; line-height: 1.3; }
+
+    /* HEADER */
+    header {
+      position: sticky; top: 0; background: var(--bg); z-index: 50;
+      border-bottom: 1px solid var(--border);
+      padding: 1.25rem 2rem;
+      display: grid; grid-template-columns: 1fr auto 1fr; align-items: center;
+    }
+    .menu-trigger {
+      background: none; border: none; font-size: 0.85rem; font-weight: 700;
+      letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; justify-self: start;
+    }
+    .brand-logo {
+      font-family: 'Cinzel', serif; font-size: 2.2rem; font-weight: 800;
+      letter-spacing: 0.05em; text-decoration: none; color: var(--fg); text-align: center;
+    }
+    .log-btn {
+      justify-self: end; background: #000; color: #fff; border: none;
+      padding: 0.5rem 1.2rem; font-weight: 700; text-transform: uppercase; font-size: 0.8rem;
+      letter-spacing: 0.05em; cursor: pointer; transition: opacity 0.2s;
+    }
+    .log-btn:hover { opacity: 0.8; }
+
+    /* DRAWER */
+    .drawer-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 100; opacity: 0; visibility: hidden; transition: 0.3s ease; }
+    .drawer-overlay.active { opacity: 1; visibility: visible; }
+    .drawer {
+      position: fixed; top: 0; left: 0; bottom: 0; width: 100%; max-width: 400px;
+      background: #000; color: #fff; z-index: 101; transform: translateX(-100%);
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1); padding: 2.5rem;
+      display: flex; flex-direction: column;
+    }
+    .drawer.active { transform: translateX(0); }
+    .drawer-close { background: none; border: none; color: #fff; font-weight: 700; font-size: 0.85rem; text-transform: uppercase; cursor: pointer; margin-bottom: 3rem; text-align: left; }
+    .drawer-nav a { color: #fff; text-decoration: none; font-size: 2.2rem; font-weight: 800; display: block; margin-bottom: 1.5rem; }
+
+    /* CONTROLS */
+    .controls { padding: 1.5rem 2rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); flex-wrap: wrap; gap: 1rem; }
+    .tab-btn { background: none; border: none; font-weight: 700; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 0.08em; cursor: pointer; color: var(--muted); margin-right: 1.5rem; padding-bottom: 4px; border-bottom: 2px solid transparent; }
+    .tab-btn.active { color: #000; border-color: #000; }
+    
+    /* GRID */
+    .film-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 3rem 2rem; padding: 2.5rem 2rem; }
+    .film-card { cursor: pointer; display: flex; flex-direction: column; gap: 0.75rem; }
+    .poster-wrapper { position: relative; width: 100%; aspect-ratio: 16/10; background: #eee; overflow: hidden; }
+    .poster-wrapper img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+    .film-card:hover .poster-wrapper img { transform: scale(1.04); }
+    .badge { position: absolute; top: 12px; right: 12px; background: #000; color: #fff; font-size: 0.65rem; font-weight: 700; text-transform: uppercase; padding: 3px 6px; }
+    .film-title { font-size: 1.5rem; font-weight: 800; letter-spacing: -0.02em; }
+    .film-credits { font-size: 0.8rem; color: var(--muted); }
+
+    /* SEARCH MODAL (API) */
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); z-index: 200; display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: 0.25s ease; padding: 1.5rem; }
+    .modal-overlay.active { opacity: 1; visibility: visible; }
+    .modal-content { background: #fff; width: 100%; max-width: 750px; max-height: 90vh; overflow-y: auto; border: 1px solid #000; padding: 2.5rem; position: relative; }
+    .modal-close { position: absolute; top: 1.5rem; right: 1.5rem; background: none; border: none; font-weight: 800; font-size: 1.2rem; cursor: pointer; }
+
+    .api-search-box { width: 100%; border: 2px solid #000; padding: 1rem; font-size: 1.2rem; font-weight: 700; outline: none; margin-bottom: 1.5rem; font-family: inherit; }
+    .search-results { display: flex; flex-direction: column; gap: 0.75rem; max-height: 380px; overflow-y: auto; }
+    .search-item { display: flex; align-items: center; gap: 1rem; padding: 0.75rem; border: 1px solid var(--border); cursor: pointer; transition: 0.15s; }
+    .search-item:hover { background: #000; color: #fff; }
+    .search-item img { width: 45px; height: 65px; object-fit: cover; background: #ddd; }
+
+    /* RATING SLIDERS */
+    .slider-group { margin: 1.25rem 0; }
+    .slider-group label { display: flex; justify-content: space-between; font-weight: 700; font-size: 0.8rem; text-transform: uppercase; margin-bottom: 0.4rem; }
+    .slider-group input[type="range"] { width: 100%; accent-color: #000; }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <button class="menu-trigger" onclick="toggleDrawer(true)">☰ Menu</button>
+    <a href="#" class="brand-logo">A24</a>
+    <button class="log-btn" onclick="openSearchModal()">+ Search & Add</button>
+  </header>
+
+  <!-- DRAWER -->
+  <div class="drawer-overlay" id="drawerOverlay" onclick="toggleDrawer(false)"></div>
+  <aside class="drawer" id="drawer">
+    <button class="drawer-close" onclick="toggleDrawer(false)">✕ Close</button>
+    <nav class="drawer-nav">
+      <a href="#" onclick="setFilter('all'); toggleDrawer(false)">All Films</a>
+      <a href="#" onclick="setFilter('top'); toggleDrawer(false)">Top 10 Ranked</a>
+      <a href="#" onclick="setFilter('watched'); toggleDrawer(false)">Watched Diary</a>
+      <a href="#" onclick="setFilter('watchlist'); toggleDrawer(false)">Watchlist</a>
+      <a href="#" onclick="loadA24Explore(); toggleDrawer(false)">Explore A24 Catalog</a>
+    </nav>
+  </aside>
+
+  <!-- FILTER CONTROLS -->
+  <section class="controls">
+    <div>
+      <button class="tab-btn active" id="tab-all" onclick="setFilter('all')">My Archive</button>
+      <button class="tab-btn" id="tab-top" onclick="setFilter('top')">Top Ranked</button>
+      <button class="tab-btn" id="tab-watched" onclick="setFilter('watched')">Watched</button>
+      <button class="tab-btn" id="tab-watchlist" onclick="setFilter('watchlist')">Watchlist</button>
+    </div>
+  </section>
+
+  <!-- FILM GRID -->
+  <main class="film-grid" id="filmGrid"></main>
+
+  <!-- LIVE TMDB SEARCH MODAL -->
+  <div class="modal-overlay" id="searchModal">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeModal('searchModal')">✕</button>
+      <h2 style="font-size: 1.6rem; font-weight: 900; margin-bottom: 1rem; text-transform: uppercase;">Search Real Film Database</h2>
+      <input type="text" class="api-search-box" id="tmdbQuery" placeholder="Type title (e.g. Hereditary, The Substance, Cure)..." oninput="debounceSearch()">
+      
+      <div class="search-results" id="searchResults">
+        <p style="color: var(--muted); font-size: 0.85rem; text-transform: uppercase;">Type a film name above to pull official poster, crew & metadata automatically.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONFIGURE RATING & SAVE MODAL -->
+  <div class="modal-overlay" id="saveModal">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeModal('saveModal')">✕</button>
+      <div id="savePreview"></div>
+      
+      <div class="slider-group">
+        <label><span>Dread & Mindfuck Level</span><span id="dreadVal">8/10</span></label>
+        <input type="range" id="dreadInput" min="1" max="10" value="8" oninput="document.getElementById('dreadVal').innerText = this.value + '/10'">
+      </div>
+
+      <div class="slider-group">
+        <label><span>Your Personal Score</span><span id="ratingVal">9/10</span></label>
+        <input type="range" id="ratingInput" min="1" max="10" value="9" oninput="document.getElementById('ratingVal').innerText = this.value + '/10'">
+      </div>
+
+      <div style="margin: 1.5rem 0;">
+        <label style="font-weight: 700; font-size: 0.8rem; text-transform: uppercase; display: block; margin-bottom: 0.5rem;">Status</label>
+        <select id="saveStatus" style="width: 100%; padding: 0.75rem; border: 1px solid #000; font-weight: 700;">
+          <option value="watched">Mark as Watched</option>
+          <option value="watchlist">Add to Watchlist</option>
+        </select>
+      </div>
+
+      <button class="log-btn" style="width: 100%; padding: 1rem; font-size: 0.9rem;" onclick="confirmSaveFilm()">Save to My Collection</button>
+    </div>
+  </div>
+
+  <script>
+    const WORKER_URL = "https://a24.kviappsgames.workers.dev";
+    let myFilms = JSON.parse(localStorage.getItem('a24_saved_films')) || [];
+    let currentFilter = 'all';
+    let selectedFilmData = null;
+    let debounceTimer;
+
+    function toggleDrawer(show) {
+      document.getElementById('drawer').classList.toggle('active', show);
+      document.getElementById('drawerOverlay').classList.toggle('active', show);
+    }
+
+    function openSearchModal() {
+      document.getElementById('searchModal').classList.add('active');
+      document.getElementById('tmdbQuery').focus();
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).classList.remove('active');
+    }
+
+    // DEBOUNCE SEARCH TMDB VIA WORKER
+    function debounceSearch() {
+      clearTimeout(debounceTimer);
+      const query = document.getElementById('tmdbQuery').value.trim();
+      if (!query) return;
+
+      debounceTimer = setTimeout(async () => {
+        const res = await fetch(`${WORKER_URL}/api/search?q=${encodeURIComponent(query)}`);
+        const results = await res.json();
+        const container = document.getElementById('searchResults');
+        
+        if (!results.length) {
+          container.innerHTML = `<p style="color:var(--muted)">No results found.</p>`;
+          return;
+        }
+
+        container.innerHTML = results.slice(0, 8).map(m => `
+          <div class="search-item" onclick="fetchAndPrepare('${m.id}')">
+            <img src="${m.poster_path ? 'https://image.tmdb.org/t/p/w92' + m.poster_path : ''}">
+            <div>
+              <strong style="font-size: 1.1rem; display:block;">${m.title}</strong>
+              <span style="font-size: 0.8rem; opacity: 0.7;">${m.release_date ? m.release_date.split('-')[0] : 'N/A'}</span>
+            </div>
+          </div>
+        `).join('');
+      }, 300);
+    }
+
+    // FETCH COMPLETE METADATA (Director, Cast, Synopsis)
+    async function fetchAndPrepare(tmdbId) {
+      closeModal('searchModal');
+      const res = await fetch(`${WORKER_URL}/api/fetch-movie/${tmdbId}`);
+      selectedFilmData = await res.json();
+
+      document.getElementById('savePreview').innerHTML = `
+        <div style="display:flex; gap: 1.5rem; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border); padding-bottom: 1.5rem;">
+          <img src="${selectedFilmData.poster}" style="width: 140px; aspect-ratio: 16/10; object-fit: cover;">
+          <div>
+            <h2 style="font-size: 1.6rem; font-weight: 900;">${selectedFilmData.title} (${selectedFilmData.year})</h2>
+            <p style="font-size: 0.85rem; color: var(--muted); margin: 0.25rem 0;"><b>Director:</b> ${selectedFilmData.director}</p>
+            <p style="font-size: 0.85rem; color: var(--muted);"><b>Cast:</b> ${selectedFilmData.starring}</p>
+          </div>
+        </div>
+      `;
+      document.getElementById('saveModal').classList.add('active');
+    }
+
+    // SAVE FILM TO WORKER + LOCAL STORAGE
+    async function confirmSaveFilm() {
+      const film = {
+        ...selectedFilmData,
+        dreadScore: parseInt(document.getElementById('dreadInput').value),
+        userRating: parseInt(document.getElementById('ratingInput').value),
+        status: document.getElementById('saveStatus').value
+      };
+
+      // Add to local state
+      myFilms = myFilms.filter(f => f.id !== film.id);
+      myFilms.unshift(film);
+      localStorage.setItem('a24_saved_films', JSON.stringify(myFilms));
+
+      // Post to Cloudflare Worker
+      try {
+        await fetch(`${WORKER_URL}/api/films`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(film)
+        });
+      } catch(e) {}
+
+      closeModal('saveModal');
+      render();
+    }
+
+    function setFilter(filter) {
+      currentFilter = filter;
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      const activeTab = document.getElementById(`tab-${filter}`);
+      if(activeTab) activeTab.classList.add('active');
+      render();
+    }
+
+    function render() {
+      const grid = document.getElementById('filmGrid');
+      let list = [...myFilms];
+
+      if (currentFilter === 'watched') list = list.filter(f => f.status === 'watched');
+      if (currentFilter === 'watchlist') list = list.filter(f => f.status === 'watchlist');
+      if (currentFilter === 'top') list = list.sort((a,b) => b.userRating - a.userRating).slice(0, 10);
+
+      if (!list.length) {
+        grid.innerHTML = `<div style="grid-column: 1/-1; padding: 4rem; text-align: center; color: var(--muted);">NO TITLES IN ARCHIVE. CLICK "+ SEARCH & ADD" TO LOG YOUR FIRST FILM.</div>`;
+        return;
+      }
+
+      grid.innerHTML = list.map((f, idx) => `
+        <article class="film-card">
+          <div class="poster-wrapper">
+            <img src="${f.poster}" alt="${f.title}">
+            <div class="badge">${f.status === 'watched' ? 'Watched' : 'Watchlist'}</div>
+          </div>
+          <div style="display:flex; justify-content:space-between; font-size:0.75rem; color:var(--muted); font-weight:700;">
+            <span>${currentFilter === 'top' ? `TOP #${idx + 1} — ` : ''}${f.year}</span>
+            <span>RATING: ${f.userRating}/10</span>
+          </div>
+          <h3 class="film-title">${f.title}</h3>
+          <p class="film-credits"><b>DIR.</b> ${f.director} &nbsp;•&nbsp; <b>CAST:</b> ${f.starring}</p>
+        </article>
+      `).join('');
+    }
+
+    render();
+  </script>
+</body>
+</html>
