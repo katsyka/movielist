@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>A24 — Film Archive & Catalog</title>
+  <title>A24 — Psychological Archive & Film Universe</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -82,12 +82,11 @@
     .drawer-nav { display: flex; flex-direction: column; gap: 1.2rem; margin-top: 2.5rem; }
     .drawer-link {
       color: #fff; font-size: 2.3rem; font-weight: 900; letter-spacing: -0.04em;
-      line-height: 1; cursor: pointer; transition: opacity 0.15s;
+      line-height: 1.05; cursor: pointer; transition: opacity 0.15s;
     }
     .drawer-link:hover { opacity: 0.6; }
-    .drawer-badge { font-size: 0.75rem; background: #fff; color: #000; padding: 2px 6px; font-weight: 900; vertical-align: middle; margin-left: 8px; border-radius: 2px; }
 
-    /* CONTROLS BAR */
+    /* CONTROLS */
     .controls {
       padding: 1.25rem 2.5rem; display: flex; justify-content: space-between;
       align-items: center; border-bottom: 1px solid var(--border); flex-wrap: wrap; gap: 1rem;
@@ -99,17 +98,7 @@
     }
     .tab-btn.active { color: #000; border-color: #000; }
 
-    /* A24 CATALOG FILTER SECTION */
-    .catalog-filter-bar {
-      padding: 1.5rem 2.5rem; background: #fafafa; border-bottom: 1px solid var(--border);
-      display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 1rem; align-items: center;
-    }
-    .filter-input, .filter-select {
-      width: 100%; border: 1px solid #000; padding: 0.75rem 1rem;
-      font-weight: 700; font-size: 0.85rem; background: #fff; outline: none;
-    }
-
-    /* TRADITIONAL LEFT-TO-RIGHT ROW GRID WITH NATURAL POSTER SIZES */
+    /* ROW FEED (TRADITIONAL LEFT-TO-RIGHT ROW ORDER) */
     .film-row-feed {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -122,7 +111,7 @@
       display: flex;
       flex-direction: column;
       width: 100%;
-      position: relative;
+      user-select: none;
     }
     .film-art-wrapper {
       position: relative;
@@ -142,27 +131,46 @@
     .film-item:hover .film-art-wrapper img { transform: scale(1.035); }
     
     .film-year {
-      font-size: 0.8rem;
-      font-weight: 800;
-      color: var(--muted);
-      letter-spacing: 0.05em;
-      margin-bottom: 0.2rem;
+      font-size: 0.8rem; font-weight: 800; color: var(--muted);
+      letter-spacing: 0.05em; margin-bottom: 0.2rem;
     }
     .film-name {
-      font-size: 2.1rem;
-      font-weight: 900;
-      letter-spacing: -0.04em;
-      line-height: 1.05;
-      margin-bottom: 0.35rem;
+      font-size: 2.1rem; font-weight: 900; letter-spacing: -0.04em;
+      line-height: 1.05; margin-bottom: 0.35rem;
     }
     .film-meta-bar {
       display: flex; justify-content: space-between;
       font-size: 0.78rem; font-weight: 800; color: #000;
-      letter-spacing: 0.04em; text-transform: uppercase;
-      margin-top: 0.2rem;
+      letter-spacing: 0.04em; text-transform: uppercase; margin-top: 0.2rem;
     }
 
-    /* FILM DETAIL VIEW (HERO & EXTENDED CREW) */
+    /* RIGHT-CLICK CUSTOM A24 CONTEXT MENU */
+    #customContextMenu {
+      position: fixed; display: none; z-index: 500;
+      background: #000; color: #fff; border: 1px solid #222;
+      width: 220px; box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    }
+    .context-item {
+      padding: 0.75rem 1rem; font-size: 0.75rem; font-weight: 800;
+      text-transform: uppercase; letter-spacing: 0.08em; cursor: pointer;
+      display: flex; align-items: center; justify-content: space-between;
+      border-bottom: 1px solid #1a1a1a; transition: background 0.15s;
+    }
+    .context-item:last-child { border-bottom: none; }
+    .context-item:hover { background: #222; color: #fff; }
+    .context-item.danger:hover { background: #990000; }
+
+    /* A24 CATALOG DISCOVERY CONTROLS */
+    .filter-bar {
+      padding: 1.25rem 2.5rem; background: #fafafa; border-bottom: 1px solid var(--border);
+      display: flex; gap: 1rem; flex-wrap: wrap; align-items: center;
+    }
+    .filter-select {
+      padding: 0.65rem 1rem; border: 1px solid #000; font-size: 0.8rem;
+      font-weight: 800; text-transform: uppercase; background: #fff; outline: none; cursor: pointer;
+    }
+
+    /* DEDICATED FILM DETAIL VIEW */
     #filmPageView, #catalogView { display: none; }
     .film-hero {
       position: relative; width: 100%; min-height: 70vh; max-height: 85vh;
@@ -174,7 +182,7 @@
     }
     .film-hero-gradient {
       position: absolute; inset: 0;
-      background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.15) 50%, transparent 100%);
+      background: linear-gradient(to top, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.2) 50%, transparent 100%);
     }
     .film-hero-title-wrap {
       position: relative; z-index: 10; padding: 3.5rem 2.5rem; color: #fff;
@@ -212,13 +220,16 @@
     .score-stat h5 { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; color: #888; letter-spacing: 0.08em; }
     .score-stat .val { font-size: 1.8rem; font-weight: 900; }
 
-    /* DEEP CREW CREDITS GRID */
-    .crew-grid {
-      padding: 3.5rem 2.5rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    /* DETAILED CREW & CAST SECTION */
+    .crew-department-grid {
+      padding: 3rem 2.5rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
       gap: 2.5rem 2rem; border-bottom: 1px solid var(--border);
     }
-    .crew-block h5 { font-size: 0.72rem; font-weight: 800; text-transform: uppercase; color: var(--muted); letter-spacing: 0.08em; margin-bottom: 0.35rem; }
-    .crew-block p { font-size: 1.15rem; font-weight: 800; line-height: 1.25; }
+    .crew-item h5 {
+      font-size: 0.72rem; font-weight: 800; text-transform: uppercase;
+      color: var(--muted); letter-spacing: 0.08em; margin-bottom: 0.4rem;
+    }
+    .crew-item p { font-size: 1.15rem; font-weight: 800; line-height: 1.3; }
 
     .film-body-grid {
       padding: 3.5rem 2.5rem; display: grid; grid-template-columns: 2fr 1fr;
@@ -259,16 +270,6 @@
       position: absolute; top: 1.5rem; right: 1.5rem; background: none;
       border: none; font-weight: 900; font-size: 1.4rem; cursor: pointer;
     }
-
-    /* LEFT-CLICK FILM ACTION MENU MODAL */
-    .action-menu-list { display: flex; flex-direction: column; gap: 0.5rem; margin-top: 1.5rem; }
-    .action-menu-item {
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 1rem 1.25rem; border: 1px solid var(--border); font-size: 0.9rem;
-      font-weight: 800; text-transform: uppercase; cursor: pointer; transition: 0.15s;
-    }
-    .action-menu-item:hover { background: #000; color: #fff; border-color: #000; }
-
     .api-search-box {
       width: 100%; border: 2px solid #000; padding: 1rem; font-size: 1.1rem;
       font-weight: 700; outline: none; margin-bottom: 1.2rem;
@@ -301,24 +302,32 @@
       margin: 1rem 0; resize: vertical; outline: none; white-space: pre;
     }
 
-    /* RESPONSIVE LAYOUT */
+    /* RESPONSIVE */
     @media (max-width: 1024px) {
       .film-row-feed { grid-template-columns: repeat(2, 1fr); column-gap: 2rem; padding: 1.75rem; }
-      .catalog-filter-bar { grid-template-columns: 1fr 1fr; }
     }
     @media (max-width: 700px) {
       header { padding: 0.9rem 1.25rem; }
       .brand-logo-img { height: 28px; }
-      .controls, .catalog-filter-bar { padding: 1rem 1.25rem; }
-      .catalog-filter-bar { grid-template-columns: 1fr; }
+      .controls, .filter-bar { padding: 1rem 1.25rem; }
       .film-row-feed { grid-template-columns: 1fr; padding: 1.25rem; gap: 2.5rem; }
       .film-name { font-size: 1.8rem; }
-      .film-meta-grid, .film-body-grid, .gallery-section, .scorecard-banner, .crew-grid { padding-left: 1.25rem; padding-right: 1.25rem; }
+      .film-meta-grid, .film-body-grid, .gallery-section, .scorecard-banner, .crew-department-grid { padding-left: 1.25rem; padding-right: 1.25rem; }
       .film-meta-grid, .film-body-grid { grid-template-columns: 1fr; gap: 2rem; }
     }
   </style>
 </head>
 <body>
+
+  <!-- CUSTOM RIGHT CLICK CONTEXT MENU -->
+  <div id="customContextMenu">
+    <div class="context-item" onclick="contextAction('make1')"><span>👑 Make #1 Masterpiece</span></div>
+    <div class="context-item" onclick="contextAction('up')"><span>▲ Move Up in Rank</span></div>
+    <div class="context-item" onclick="contextAction('down')"><span>▼ Move Down in Rank</span></div>
+    <div class="context-item" onclick="contextAction('edit')"><span>✎ Edit Rating / Still</span></div>
+    <div class="context-item" onclick="contextAction('open')"><span>↗ View Film Page</span></div>
+    <div class="context-item danger" onclick="contextAction('delete')"><span>✕ Remove from Archive</span></div>
+  </div>
 
   <!-- SIDE MENU DRAWER -->
   <div class="drawer-overlay" id="drawerOverlay" onclick="toggleDrawer(false)"></div>
@@ -326,11 +335,11 @@
     <div>
       <button class="drawer-close" onclick="toggleDrawer(false)">✕ CLOSE</button>
       <nav class="drawer-nav">
-        <a class="drawer-link" onclick="showCatalogView()">A24 Catalog <span class="drawer-badge">ALL</span></a>
+        <a class="drawer-link" onclick="showCatalogView()">Explore All A24</a>
         <a class="drawer-link" onclick="navigateHome('all')">My Archive</a>
-        <a class="drawer-link" onclick="navigateHome('top')">Top Ranked</a>
         <a class="drawer-link" onclick="navigateHome('watched')">Watched</a>
         <a class="drawer-link" onclick="navigateHome('watchlist')">Watchlist</a>
+        <a class="drawer-link" onclick="navigateHome('top')">Top Ranked</a>
         <a class="drawer-link" onclick="openSearchModal(); toggleDrawer(false);">Search TMDB</a>
         <a class="drawer-link" onclick="openExportModal(); toggleDrawer(false);">Export / Backup</a>
       </nav>
@@ -351,11 +360,11 @@
     <div class="header-actions">
       <button class="outline-btn" onclick="showCatalogView()">A24 Catalog</button>
       <button class="outline-btn" onclick="openExportModal()">↓ Export</button>
-      <button class="log-btn" onclick="openSearchModal()">+ Search</button>
+      <button class="log-btn" onclick="openSearchModal()">+ Add</button>
     </div>
   </header>
 
-  <!-- 1. HOME VIEW (MY PERSONAL COLLECTION) -->
+  <!-- HOME VIEW (MY ARCHIVE) -->
   <div id="homeView">
     <section class="controls">
       <div>
@@ -369,36 +378,34 @@
       </div>
     </section>
 
-    <!-- TRADITIONAL LEFT-TO-RIGHT ROW FEED -->
     <main class="film-row-feed" id="filmGrid"></main>
   </div>
 
-  <!-- 2. FULL A24 STUDIO CATALOG EXPLORER (SEARCH ALL REAL A24 FILMS) -->
+  <!-- ALL A24 OFFICIAL FILMS DISCOVERY CATALOG -->
   <div id="catalogView">
     <section class="controls">
-      <div style="font-size: 0.9rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.06em;">
-        A24 Complete Filmography Database
+      <div style="display:flex; align-items:center; gap: 1rem;">
+        <h2 style="font-size: 1.2rem; font-weight: 900; letter-spacing: -0.02em;">OFFICIAL A24 CATALOG</h2>
+        <span style="font-size:0.75rem; font-weight:800; color:var(--muted); text-transform:uppercase;" id="catalogTotalLabel">LOADING...</span>
       </div>
-      <button class="outline-btn" onclick="showHomeView()">← Back to My Archive</button>
+      <button class="tab-btn active" onclick="showHomeView()">← Back to My Archive</button>
     </section>
 
     <!-- FLEXIBLE FILTERS -->
-    <section class="catalog-filter-bar">
-      <input type="text" id="catSearchQuery" class="filter-input" placeholder="Search A24 films: Hereditary, Talk to Me..." oninput="handleCatalogFilter()">
-      
-      <select id="catGenreFilter" class="filter-select" onchange="fetchA24Catalog()">
+    <div class="filter-bar">
+      <select id="catalogGenreFilter" class="filter-select" onchange="loadA24Catalog(1)">
         <option value="">All Genres</option>
         <option value="27">Horror</option>
-        <option value="53">Thriller / Psychological</option>
+        <option value="53">Psychological / Thriller</option>
         <option value="18">Drama</option>
         <option value="878">Sci-Fi</option>
         <option value="9648">Mystery</option>
         <option value="35">Comedy</option>
         <option value="10749">Romance</option>
-        <option value="80">Crime</option>
+        <option value="99">Documentary</option>
       </select>
 
-      <select id="catYearFilter" class="filter-select" onchange="fetchA24Catalog()">
+      <select id="catalogYearFilter" class="filter-select" onchange="loadA24Catalog(1)">
         <option value="">All Years</option>
         <option value="2026">2026</option>
         <option value="2025">2025</option>
@@ -406,62 +413,33 @@
         <option value="2023">2023</option>
         <option value="2022">2022</option>
         <option value="2021">2021</option>
+        <option value="2020">2020</option>
         <option value="2019">2019</option>
         <option value="2018">2018</option>
+        <option value="2017">2017</option>
         <option value="2016">2016</option>
         <option value="2015">2015</option>
       </select>
 
-      <select id="catSortFilter" class="filter-select" onchange="fetchA24Catalog()">
+      <select id="catalogSortFilter" class="filter-select" onchange="loadA24Catalog(1)">
         <option value="popularity.desc">Most Popular</option>
+        <option value="primary_release_date.desc">Newest First</option>
+        <option value="primary_release_date.asc">Oldest First</option>
         <option value="vote_average.desc">Highest Rated</option>
-        <option value="primary_release_date.desc">Newest Release</option>
-        <option value="title.asc">A - Z</option>
       </select>
-    </section>
+    </div>
 
-    <main class="film-row-feed" id="catalogGrid"></main>
+    <main class="film-row-feed" id="catalogFeed"></main>
   </div>
 
-  <!-- 3. SINGLE DEDICATED FILM PAGE VIEW -->
+  <!-- SINGLE DEDICATED FILM PAGE VIEW -->
   <div id="filmPageView"></div>
 
-  <!-- LEFT-CLICK INTERACTIVE CARD ACTION MENU (Tie-Breaker / Reordering / Actions) -->
-  <div class="modal-overlay" id="filmActionModal">
-    <div class="modal-content" style="max-width: 480px;">
-      <button class="modal-close" onclick="closeModal('filmActionModal')">✕</button>
-      <div id="actionModalPreview"></div>
-      
-      <div class="action-menu-list">
-        <div class="action-menu-item" onclick="viewSelectedFilmPage()">
-          <span>📖 View Full Film Page & Gallery</span>
-          <span>→</span>
-        </div>
-        <div class="action-menu-item" onclick="actionPromoteToTop()">
-          <span>👑 Set as #1 Top Masterpiece</span>
-          <span>#1</span>
-        </div>
-        <div class="action-menu-item" onclick="actionShiftRank(-1)">
-          <span>▲ Move Up in Rank</span>
-          <span>UP</span>
-        </div>
-        <div class="action-menu-item" onclick="actionShiftRank(1)">
-          <span>▼ Move Down in Rank</span>
-          <span>DOWN</span>
-        </div>
-        <div class="action-menu-item" onclick="openSaveModal(); closeModal('filmActionModal');">
-          <span>⭐ Re-Score & Change Status</span>
-          <span>EDIT</span>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- SEARCH TMDB MODAL -->
+  <!-- SEARCH MODAL -->
   <div class="modal-overlay" id="searchModal">
     <div class="modal-content">
       <button class="modal-close" onclick="closeModal('searchModal')">✕</button>
-      <h2 style="font-size: 1.4rem; font-weight: 900; margin-bottom: 1rem; text-transform: uppercase;">Search Real Film Database</h2>
+      <h2 style="font-size: 1.4rem; font-weight: 900; margin-bottom: 1rem; text-transform: uppercase;">Search Global Film Database</h2>
       <input type="text" class="api-search-box" id="tmdbQuery" placeholder="Type title: Hereditary, The Lighthouse, Tony..." oninput="handleTyping()">
       <div class="search-results" id="searchResults">
         <p style="color: var(--muted); font-size: 0.85rem; text-transform: uppercase;">Start typing any movie title above...</p>
@@ -489,7 +467,6 @@
         </select>
       </div>
 
-      <!-- WATCHLIST SECTION -->
       <div id="watchlistFields" style="display:none; margin: 1.25rem 0;">
         <div class="slider-row">
           <label><span>Anticipation / Hype Level</span><span id="hypeVal">9/10</span></label>
@@ -497,7 +474,6 @@
         </div>
       </div>
 
-      <!-- WATCHED MULTI-METRIC SCORING SECTION -->
       <div id="watchedFields">
         <div style="border-top: 1px solid var(--border); padding-top: 1rem; margin-top: 1rem;">
           <p style="font-size:0.75rem; font-weight:800; text-transform:uppercase; color:var(--muted); margin-bottom:0.5rem;">Psychological & Aesthetic Scoring</p>
@@ -522,11 +498,9 @@
             <input type="range" id="mindInput" min="1" max="10" value="8" oninput="document.getElementById('mindVal').innerText = this.value + '/10'">
           </div>
 
-          <!-- TIE-BREAKER MANUAL PRIORITY -->
           <div class="slider-row" style="background:#fafafa; border:1px dashed #000; padding:0.75rem;">
-            <label><span>Curator Tie-Breaker Priority (For Identical Scores)</span><span id="tieBreakVal">50</span></label>
+            <label><span>Curator Tie-Breaker Priority</span><span id="tieBreakVal">50</span></label>
             <input type="range" id="tieBreakInput" min="1" max="100" value="50" oninput="document.getElementById('tieBreakVal').innerText = this.value">
-            <p style="font-size:0.68rem; color:var(--muted); margin-top:4px;">Higher value wins #1 placement if two films reach identical Index scores.</p>
           </div>
         </div>
       </div>
@@ -535,13 +509,11 @@
     </div>
   </div>
 
-  <!-- EXPORT & JSON MODAL -->
+  <!-- EXPORT MODAL -->
   <div class="modal-overlay" id="exportModal">
     <div class="modal-content">
       <button class="modal-close" onclick="closeModal('exportModal')">✕</button>
       <h2 style="font-size: 1.4rem; font-weight: 900; text-transform: uppercase; margin-bottom: 0.5rem;">Export Archive / JSON</h2>
-      <p style="font-size: 0.85rem; color: var(--muted); margin-bottom: 1.2rem;">Export customized archive data, download JSON file, or restore backup.</p>
-
       <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1rem;">
         <button class="outline-btn" id="scope-all" onclick="updateExportView('all')">All Archive</button>
         <button class="outline-btn" id="scope-top" onclick="updateExportView('top')">Top Ranked Only</button>
@@ -557,8 +529,8 @@
       </div>
 
       <div style="border-top: 1px solid var(--border); padding-top: 1.2rem;">
-        <h4 style="font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: var(--muted); margin-bottom: 0.5rem;">Restore / Import Backup</h4>
-        <input type="file" id="importFileInput" accept=".json" onchange="importJsonFile(event)" style="font-size: 0.8rem;">
+        <h4 style="font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: var(--muted); margin-bottom: 0.5rem;">Restore Backup</h4>
+        <input type="file" id="importFileInput" accept=".json" onchange="importJsonFile(event)">
       </div>
     </div>
   </div>
@@ -572,7 +544,7 @@
         title: "Hereditary",
         year: 2018,
         director: "Ari Aster",
-        starring: "Toni Collette, Alex Wolff, Milly Shapiro",
+        starring: "Toni Collette, Alex Wolff",
         status: "watched",
         gutRating: 9.8,
         dreadScore: 10,
@@ -588,10 +560,9 @@
     let currentFilter = 'all';
     let currentExportScope = 'all';
     let selectedFilm = null;
-    let clickedCardFilmId = null;
+    let contextFilmId = null;
     let activeArtworkChoice = "";
     let debounceTimer;
-    let cachedA24Catalog = [];
 
     function toggleDrawer(open) {
       document.getElementById('sideDrawer').classList.toggle('active', open);
@@ -605,8 +576,8 @@
     }
 
     function showHomeView() {
-      document.getElementById('filmPageView').style.display = 'none';
       document.getElementById('catalogView').style.display = 'none';
+      document.getElementById('filmPageView').style.display = 'none';
       document.getElementById('homeView').style.display = 'block';
       window.scrollTo({ top: 0, behavior: 'smooth' });
       renderGrid();
@@ -618,7 +589,7 @@
       document.getElementById('filmPageView').style.display = 'none';
       document.getElementById('catalogView').style.display = 'block';
       window.scrollTo({ top: 0, behavior: 'smooth' });
-      if (!cachedA24Catalog.length) fetchA24Catalog();
+      loadA24Catalog(1);
     }
 
     function openSearchModal() {
@@ -632,7 +603,7 @@
 
     function setFilter(filter) {
       currentFilter = filter;
-      document.querySelectorAll('#homeView .tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
       const btn = document.getElementById(`tab-${filter}`);
       if (btn) btn.classList.add('active');
       renderGrid();
@@ -644,120 +615,79 @@
       document.getElementById('watchedFields').style.display = isWatchlist ? 'none' : 'block';
     }
 
-    // LEFT-CLICK CARD HANDLER: In 'top' ranking view, opens the Action Menu on left-click; in other views, opens Movie Page directly.
-    function handleCardClick(filmId) {
-      clickedCardFilmId = filmId;
-      const film = myFilms.find(f => f.id === filmId);
-      if (!film) {
-        openFilmPage(filmId);
-        return;
-      }
+    // RIGHT-CLICK CONTEXT MENU HANDLER
+    function setupContextMenu() {
+      const menu = document.getElementById('customContextMenu');
+      
+      window.addEventListener('click', () => {
+        menu.style.display = 'none';
+      });
 
-      if (currentFilter === 'top') {
-        selectedFilm = film;
-        document.getElementById('actionModalPreview').innerHTML = `
-          <div style="display:flex; gap:1rem; align-items:center; border-bottom:1px solid var(--border); padding-bottom:1rem;">
-            <img src="${film.displayArtwork || film.poster}" style="width:70px; height:50px; object-fit:cover;">
-            <div>
-              <h3 style="font-size:1.2rem; font-weight:900;">${film.title}</h3>
-              <p style="font-size:0.75rem; color:var(--muted);">Index: ${film.compositeScore} / 100 • Year: ${film.year}</p>
-            </div>
-          </div>
-        `;
-        document.getElementById('filmActionModal').classList.add('active');
-      } else {
-        openFilmPage(filmId);
-      }
+      window.addEventListener('scroll', () => {
+        menu.style.display = 'none';
+      });
     }
 
-    function viewSelectedFilmPage() {
-      closeModal('filmActionModal');
-      if (clickedCardFilmId) openFilmPage(clickedCardFilmId);
+    function openContextMenuOnCard(e, filmId) {
+      e.preventDefault();
+      e.stopPropagation();
+      contextFilmId = filmId;
+      const menu = document.getElementById('customContextMenu');
+      menu.style.display = 'block';
+      menu.style.left = `${Math.min(e.clientX, window.innerWidth - 230)}px`;
+      menu.style.top = `${Math.min(e.clientY, window.innerHeight - 250)}px`;
     }
 
-    function actionPromoteToTop() {
-      const film = myFilms.find(f => f.id === clickedCardFilmId);
-      if (film) {
-        const highest = Math.max(...myFilms.map(f => f.tieBreakPriority || 50), 50);
-        film.tieBreakPriority = highest + 10;
+    function contextAction(action) {
+      if (!contextFilmId) return;
+      const film = myFilms.find(f => f.id === contextFilmId);
+
+      if (action === 'open') {
+        openFilmPage(contextFilmId);
+      } else if (action === 'make1') {
+        if (!film) return;
+        const maxP = Math.max(...myFilms.map(f => f.tieBreakPriority || 50), 50);
+        film.tieBreakPriority = maxP + 10;
         localStorage.setItem('a24_saved_films', JSON.stringify(myFilms));
         renderGrid();
+      } else if (action === 'up') {
+        shiftRank(contextFilmId, -1);
+      } else if (action === 'down') {
+        shiftRank(contextFilmId, 1);
+      } else if (action === 'edit') {
+        fetch(`${WORKER_URL}/api/fetch-movie/${contextFilmId}`).then(r=>r.json()).then(f => {
+          selectedFilm = f;
+          openSaveModal();
+        });
+      } else if (action === 'delete') {
+        if (confirm(`Remove "${film?.title || 'film'}" from archive?`)) {
+          myFilms = myFilms.filter(f => f.id !== contextFilmId);
+          localStorage.setItem('a24_saved_films', JSON.stringify(myFilms));
+          renderGrid();
+        }
       }
-      closeModal('filmActionModal');
+      document.getElementById('customContextMenu').style.display = 'none';
     }
 
-    function actionShiftRank(dir) {
-      const sorted = myFilms
+    function shiftRank(filmId, direction) {
+      const sortedWatched = myFilms
         .filter(f => f.status === 'watched')
         .sort((a,b) => (b.compositeScore || 0) - (a.compositeScore || 0) || (b.tieBreakPriority || 50) - (a.tieBreakPriority || 50));
-      
-      const idx = sorted.findIndex(f => f.id === clickedCardFilmId);
-      const targetIdx = idx + dir;
-      if (targetIdx >= 0 && targetIdx < sorted.length) {
-        const cur = sorted[idx];
-        const tgt = sorted[targetIdx];
-        cur.tieBreakPriority = (tgt.tieBreakPriority || 50) + (dir === -1 ? 1 : -1);
-        localStorage.setItem('a24_saved_films', JSON.stringify(myFilms));
-        renderGrid();
-      }
-      closeModal('filmActionModal');
+
+      const currentIndex = sortedWatched.findIndex(f => f.id === filmId);
+      const targetIndex = currentIndex + direction;
+
+      if (targetIndex < 0 || targetIndex >= sortedWatched.length) return;
+
+      const currentFilm = sortedWatched[currentIndex];
+      const targetFilm = sortedWatched[targetIndex];
+
+      currentFilm.tieBreakPriority = (targetFilm.tieBreakPriority || 50) + (direction === -1 ? 1 : -1);
+      localStorage.setItem('a24_saved_films', JSON.stringify(myFilms));
+      renderGrid();
     }
 
-    // A24 CATALOG QUERYING (ALL REAL A24 FILMS)
-    async function fetchA24Catalog() {
-      const genre = document.getElementById('catGenreFilter').value;
-      const year = document.getElementById('catYearFilter').value;
-      const sort = document.getElementById('catSortFilter').value;
-      const grid = document.getElementById('catalogGrid');
-
-      grid.innerHTML = `<div style="grid-column: 1/-1; padding: 6rem 0; text-align:center; font-weight:800;">LOADING A24 STUDIO CATALOG...</div>`;
-
-      try {
-        const res = await fetch(`${WORKER_URL}/api/a24-catalog?genre=${genre}&year=${year}&sort=${sort}`);
-        const films = await res.json();
-        cachedA24Catalog = films || [];
-        renderCatalogGrid(cachedA24Catalog);
-      } catch (err) {
-        grid.innerHTML = `<div style="grid-column: 1/-1; padding: 4rem; color:red; text-align:center;">Failed to load catalog: ${err.message}</div>`;
-      }
-    }
-
-    function handleCatalogFilter() {
-      const q = document.getElementById('catSearchQuery').value.toLowerCase().trim();
-      if (!q) {
-        renderCatalogGrid(cachedA24Catalog);
-        return;
-      }
-      const filtered = cachedA24Catalog.filter(f => f.title.toLowerCase().includes(q));
-      renderCatalogGrid(filtered);
-    }
-
-    function renderCatalogGrid(films) {
-      const grid = document.getElementById('catalogGrid');
-      if (!films || !films.length) {
-        grid.innerHTML = `<div style="grid-column: 1/-1; padding: 5rem 0; text-align: center; color: var(--muted); text-transform:uppercase; font-weight:800;">No A24 films found matching this criteria.</div>`;
-        return;
-      }
-
-      grid.innerHTML = films.map(f => {
-        const isSaved = myFilms.find(m => m.id === f.id.toString());
-        return `
-          <article class="film-item" onclick="openFilmPage('${f.id}')">
-            <div class="film-art-wrapper">
-              <img src="${f.backdrop_path ? 'https://image.tmdb.org/t/p/w1280' + f.backdrop_path : (f.poster_path ? 'https://image.tmdb.org/t/p/w780' + f.poster_path : 'https://placehold.co/1280x720/000/fff?text=A24')}" alt="${f.title}" loading="lazy">
-            </div>
-            <span class="film-year">${f.release_date ? f.release_date.split('-')[0] : 'N/A'}</span>
-            <h2 class="film-name">${f.title}</h2>
-            <div class="film-meta-bar">
-              <span>${isSaved ? `IN ARCHIVE (${isSaved.status.toUpperCase()})` : 'A24 PRODUCTION'}</span>
-              <span>★ ${f.vote_average ? f.vote_average.toFixed(1) : 'N/A'}</span>
-            </div>
-          </article>
-        `;
-      }).join('');
-    }
-
-    // LIVE SEARCH
+    // LIVE TMDB SEARCH
     function handleTyping() {
       clearTimeout(debounceTimer);
       const query = document.getElementById('tmdbQuery').value.trim();
@@ -795,7 +725,53 @@
       }, 300);
     }
 
-    // DEDICATED FILM PAGE (HERO + DEEP CREW CREDITS + GALLERY)
+    // LOAD OFFICIAL A24 CATALOG (Explore View)
+    async function loadA24Catalog(page = 1) {
+      const feed = document.getElementById('catalogFeed');
+      const totalLabel = document.getElementById('catalogTotalLabel');
+      const genre = document.getElementById('catalogGenreFilter').value;
+      const year = document.getElementById('catalogYearFilter').value;
+      const sort = document.getElementById('catalogSortFilter').value;
+
+      feed.innerHTML = `<div style="grid-column:1/-1; padding:6rem; text-align:center; font-weight:800; letter-spacing:0.08em;">LOADING OFFICIAL A24 UNIVERSE...</div>`;
+
+      try {
+        const url = `${WORKER_URL}/api/a24-catalog?genre=${genre}&year=${year}&sort=${sort}&page=${page}`;
+        const res = await fetch(url);
+        const data = await res.json();
+        const results = data.results || [];
+
+        totalLabel.innerText = `${data.total_results || results.length} TITLES FOUND`;
+
+        if (!results.length) {
+          feed.innerHTML = `<div style="grid-column:1/-1; padding:5rem; text-align:center; color:var(--muted); font-weight:800;">No A24 titles found with the selected filter.</div>`;
+          return;
+        }
+
+        feed.innerHTML = results.map(f => {
+          const img = f.backdrop_path ? `https://image.tmdb.org/t/p/w780${f.backdrop_path}` : (f.poster_path ? `https://image.tmdb.org/t/p/w780${f.poster_path}` : 'https://placehold.co/780x440/000/fff?text=A24');
+          const releaseYear = f.release_date ? f.release_date.split('-')[0] : 'TBA';
+
+          return `
+            <article class="film-item" onclick="openFilmPage('${f.id}')">
+              <div class="film-art-wrapper">
+                <img src="${img}" alt="${f.title}" loading="lazy">
+              </div>
+              <span class="film-year">${releaseYear}</span>
+              <h2 class="film-name">${f.title}</h2>
+              <div class="film-meta-bar">
+                <span>TMDB ★ ${f.vote_average ? f.vote_average.toFixed(1) : 'N/A'}</span>
+                <span style="text-decoration:underline;">EXPLORE ↗</span>
+              </div>
+            </article>
+          `;
+        }).join('');
+      } catch (e) {
+        feed.innerHTML = `<div style="grid-column:1/-1; padding:4rem; color:red;">Failed loading A24 library: ${e.message}</div>`;
+      }
+    }
+
+    // DEDICATED FILM PAGE WITH FULL DIRECTORS & EXTENDED CREW
     async function openFilmPage(tmdbId) {
       closeModal('searchModal');
       toggleDrawer(false);
@@ -825,7 +801,7 @@
             <div class="film-hero-gradient"></div>
             <div class="film-hero-title-wrap">
               <h1 class="film-hero-title">${film.title}</h1>
-              ${film.tagline ? `<p style="font-size:1.1rem; font-style:italic; opacity:0.85;">“${film.tagline}”</p>` : ''}
+              ${film.tagline ? `<p style="font-size:1.15rem; font-style:italic; opacity:0.88;">“${film.tagline}”</p>` : ''}
             </div>
           </section>
 
@@ -833,7 +809,7 @@
           <section class="film-meta-grid">
             <div class="meta-block">
               <h4>DIRECTED BY</h4>
-              <p>${film.director}</p>
+              <p>${film.directors || film.director}</p>
             </div>
             
             <div class="meta-block">
@@ -860,11 +836,11 @@
             </div>
           </section>
 
-          <!-- SCORECARD -->
+          <!-- SCORECARD (If Watched) -->
           ${saved && saved.status === 'watched' ? `
             <div class="scorecard-banner">
               <div class="score-stat">
-                <h5>Composite A24 Rank Score</h5>
+                <h5>Composite Rank Index</h5>
                 <div class="val">${saved.compositeScore} / 100</div>
               </div>
               <div class="score-stat">
@@ -886,35 +862,42 @@
             </div>
           ` : ''}
 
-          <!-- FULL CREW & FILMMAKERS BREAKDOWN -->
-          <section class="crew-grid">
-            <div class="crew-block">
-              <h5>Written By (Screenplay)</h5>
-              <p>${film.writers || film.director}</p>
+          <!-- EXTENDED CREW & CREATIVE DEPARTMENT -->
+          <section class="crew-department-grid">
+            <div class="crew-item">
+              <h5>Screenplay & Writers</h5>
+              <p>${film.writers || 'N/A'}</p>
             </div>
-            <div class="crew-block">
-              <h5>Director of Photography (DP)</h5>
+            <div class="crew-item">
+              <h5>Cinematography (DP)</h5>
               <p>${film.cinematography || 'N/A'}</p>
             </div>
-            <div class="crew-block">
-              <h5>Original Score & Music</h5>
+            <div class="crew-item">
+              <h5>Original Score / Music</h5>
               <p>${film.music || 'N/A'}</p>
             </div>
-            <div class="crew-block">
+            <div class="crew-item">
               <h5>Producers</h5>
-              <p>${film.producers || film.production || 'A24'}</p>
+              <p>${film.producers || 'N/A'}</p>
             </div>
           </section>
 
-          <!-- SYNOPSIS -->
+          <!-- SYNOPSIS & DETAILED CAST -->
           <section class="film-body-grid">
             <div>
               <h4 style="font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: var(--muted); margin-bottom: 1rem;">SYNOPSIS</h4>
               <p class="synopsis-text">${film.synopsis}</p>
+              
+              <h4 style="font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: var(--muted); margin: 2rem 0 0.8rem;">FEATURED CAST & CHARACTERS</h4>
+              <div style="font-size:0.95rem; line-height:1.7;">
+                ${(film.castDetails && film.castDetails.length) 
+                  ? film.castDetails.map(c => `<b>${c.name}</b> as <i>${c.character || 'Self'}</i>`).join(' &nbsp;•&nbsp; ')
+                  : film.starring}
+              </div>
             </div>
             <div style="display:flex; flex-direction:column; gap:1.2rem;">
               <div style="border-bottom:1px solid var(--border); padding-bottom:0.6rem;">
-                <span style="font-size:0.75rem; font-weight:800; text-transform:uppercase; color:var(--muted); display:block;">Production Companies</span>
+                <span style="font-size:0.75rem; font-weight:800; text-transform:uppercase; color:var(--muted); display:block;">Production</span>
                 <span style="font-weight:700;">${film.production || 'A24 / Independent'}</span>
               </div>
               <div style="border-bottom:1px solid var(--border); padding-bottom:0.6rem;">
@@ -928,9 +911,9 @@
             </div>
           </section>
 
-          <!-- POSTER ARCHIVE & MOVIE STILL PICKER -->
+          <!-- POSTER ARCHIVE WITH 1-CLICK SELECTOR -->
           <section class="gallery-section">
-            <h3 class="section-heading">Poster Archive & Stills (${(film.posters || []).length + (film.backdrops || []).length} VARIANTS)</h3>
+            <h3 class="section-heading">Poster & Key Art Archive (${(film.posters || []).length + (film.backdrops || []).length} VARIANTS)</h3>
             <p style="font-size:0.85rem; color:var(--muted); margin-bottom:1.5rem;">Click any artwork below to set it as this movie's cover on your main archive feed.</p>
             
             <div class="gallery-grid">
@@ -977,7 +960,7 @@
           <img src="${activeArtworkChoice}" id="modalActiveCoverPreview" style="width: 100px; height: 65px; object-fit: cover;">
           <div>
             <h3 style="font-size: 1.25rem; font-weight: 900;">${selectedFilm.title} (${selectedFilm.year})</h3>
-            <p style="font-size: 0.8rem; color: var(--muted);">Dir. ${selectedFilm.director}</p>
+            <p style="font-size: 0.8rem; color: var(--muted);">Dir. ${selectedFilm.directors || selectedFilm.director}</p>
           </div>
         </div>
       `;
@@ -1062,7 +1045,7 @@
       openFilmPage(film.id);
     }
 
-    // EXPORT & BACKUP
+    // EXPORT / IMPORT
     function openExportModal() {
       updateExportView('all');
       document.getElementById('exportModal').classList.add('active');
@@ -1090,9 +1073,7 @@
       document.querySelectorAll('#exportModal .outline-btn').forEach(b => b.style.background = '#fff');
       const activeBtn = document.getElementById(`scope-${scope}`);
       if (activeBtn) activeBtn.style.background = '#e6e6e6';
-
-      const json = JSON.stringify(getExportData(scope), null, 2);
-      document.getElementById('jsonOutputArea').value = json;
+      document.getElementById('jsonOutputArea').value = JSON.stringify(getExportData(scope), null, 2);
     }
 
     function downloadJsonFile() {
@@ -1107,8 +1088,7 @@
     }
 
     function copyJsonToClipboard() {
-      const text = document.getElementById('jsonOutputArea').value;
-      navigator.clipboard.writeText(text);
+      navigator.clipboard.writeText(document.getElementById('jsonOutputArea').value);
       alert('Archive JSON copied to clipboard!');
     }
 
@@ -1121,8 +1101,7 @@
         try {
           const parsed = JSON.parse(e.target.result);
           const importedFilms = Array.isArray(parsed) ? parsed : (parsed.films || []);
-
-          if (!Array.isArray(importedFilms)) throw new Error('Invalid JSON schema');
+          if (!Array.isArray(importedFilms)) throw new Error('Invalid JSON format');
 
           myFilms = importedFilms;
           localStorage.setItem('a24_saved_films', JSON.stringify(myFilms));
@@ -1136,7 +1115,7 @@
       reader.readAsText(file);
     }
 
-    // RENDER MY ARCHIVE GRID
+    // RENDER MAIN ARCHIVE GRID (Clean: Left Click = Open Page, Right Click = Context Menu)
     function renderGrid() {
       const grid = document.getElementById('filmGrid');
       const countLabel = document.getElementById('itemCountLabel');
@@ -1155,12 +1134,12 @@
       countLabel.innerText = `${list.length} ${list.length === 1 ? 'FILM' : 'FILMS'}`;
 
       if (!list.length) {
-        grid.innerHTML = `<div style="grid-column: 1/-1; padding: 5rem 0; text-align: center; color: var(--muted); text-transform:uppercase; letter-spacing:0.08em; font-weight:800;">No films in this view. Click "A24 Catalog" or "+ Search" to add films.</div>`;
+        grid.innerHTML = `<div style="grid-column: 1/-1; padding: 5rem 0; text-align: center; color: var(--muted); text-transform:uppercase; letter-spacing:0.08em; font-weight:800;">No films in this view. Click "+ Add" or "A24 Catalog" above to build your archive.</div>`;
         return;
       }
 
       grid.innerHTML = list.map((f, idx) => `
-        <article class="film-item" onclick="handleCardClick('${f.id}')">
+        <article class="film-item" onclick="openFilmPage('${f.id}')" oncontextmenu="openContextMenuOnCard(event, '${f.id}')">
           <div class="film-art-wrapper">
             <img src="${f.displayArtwork || f.poster}" alt="${f.title}" loading="lazy">
           </div>
@@ -1174,6 +1153,7 @@
       `).join('');
     }
 
+    setupContextMenu();
     renderGrid();
   </script>
 </body>
