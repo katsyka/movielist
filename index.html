@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>A24 — Psychological Archive & Film Universe</title>
+  <title>A24 — Film Universe & Psychological Archive</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -25,12 +25,12 @@
       overflow-x: hidden;
     }
     a { color: inherit; text-decoration: none; }
-    button, input, select { font-family: inherit; }
+    button, input, select, textarea { font-family: inherit; }
 
     /* HEADER */
     header {
       position: sticky; top: 0; background: rgba(255,255,255,0.97);
-      backdrop-filter: blur(10px);
+      backdrop-filter: blur(12px);
       z-index: 100;
       border-bottom: 1px solid var(--border);
       padding: 1.1rem 2.5rem;
@@ -38,27 +38,41 @@
       grid-template-columns: 1fr auto 1fr;
       align-items: center;
     }
+    
+    /* 2-LINE MINIMAL MENU TRIGGER (A24 STYLE) */
     .menu-trigger {
-      background: none; border: none; font-size: 0.85rem; font-weight: 800;
+      background: none; border: none; font-size: 0.82rem; font-weight: 800;
       letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer;
-      justify-self: start; display: inline-flex; align-items: center; gap: 9px;
+      justify-self: start; display: inline-flex; align-items: center; gap: 10px;
     }
-    .menu-trigger span { display: inline-block; width: 16px; height: 2px; background: #000; }
-    .brand-logo-img { height: 36px; object-fit: contain; cursor: pointer; display: block; }
+    .hamburger-icon {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 18px;
+      height: 9px;
+    }
+    .hamburger-icon span {
+      display: block;
+      width: 100%;
+      height: 2px;
+      background: #000;
+    }
+    .brand-logo-img { height: 34px; object-fit: contain; cursor: pointer; display: block; }
     
     .header-actions { justify-self: end; display: flex; gap: 0.6rem; align-items: center; }
     .outline-btn {
       background: #fff; color: #000; border: 1px solid #000;
       padding: 0.6rem 1.1rem; font-weight: 800; text-transform: uppercase;
       font-size: 0.75rem; letter-spacing: 0.08em; cursor: pointer;
-      transition: background 0.15s;
+      transition: background 0.15s; white-space: nowrap;
     }
     .outline-btn:hover { background: #f0f0f0; }
     .log-btn {
       background: #000; color: #fff; border: 1px solid #000;
       padding: 0.6rem 1.3rem; font-weight: 800; text-transform: uppercase;
       font-size: 0.78rem; letter-spacing: 0.08em; cursor: pointer;
-      transition: opacity 0.15s ease;
+      transition: opacity 0.15s ease; white-space: nowrap;
     }
     .log-btn:hover { opacity: 0.85; }
 
@@ -79,12 +93,20 @@
       background: none; border: none; color: #fff; font-size: 0.85rem;
       font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer;
     }
-    .drawer-nav { display: flex; flex-direction: column; gap: 1.2rem; margin-top: 2.5rem; }
+    .drawer-nav { display: flex; flex-direction: column; gap: 1.1rem; margin-top: 2rem; }
     .drawer-link {
-      color: #fff; font-size: 2.3rem; font-weight: 900; letter-spacing: -0.04em;
+      color: #fff; font-size: 2.1rem; font-weight: 900; letter-spacing: -0.04em;
       line-height: 1.05; cursor: pointer; transition: opacity 0.15s;
     }
     .drawer-link:hover { opacity: 0.6; }
+
+    /* USER BADGE */
+    .user-pill {
+      display: flex; align-items: center; gap: 0.5rem; font-size: 0.75rem;
+      font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em;
+      padding: 0.5rem 0.8rem; background: #f2f2f2; border: 1px solid var(--border);
+      cursor: pointer;
+    }
 
     /* CONTROLS */
     .controls {
@@ -98,7 +120,7 @@
     }
     .tab-btn.active { color: #000; border-color: #000; }
 
-    /* ROW FEED (TRADITIONAL LEFT-TO-RIGHT ROW ORDER) */
+    /* GRID FEED */
     .film-row-feed {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -112,6 +134,7 @@
       flex-direction: column;
       width: 100%;
       user-select: none;
+      position: relative;
     }
     .film-art-wrapper {
       position: relative;
@@ -119,23 +142,23 @@
       background: #0f0f0f;
       overflow: hidden;
       margin-bottom: 0.85rem;
+      aspect-ratio: 16 / 9;
     }
     .film-art-wrapper img {
       width: 100%;
-      height: auto;
-      max-height: 520px;
+      height: 100%;
       object-fit: cover;
       display: block;
-      transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    .film-item:hover .film-art-wrapper img { transform: scale(1.035); }
+    .film-item:hover .film-art-wrapper img { transform: scale(1.04); }
     
     .film-year {
       font-size: 0.8rem; font-weight: 800; color: var(--muted);
       letter-spacing: 0.05em; margin-bottom: 0.2rem;
     }
     .film-name {
-      font-size: 2.1rem; font-weight: 900; letter-spacing: -0.04em;
+      font-size: 2rem; font-weight: 900; letter-spacing: -0.04em;
       line-height: 1.05; margin-bottom: 0.35rem;
     }
     .film-meta-bar {
@@ -144,7 +167,7 @@
       letter-spacing: 0.04em; text-transform: uppercase; margin-top: 0.2rem;
     }
 
-    /* RIGHT-CLICK CUSTOM A24 CONTEXT MENU */
+    /* RIGHT-CLICK CONTEXT MENU */
     #customContextMenu {
       position: fixed; display: none; z-index: 500;
       background: #000; color: #fff; border: 1px solid #222;
@@ -154,13 +177,13 @@
       padding: 0.75rem 1rem; font-size: 0.75rem; font-weight: 800;
       text-transform: uppercase; letter-spacing: 0.08em; cursor: pointer;
       display: flex; align-items: center; justify-content: space-between;
-      border-bottom: 1px solid #1a1a1a; transition: background 0.15s;
+      border-bottom: 1px solid #1a1a1a;
     }
     .context-item:last-child { border-bottom: none; }
-    .context-item:hover { background: #222; color: #fff; }
+    .context-item:hover { background: #222; }
     .context-item.danger:hover { background: #990000; }
 
-    /* A24 CATALOG DISCOVERY CONTROLS */
+    /* CATALOG CONTROLS & PAGINATION */
     .filter-bar {
       padding: 1.25rem 2.5rem; background: #fafafa; border-bottom: 1px solid var(--border);
       display: flex; gap: 1rem; flex-wrap: wrap; align-items: center;
@@ -169,28 +192,56 @@
       padding: 0.65rem 1rem; border: 1px solid #000; font-size: 0.8rem;
       font-weight: 800; text-transform: uppercase; background: #fff; outline: none; cursor: pointer;
     }
+    .pagination-bar {
+      padding: 2rem 2.5rem; display: flex; justify-content: center; align-items: center; gap: 1rem;
+      border-top: 1px solid var(--border);
+    }
 
-    /* DEDICATED FILM DETAIL VIEW */
+    /* CINEMATIC A24 HERO TRAILER VIEW */
     #filmPageView, #catalogView { display: none; }
     .film-hero {
-      position: relative; width: 100%; min-height: 70vh; max-height: 85vh;
+      position: relative; width: 100%; height: 75vh; min-height: 520px;
       background: #000; overflow: hidden; display: flex; align-items: flex-end;
+    }
+    .trailer-video-frame {
+      position: absolute; inset: -10%; width: 120%; height: 120%;
+      border: none; pointer-events: none; opacity: 0.95;
     }
     .film-hero-bg {
       position: absolute; inset: 0; width: 100%; height: 100%;
       object-fit: cover; opacity: 0.88;
     }
     .film-hero-gradient {
-      position: absolute; inset: 0;
-      background: linear-gradient(to top, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.2) 50%, transparent 100%);
+      position: absolute; inset: 0; pointer-events: none;
+      background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.4) 100%);
     }
     .film-hero-title-wrap {
-      position: relative; z-index: 10; padding: 3.5rem 2.5rem; color: #fff;
+      position: relative; z-index: 10; padding: 3.5rem 2.5rem; color: #fff; width: 100%;
+      display: flex; justify-content: space-between; align-items: flex-end;
     }
     .film-hero-title {
-      font-size: clamp(3rem, 7vw, 6.5rem); font-weight: 900;
+      font-size: clamp(3rem, 7vw, 6.2rem); font-weight: 900;
       letter-spacing: -0.04em; line-height: 0.95; margin-bottom: 0.5rem;
     }
+
+    /* AUDIO / PLAY OVERLAY BUTTONS */
+    .hero-audio-btn {
+      background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.4);
+      color: #fff; border-radius: 50%; width: 52px; height: 52px;
+      display: flex; align-items: center; justify-content: center; cursor: pointer;
+      backdrop-filter: blur(8px); transition: transform 0.2s, background 0.2s;
+    }
+    .hero-audio-btn:hover { transform: scale(1.08); background: #000; }
+    .hero-audio-btn svg { width: 22px; height: 22px; fill: #fff; }
+
+    .center-play-triangle {
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+      z-index: 15; width: 70px; height: 70px; border: 2px solid rgba(255,255,255,0.8);
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      cursor: pointer; backdrop-filter: blur(4px); transition: 0.2s;
+    }
+    .center-play-triangle:hover { transform: translate(-50%, -50%) scale(1.1); background: rgba(255,255,255,0.15); }
+    .center-play-triangle svg { width: 24px; height: 24px; fill: #fff; margin-left: 3px; }
 
     .film-meta-grid {
       padding: 3rem 2.5rem; display: grid; grid-template-columns: 1.2fr 1fr 1fr;
@@ -220,7 +271,6 @@
     .score-stat h5 { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; color: #888; letter-spacing: 0.08em; }
     .score-stat .val { font-size: 1.8rem; font-weight: 900; }
 
-    /* DETAILED CREW & CAST SECTION */
     .crew-department-grid {
       padding: 3rem 2.5rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
       gap: 2.5rem 2rem; border-bottom: 1px solid var(--border);
@@ -296,11 +346,16 @@
     }
     .art-thumb.selected { border-color: #000; opacity: 1; transform: scale(1.04); }
 
-    .json-code-box {
-      width: 100%; height: 220px; font-family: monospace; font-size: 0.8rem;
-      background: #f7f7f7; border: 1px solid #000; padding: 1rem;
-      margin: 1rem 0; resize: vertical; outline: none; white-space: pre;
+    .text-output-box {
+      width: 100%; height: 260px; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-size: 0.95rem; line-height: 1.5; background: #fafafa; border: 1px solid #000;
+      padding: 1rem; margin: 1rem 0; resize: vertical; outline: none; white-space: pre-wrap;
     }
+
+    /* AUTH MODAL */
+    .auth-input-group { margin-bottom: 1rem; }
+    .auth-input-group label { display: block; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; margin-bottom: 0.4rem; }
+    .auth-input-group input { width: 100%; border: 1px solid #000; padding: 0.8rem; font-size: 1rem; font-weight: 600; outline: none; }
 
     /* RESPONSIVE */
     @media (max-width: 1024px) {
@@ -308,10 +363,11 @@
     }
     @media (max-width: 700px) {
       header { padding: 0.9rem 1.25rem; }
-      .brand-logo-img { height: 28px; }
-      .controls, .filter-bar { padding: 1rem 1.25rem; }
+      .brand-logo-img { height: 26px; }
+      .controls, .filter-bar, .pagination-bar { padding: 1rem 1.25rem; }
       .film-row-feed { grid-template-columns: 1fr; padding: 1.25rem; gap: 2.5rem; }
-      .film-name { font-size: 1.8rem; }
+      .film-name { font-size: 1.7rem; }
+      .film-hero { height: 50vh; min-height: 380px; }
       .film-meta-grid, .film-body-grid, .gallery-section, .scorecard-banner, .crew-department-grid { padding-left: 1.25rem; padding-right: 1.25rem; }
       .film-meta-grid, .film-body-grid { grid-template-columns: 1fr; gap: 2rem; }
     }
@@ -319,7 +375,7 @@
 </head>
 <body>
 
-  <!-- CUSTOM RIGHT CLICK CONTEXT MENU -->
+  <!-- CONTEXT MENU -->
   <div id="customContextMenu">
     <div class="context-item" onclick="contextAction('make1')"><span>👑 Make #1 Masterpiece</span></div>
     <div class="context-item" onclick="contextAction('up')"><span>▲ Move Up in Rank</span></div>
@@ -344,20 +400,29 @@
         <a class="drawer-link" onclick="openExportModal(); toggleDrawer(false);">Export / Backup</a>
       </nav>
     </div>
-    <div style="font-size: 0.75rem; color: #666; text-transform: uppercase; letter-spacing: 0.06em;">
-      <p>© A24 PSYCHOLOGICAL ARCHIVE</p>
+    <div>
+      <div id="drawerUserBox" style="margin-bottom: 1rem;"></div>
+      <p style="font-size: 0.75rem; color: #666; text-transform: uppercase; letter-spacing: 0.06em;">© A24 FILM UNIVERSE</p>
     </div>
   </aside>
 
   <!-- HEADER -->
   <header>
+    <!-- 2-Line Minimal A24 Menu Button -->
     <button class="menu-trigger" onclick="toggleDrawer(true)">
-      <span></span> MENU
+      <div class="hamburger-icon">
+        <span></span>
+        <span></span>
+      </div>
+      MENU
     </button>
+    
     <a href="#" onclick="showHomeView()">
       <img src="https://images.seeklogo.com/logo-png/31/2/a24-films-logo-png_seeklogo-316223.png" alt="A24" class="brand-logo-img">
     </a>
+
     <div class="header-actions">
+      <div id="headerAuthArea"></div>
       <button class="outline-btn" onclick="showCatalogView()">A24 Catalog</button>
       <button class="outline-btn" onclick="openExportModal()">↓ Export</button>
       <button class="log-btn" onclick="openSearchModal()">+ Add</button>
@@ -391,7 +456,7 @@
       <button class="tab-btn active" onclick="showHomeView()">← Back to My Archive</button>
     </section>
 
-    <!-- FLEXIBLE FILTERS -->
+    <!-- FILTERS -->
     <div class="filter-bar">
       <select id="catalogGenreFilter" class="filter-select" onchange="loadA24Catalog(1)">
         <option value="">All Genres</option>
@@ -430,10 +495,41 @@
     </div>
 
     <main class="film-row-feed" id="catalogFeed"></main>
+
+    <!-- FULL PAGINATION CONTROLS -->
+    <div class="pagination-bar" id="catalogPagination"></div>
   </div>
 
-  <!-- SINGLE DEDICATED FILM PAGE VIEW -->
+  <!-- SINGLE DEDICATED FILM PAGE VIEW WITH TRAILER -->
   <div id="filmPageView"></div>
+
+  <!-- AUTHENTICATION MODAL (LOGIN / REGISTER) -->
+  <div class="modal-overlay" id="authModal">
+    <div class="modal-content" style="max-width: 440px;">
+      <button class="modal-close" onclick="closeModal('authModal')">✕</button>
+      <h2 style="font-size: 1.4rem; font-weight: 900; margin-bottom: 0.5rem; text-transform: uppercase;" id="authModalTitle">Sign In</h2>
+      <p style="font-size: 0.8rem; color: var(--muted); margin-bottom: 1.5rem;">Access and sync your private A24 archive anywhere.</p>
+
+      <form onsubmit="handleAuthSubmit(event)">
+        <div class="auth-input-group">
+          <label>Username</label>
+          <input type="text" id="authUsername" required autocomplete="username">
+        </div>
+        <div class="auth-input-group">
+          <label>Password</label>
+          <input type="password" id="authPassword" required autocomplete="current-password">
+        </div>
+
+        <button type="submit" class="log-btn" style="width: 100%; padding: 0.9rem; margin-top: 0.5rem;" id="authSubmitBtn">LOG IN</button>
+      </form>
+
+      <div style="margin-top: 1.2rem; text-align: center;">
+        <button class="outline-btn" style="border:none; text-decoration: underline;" onclick="toggleAuthMode()" id="authSwitchBtn">
+          Need an account? Register
+        </button>
+      </div>
+    </div>
+  </div>
 
   <!-- SEARCH MODAL -->
   <div class="modal-overlay" id="searchModal">
@@ -447,7 +543,7 @@
     </div>
   </div>
 
-  <!-- SAVE & MULTI-METRIC SCORING MODAL -->
+  <!-- SAVE & SCORING MODAL -->
   <div class="modal-overlay" id="saveModal">
     <div class="modal-content">
       <button class="modal-close" onclick="closeModal('saveModal')">✕</button>
@@ -509,27 +605,33 @@
     </div>
   </div>
 
-  <!-- EXPORT MODAL -->
+  <!-- EXPORT MODAL (JSON + PLAIN TEXT NUMBERED LIST) -->
   <div class="modal-overlay" id="exportModal">
     <div class="modal-content">
       <button class="modal-close" onclick="closeModal('exportModal')">✕</button>
-      <h2 style="font-size: 1.4rem; font-weight: 900; text-transform: uppercase; margin-bottom: 0.5rem;">Export Archive / JSON</h2>
-      <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1rem;">
-        <button class="outline-btn" id="scope-all" onclick="updateExportView('all')">All Archive</button>
-        <button class="outline-btn" id="scope-top" onclick="updateExportView('top')">Top Ranked Only</button>
-        <button class="outline-btn" id="scope-watched" onclick="updateExportView('watched')">Watched Only</button>
-        <button class="outline-btn" id="scope-watchlist" onclick="updateExportView('watchlist')">Watchlist Only</button>
+      <h2 style="font-size: 1.4rem; font-weight: 900; text-transform: uppercase; margin-bottom: 0.5rem;">Export Archive</h2>
+      
+      <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.75rem;">
+        <button class="outline-btn" id="scope-all" onclick="setExportScope('all')">All Archive</button>
+        <button class="outline-btn" id="scope-top" onclick="setExportScope('top')">Top Ranked Only</button>
+        <button class="outline-btn" id="scope-watched" onclick="setExportScope('watched')">Watched Only</button>
+        <button class="outline-btn" id="scope-watchlist" onclick="setExportScope('watchlist')">Watchlist Only</button>
       </div>
 
-      <textarea id="jsonOutputArea" class="json-code-box" readonly></textarea>
+      <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem;">
+        <button class="outline-btn active" id="format-text" onclick="setExportFormat('text')">Numbered Text List</button>
+        <button class="outline-btn" id="format-json" onclick="setExportFormat('json')">JSON Backup</button>
+      </div>
+
+      <textarea id="exportOutputArea" class="text-output-box" readonly></textarea>
 
       <div style="display: flex; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 1.5rem;">
-        <button class="log-btn" style="flex:1;" onclick="downloadJsonFile()">↓ Download .JSON File</button>
-        <button class="outline-btn" style="flex:1;" onclick="copyJsonToClipboard()">⎘ Copy JSON</button>
+        <button class="log-btn" style="flex:1;" onclick="downloadExportFile()">↓ Download File</button>
+        <button class="outline-btn" style="flex:1;" onclick="copyExportToClipboard()">⎘ Copy to Clipboard</button>
       </div>
 
       <div style="border-top: 1px solid var(--border); padding-top: 1.2rem;">
-        <h4 style="font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: var(--muted); margin-bottom: 0.5rem;">Restore Backup</h4>
+        <h4 style="font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: var(--muted); margin-bottom: 0.5rem;">Restore Backup (JSON)</h4>
         <input type="file" id="importFileInput" accept=".json" onchange="importJsonFile(event)">
       </div>
     </div>
@@ -552,18 +654,135 @@
         mindScore: 9,
         tieBreakPriority: 90,
         compositeScore: 97.5,
+        trailerKey: "V6wWKNij_1M",
         displayArtwork: "https://image.tmdb.org/t/p/w1280/yV04qP2u233P8x9P1p2iW3pL3O7.jpg"
       }
     ];
 
-    let myFilms = JSON.parse(localStorage.getItem('a24_saved_films')) || DEFAULT_SEED_FILMS;
+    // STATE
+    let currentUser = JSON.parse(localStorage.getItem('a24_current_user')) || null;
+    let myFilms = getSavedFilms();
     let currentFilter = 'all';
     let currentExportScope = 'all';
+    let currentExportFormat = 'text'; // 'text' | 'json'
     let selectedFilm = null;
     let contextFilmId = null;
     let activeArtworkChoice = "";
+    let isTrailerMuted = true;
+    let isAuthRegisterMode = false;
+    let catalogCurrentPage = 1;
     let debounceTimer;
 
+    function getStorageKey() {
+      return currentUser ? `a24_saved_films_${currentUser.username}` : 'a24_saved_films';
+    }
+
+    function getSavedFilms() {
+      const key = getStorageKey();
+      return JSON.parse(localStorage.getItem(key)) || DEFAULT_SEED_FILMS;
+    }
+
+    function persistFilms() {
+      const key = getStorageKey();
+      localStorage.setItem(key, JSON.stringify(myFilms));
+      if (currentUser && currentUser.token) {
+        // Sync to cloud worker
+        fetch(`${WORKER_URL}/api/sync`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username: currentUser.username, token: currentUser.token, films: myFilms })
+        }).catch(()=>{});
+      }
+    }
+
+    // AUTH FUNCTIONS
+    function updateAuthUI() {
+      const headerAuth = document.getElementById('headerAuthArea');
+      const drawerAuth = document.getElementById('drawerUserBox');
+
+      if (currentUser) {
+        const html = `
+          <div class="user-pill" onclick="logoutUser()" title="Click to Log Out">
+            <span>● ${currentUser.username.toUpperCase()}</span>
+            <span style="opacity:0.5;">[EXIT]</span>
+          </div>
+        `;
+        headerAuth.innerHTML = html;
+        drawerAuth.innerHTML = `<p style="color:#aaa; font-size:0.8rem; text-transform:uppercase;">Signed in as <b>${currentUser.username}</b></p><button class="outline-btn" style="margin-top:0.4rem; padding:0.4rem 0.8rem;" onclick="logoutUser()">Log Out</button>`;
+      } else {
+        headerAuth.innerHTML = `<button class="outline-btn" onclick="openAuthModal(false)">Log In</button>`;
+        drawerAuth.innerHTML = `<button class="log-btn" style="width:100%;" onclick="openAuthModal(false); toggleDrawer(false);">Log In / Register</button>`;
+      }
+    }
+
+    function openAuthModal(register = false) {
+      isAuthRegisterMode = register;
+      document.getElementById('authModalTitle').innerText = register ? 'Create Account' : 'Sign In';
+      document.getElementById('authSubmitBtn').innerText = register ? 'REGISTER' : 'LOG IN';
+      document.getElementById('authSwitchBtn').innerText = register ? 'Already have an account? Log In' : 'Need an account? Register';
+      document.getElementById('authModal').classList.add('active');
+    }
+
+    function toggleAuthMode() {
+      openAuthModal(!isAuthRegisterMode);
+    }
+
+    async function handleAuthSubmit(e) {
+      e.preventDefault();
+      const u = document.getElementById('authUsername').value.trim();
+      const p = document.getElementById('authPassword').value;
+      if (!u || !p) return;
+
+      const endpoint = isAuthRegisterMode ? '/api/auth/register' : '/api/auth/login';
+
+      try {
+        const res = await fetch(`${WORKER_URL}${endpoint}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username: u, password: p })
+        });
+        const data = await res.json();
+
+        if (data.error) {
+          alert('Auth error: ' + data.error);
+          return;
+        }
+
+        currentUser = { username: data.username, token: data.token };
+        localStorage.setItem('a24_current_user', JSON.stringify(currentUser));
+        
+        if (Array.isArray(data.films) && data.films.length > 0) {
+          myFilms = data.films;
+        } else {
+          myFilms = getSavedFilms();
+        }
+        persistFilms();
+
+        closeModal('authModal');
+        updateAuthUI();
+        renderGrid();
+      } catch (err) {
+        // Fallback simple local auth if worker DB is offline
+        currentUser = { username: u, token: "local_" + btoa(u) };
+        localStorage.setItem('a24_current_user', JSON.stringify(currentUser));
+        myFilms = getSavedFilms();
+        closeModal('authModal');
+        updateAuthUI();
+        renderGrid();
+      }
+    }
+
+    function logoutUser() {
+      if (confirm('Log out from your A24 archive session?')) {
+        currentUser = null;
+        localStorage.removeItem('a24_current_user');
+        myFilms = DEFAULT_SEED_FILMS;
+        updateAuthUI();
+        renderGrid();
+      }
+    }
+
+    // NAVIGATION
     function toggleDrawer(open) {
       document.getElementById('sideDrawer').classList.toggle('active', open);
       document.getElementById('drawerOverlay').classList.toggle('active', open);
@@ -615,17 +834,11 @@
       document.getElementById('watchedFields').style.display = isWatchlist ? 'none' : 'block';
     }
 
-    // RIGHT-CLICK CONTEXT MENU HANDLER
+    // RIGHT-CLICK CONTEXT MENU
     function setupContextMenu() {
       const menu = document.getElementById('customContextMenu');
-      
-      window.addEventListener('click', () => {
-        menu.style.display = 'none';
-      });
-
-      window.addEventListener('scroll', () => {
-        menu.style.display = 'none';
-      });
+      window.addEventListener('click', () => { menu.style.display = 'none'; });
+      window.addEventListener('scroll', () => { menu.style.display = 'none'; });
     }
 
     function openContextMenuOnCard(e, filmId) {
@@ -648,7 +861,7 @@
         if (!film) return;
         const maxP = Math.max(...myFilms.map(f => f.tieBreakPriority || 50), 50);
         film.tieBreakPriority = maxP + 10;
-        localStorage.setItem('a24_saved_films', JSON.stringify(myFilms));
+        persistFilms();
         renderGrid();
       } else if (action === 'up') {
         shiftRank(contextFilmId, -1);
@@ -662,7 +875,7 @@
       } else if (action === 'delete') {
         if (confirm(`Remove "${film?.title || 'film'}" from archive?`)) {
           myFilms = myFilms.filter(f => f.id !== contextFilmId);
-          localStorage.setItem('a24_saved_films', JSON.stringify(myFilms));
+          persistFilms();
           renderGrid();
         }
       }
@@ -683,11 +896,11 @@
       const targetFilm = sortedWatched[targetIndex];
 
       currentFilm.tieBreakPriority = (targetFilm.tieBreakPriority || 50) + (direction === -1 ? 1 : -1);
-      localStorage.setItem('a24_saved_films', JSON.stringify(myFilms));
+      persistFilms();
       renderGrid();
     }
 
-    // LIVE TMDB SEARCH
+    // SEARCH
     function handleTyping() {
       clearTimeout(debounceTimer);
       const query = document.getElementById('tmdbQuery').value.trim();
@@ -725,10 +938,12 @@
       }, 300);
     }
 
-    // LOAD OFFICIAL A24 CATALOG (Explore View)
+    // OFFICIAL A24 CATALOG (FULL 177+ TITLES WITH COMPLETE PAGINATION)
     async function loadA24Catalog(page = 1) {
+      catalogCurrentPage = page;
       const feed = document.getElementById('catalogFeed');
       const totalLabel = document.getElementById('catalogTotalLabel');
+      const pagination = document.getElementById('catalogPagination');
       const genre = document.getElementById('catalogGenreFilter').value;
       const year = document.getElementById('catalogYearFilter').value;
       const sort = document.getElementById('catalogSortFilter').value;
@@ -740,11 +955,14 @@
         const res = await fetch(url);
         const data = await res.json();
         const results = data.results || [];
+        const totalFilms = data.total_results || 177;
+        const totalPages = data.total_pages || Math.ceil(totalFilms / 20);
 
-        totalLabel.innerText = `${data.total_results || results.length} TITLES FOUND`;
+        totalLabel.innerText = `${totalFilms} A24 FILMS CATALOGED`;
 
         if (!results.length) {
           feed.innerHTML = `<div style="grid-column:1/-1; padding:5rem; text-align:center; color:var(--muted); font-weight:800;">No A24 titles found with the selected filter.</div>`;
+          pagination.innerHTML = '';
           return;
         }
 
@@ -766,12 +984,19 @@
             </article>
           `;
         }).join('');
+
+        // RENDER PAGINATION
+        pagination.innerHTML = `
+          <button class="outline-btn" ${page <= 1 ? 'disabled style="opacity:0.4;"' : ''} onclick="loadA24Catalog(${page - 1})">← Prev</button>
+          <span style="font-size:0.85rem; font-weight:900; letter-spacing:0.05em;">PAGE ${page} OF ${totalPages}</span>
+          <button class="outline-btn" ${page >= totalPages ? 'disabled style="opacity:0.4;"' : ''} onclick="loadA24Catalog(${page + 1})">Next →</button>
+        `;
       } catch (e) {
         feed.innerHTML = `<div style="grid-column:1/-1; padding:4rem; color:red;">Failed loading A24 library: ${e.message}</div>`;
       }
     }
 
-    // DEDICATED FILM PAGE WITH FULL DIRECTORS & EXTENDED CREW
+    // DEDICATED FILM VIEW WITH AUTOPLAY TRAILER & MUTE TOGGLE
     async function openFilmPage(tmdbId) {
       closeModal('searchModal');
       toggleDrawer(false);
@@ -791,17 +1016,39 @@
         const film = await res.json();
         selectedFilm = film;
         activeArtworkChoice = film.displayArtwork || film.heroBackdrop || film.poster;
+        isTrailerMuted = true;
 
         const saved = myFilms.find(f => f.id === film.id);
 
         filmPageView.innerHTML = `
-          <!-- HERO -->
+          <!-- HERO SECTION WITH TRAILER OR BACKDROP -->
           <section class="film-hero">
-            <img src="${film.heroBackdrop || film.poster}" class="film-hero-bg" alt="${film.title}">
+            ${film.trailerKey ? `
+              <iframe id="heroTrailerFrame" class="trailer-video-frame" 
+                src="https://www.youtube.com/embed/${film.trailerKey}?autoplay=1&mute=1&controls=0&loop=1&playlist=${film.trailerKey}&enablejsapi=1" 
+                allow="autoplay; encrypted-media" allowfullscreen>
+              </iframe>
+              <div class="center-play-triangle" onclick="toggleHeroSound()">
+                <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+              </div>
+            ` : `
+              <img src="${film.heroBackdrop || film.poster}" class="film-hero-bg" alt="${film.title}">
+            `}
+
             <div class="film-hero-gradient"></div>
+            
             <div class="film-hero-title-wrap">
-              <h1 class="film-hero-title">${film.title}</h1>
-              ${film.tagline ? `<p style="font-size:1.15rem; font-style:italic; opacity:0.88;">“${film.tagline}”</p>` : ''}
+              <div>
+                <h1 class="film-hero-title">${film.title}</h1>
+                ${film.tagline ? `<p style="font-size:1.15rem; font-style:italic; opacity:0.88;">“${film.tagline}”</p>` : ''}
+              </div>
+
+              ${film.trailerKey ? `
+                <button class="hero-audio-btn" id="soundToggleBtn" onclick="toggleHeroSound()" title="Toggle Sound">
+                  <svg id="volumeIconMuted" viewBox="0 0 24 24"><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/></svg>
+                  <svg id="volumeIconAudible" style="display:none;" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+                </button>
+              ` : ''}
             </div>
           </section>
 
@@ -836,7 +1083,7 @@
             </div>
           </section>
 
-          <!-- SCORECARD (If Watched) -->
+          <!-- SCORECARD -->
           ${saved && saved.status === 'watched' ? `
             <div class="scorecard-banner">
               <div class="score-stat">
@@ -862,7 +1109,7 @@
             </div>
           ` : ''}
 
-          <!-- EXTENDED CREW & CREATIVE DEPARTMENT -->
+          <!-- CREW & CREATIVE DEPARTMENT -->
           <section class="crew-department-grid">
             <div class="crew-item">
               <h5>Screenplay & Writers</h5>
@@ -911,7 +1158,7 @@
             </div>
           </section>
 
-          <!-- POSTER ARCHIVE WITH 1-CLICK SELECTOR -->
+          <!-- POSTER ARCHIVE -->
           <section class="gallery-section">
             <h3 class="section-heading">Poster & Key Art Archive (${(film.posters || []).length + (film.backdrops || []).length} VARIANTS)</h3>
             <p style="font-size:0.85rem; color:var(--muted); margin-bottom:1.5rem;">Click any artwork below to set it as this movie's cover on your main archive feed.</p>
@@ -934,6 +1181,22 @@
       }
     }
 
+    function toggleHeroSound() {
+      const frame = document.getElementById('heroTrailerFrame');
+      if (!frame || !selectedFilm?.trailerKey) return;
+
+      isTrailerMuted = !isTrailerMuted;
+      const muteParam = isTrailerMuted ? '1' : '0';
+      frame.src = `https://www.youtube.com/embed/${selectedFilm.trailerKey}?autoplay=1&mute=${muteParam}&controls=0&loop=1&playlist=${selectedFilm.trailerKey}`;
+
+      const iconMuted = document.getElementById('volumeIconMuted');
+      const iconAudible = document.getElementById('volumeIconAudible');
+      if (iconMuted && iconAudible) {
+        iconMuted.style.display = isTrailerMuted ? 'block' : 'none';
+        iconAudible.style.display = isTrailerMuted ? 'none' : 'block';
+      }
+    }
+
     function setCoverArtwork(imgUrl) {
       activeArtworkChoice = imgUrl;
       if (selectedFilm) {
@@ -941,7 +1204,7 @@
         const saved = myFilms.find(f => f.id === selectedFilm.id);
         if (saved) {
           saved.displayArtwork = imgUrl;
-          localStorage.setItem('a24_saved_films', JSON.stringify(myFilms));
+          persistFilms();
           alert('Artwork updated for your archive feed!');
         } else {
           openSaveModal();
@@ -1031,65 +1294,80 @@
 
       myFilms = myFilms.filter(f => f.id !== film.id);
       myFilms.unshift(film);
-      localStorage.setItem('a24_saved_films', JSON.stringify(myFilms));
-
-      try {
-        fetch(`${WORKER_URL}/api/films`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(film)
-        });
-      } catch (e) {}
+      persistFilms();
 
       closeModal('saveModal');
       openFilmPage(film.id);
     }
 
-    // EXPORT / IMPORT
+    // EXPORT HANDLER (NUMBERED TEXT LIST & JSON)
     function openExportModal() {
-      updateExportView('all');
+      renderExportOutput();
       document.getElementById('exportModal').classList.add('active');
     }
 
-    function getExportData(scope) {
+    function setExportScope(scope) {
+      currentExportScope = scope;
+      document.querySelectorAll('#exportModal .outline-btn[id^="scope-"]').forEach(b => b.style.background = '#fff');
+      const activeBtn = document.getElementById(`scope-${scope}`);
+      if (activeBtn) activeBtn.style.background = '#e6e6e6';
+      renderExportOutput();
+    }
+
+    function setExportFormat(fmt) {
+      currentExportFormat = fmt;
+      document.querySelectorAll('#exportModal .outline-btn[id^="format-"]').forEach(b => b.style.background = '#fff');
+      const activeBtn = document.getElementById(`format-${fmt}`);
+      if (activeBtn) activeBtn.style.background = '#e6e6e6';
+      renderExportOutput();
+    }
+
+    function getFilteredExportFilms() {
       let data = [...myFilms];
-      if (scope === 'watched') data = data.filter(f => f.status === 'watched');
-      if (scope === 'watchlist') data = data.filter(f => f.status === 'watchlist');
-      if (scope === 'top') {
+      if (currentExportScope === 'watched') data = data.filter(f => f.status === 'watched');
+      if (currentExportScope === 'watchlist') data = data.filter(f => f.status === 'watchlist');
+      if (currentExportScope === 'top') {
         data = data.filter(f => f.status === 'watched')
                    .sort((a,b) => (b.compositeScore || 0) - (a.compositeScore || 0) || (b.tieBreakPriority || 50) - (a.tieBreakPriority || 50));
       }
-      return {
-        exportDate: new Date().toISOString(),
-        archiveType: "A24 Psychological Archive",
-        scope: scope,
-        totalFilms: data.length,
-        films: data
-      };
+      return data;
     }
 
-    function updateExportView(scope) {
-      currentExportScope = scope;
-      document.querySelectorAll('#exportModal .outline-btn').forEach(b => b.style.background = '#fff');
-      const activeBtn = document.getElementById(`scope-${scope}`);
-      if (activeBtn) activeBtn.style.background = '#e6e6e6';
-      document.getElementById('jsonOutputArea').value = JSON.stringify(getExportData(scope), null, 2);
+    function renderExportOutput() {
+      const films = getFilteredExportFilms();
+      const outputArea = document.getElementById('exportOutputArea');
+
+      if (currentExportFormat === 'text') {
+        // Plain text numbered list: 1. Title (Year)
+        const textList = films.map((f, i) => `${i + 1}. ${f.title}`).join('\n');
+        outputArea.value = textList || "No films in selected view.";
+      } else {
+        // JSON format
+        const jsonPayload = {
+          exportDate: new Date().toISOString(),
+          scope: currentExportScope,
+          total: films.length,
+          films: films
+        };
+        outputArea.value = JSON.stringify(jsonPayload, null, 2);
+      }
     }
 
-    function downloadJsonFile() {
-      const data = getExportData(currentExportScope);
-      const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+    function downloadExportFile() {
+      const content = document.getElementById('exportOutputArea').value;
+      const isJson = currentExportFormat === 'json';
+      const blob = new Blob([content], { type: isJson ? "application/json" : "text/plain" });
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = `A24-Archive-${currentExportScope}-${new Date().toISOString().split('T')[0]}.json`;
+      a.download = `A24-List-${currentExportScope}-${new Date().toISOString().split('T')[0]}.${isJson ? 'json' : 'txt'}`;
       a.click();
       URL.revokeObjectURL(url);
     }
 
-    function copyJsonToClipboard() {
-      navigator.clipboard.writeText(document.getElementById('jsonOutputArea').value);
-      alert('Archive JSON copied to clipboard!');
+    function copyExportToClipboard() {
+      navigator.clipboard.writeText(document.getElementById('exportOutputArea').value);
+      alert('Copied to clipboard!');
     }
 
     function importJsonFile(event) {
@@ -1104,7 +1382,7 @@
           if (!Array.isArray(importedFilms)) throw new Error('Invalid JSON format');
 
           myFilms = importedFilms;
-          localStorage.setItem('a24_saved_films', JSON.stringify(myFilms));
+          persistFilms();
           alert(`Successfully imported ${myFilms.length} films!`);
           closeModal('exportModal');
           renderGrid();
@@ -1115,7 +1393,7 @@
       reader.readAsText(file);
     }
 
-    // RENDER MAIN ARCHIVE GRID (Clean: Left Click = Open Page, Right Click = Context Menu)
+    // MAIN FEED RENDER
     function renderGrid() {
       const grid = document.getElementById('filmGrid');
       const countLabel = document.getElementById('itemCountLabel');
@@ -1153,7 +1431,9 @@
       `).join('');
     }
 
+    // INIT
     setupContextMenu();
+    updateAuthUI();
     renderGrid();
   </script>
 </body>
