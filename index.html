@@ -3,7 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>A24 — Film Universe & Psychological Archive</title>
+  <title>A24 — Psychological Archive & Film Universe</title>
+  
+  <!-- FAVICON -->
+  <link rel="icon" type="image/png" href="https://images.seeklogo.com/logo-png/31/2/a24-films-logo-png_seeklogo-316223.png">
+  <link rel="apple-touch-icon" href="https://i.pinimg.com/474x/4b/b5/14/4bb51422566b7df540ef9ebf2a036b9e.jpg">
+  <meta name="theme-color" content="#000000">
+
+  <!-- PWA MANIFEST -->
+  <link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%22A24%20Archive%22%2C%22short_name%22%3A%22A24%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23000000%22%2C%22theme_color%22%3A%22%23000000%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22https%3A%2F%2Fi.pinimg.com%2F474x%2F4b%2Fb5%2F14%2F4bb51422566b7df540ef9ebf2a036b9e.jpg%22%2C%22sizes%22%3A%22512x512%22%2C%22type%22%3A%22image%2Fjpeg%22%7D%5D%7D">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -39,28 +48,22 @@
       align-items: center;
     }
     
-    /* 2-LINE MINIMAL MENU TRIGGER (A24 STYLE) */
+    /* 2-LINE MINIMAL MENU */
     .menu-trigger {
       background: none; border: none; font-size: 0.82rem; font-weight: 800;
       letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer;
       justify-self: start; display: inline-flex; align-items: center; gap: 10px;
     }
     .hamburger-icon {
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      width: 18px;
-      height: 9px;
+      display: flex; flex-direction: column; justify-content: space-between;
+      width: 18px; height: 8px;
     }
-    .hamburger-icon span {
-      display: block;
-      width: 100%;
-      height: 2px;
-      background: #000;
-    }
+    .hamburger-icon span { display: block; width: 100%; height: 2px; background: #000; }
     .brand-logo-img { height: 34px; object-fit: contain; cursor: pointer; display: block; }
     
     .header-actions { justify-self: end; display: flex; gap: 0.6rem; align-items: center; }
+    .desktop-only { display: inline-flex; }
+
     .outline-btn {
       background: #fff; color: #000; border: 1px solid #000;
       padding: 0.6rem 1.1rem; font-weight: 800; text-transform: uppercase;
@@ -87,6 +90,7 @@
       background: #000; color: #fff; z-index: 300;
       transform: translateX(-100%); transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
       display: flex; flex-direction: column; justify-content: space-between; padding: 2.5rem 2rem;
+      overflow-y: auto;
     }
     .side-drawer.active { transform: translateX(0); }
     .drawer-close {
@@ -95,18 +99,10 @@
     }
     .drawer-nav { display: flex; flex-direction: column; gap: 1.1rem; margin-top: 2rem; }
     .drawer-link {
-      color: #fff; font-size: 2.1rem; font-weight: 900; letter-spacing: -0.04em;
+      color: #fff; font-size: 1.9rem; font-weight: 900; letter-spacing: -0.04em;
       line-height: 1.05; cursor: pointer; transition: opacity 0.15s;
     }
     .drawer-link:hover { opacity: 0.6; }
-
-    /* USER BADGE */
-    .user-pill {
-      display: flex; align-items: center; gap: 0.5rem; font-size: 0.75rem;
-      font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em;
-      padding: 0.5rem 0.8rem; background: #f2f2f2; border: 1px solid var(--border);
-      cursor: pointer;
-    }
 
     /* CONTROLS */
     .controls {
@@ -120,7 +116,7 @@
     }
     .tab-btn.active { color: #000; border-color: #000; }
 
-    /* GRID FEED */
+    /* FILM ROW GRID */
     .film-row-feed {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -142,7 +138,7 @@
       background: #0f0f0f;
       overflow: hidden;
       margin-bottom: 0.85rem;
-      aspect-ratio: 16 / 9;
+      aspect-ratio: 2 / 3;
     }
     .film-art-wrapper img {
       width: 100%;
@@ -158,7 +154,7 @@
       letter-spacing: 0.05em; margin-bottom: 0.2rem;
     }
     .film-name {
-      font-size: 2rem; font-weight: 900; letter-spacing: -0.04em;
+      font-size: 1.8rem; font-weight: 900; letter-spacing: -0.04em;
       line-height: 1.05; margin-bottom: 0.35rem;
     }
     .film-meta-bar {
@@ -167,7 +163,7 @@
       letter-spacing: 0.04em; text-transform: uppercase; margin-top: 0.2rem;
     }
 
-    /* RIGHT-CLICK CONTEXT MENU */
+    /* RIGHT CLICK CONTEXT MENU */
     #customContextMenu {
       position: fixed; display: none; z-index: 500;
       background: #000; color: #fff; border: 1px solid #222;
@@ -183,7 +179,7 @@
     .context-item:hover { background: #222; }
     .context-item.danger:hover { background: #990000; }
 
-    /* CATALOG CONTROLS & PAGINATION */
+    /* CATALOG & PAGINATION */
     .filter-bar {
       padding: 1.25rem 2.5rem; background: #fafafa; border-bottom: 1px solid var(--border);
       display: flex; gap: 1rem; flex-wrap: wrap; align-items: center;
@@ -197,10 +193,12 @@
       border-top: 1px solid var(--border);
     }
 
-    /* CINEMATIC A24 HERO TRAILER VIEW */
-    #filmPageView, #catalogView { display: none; }
+    /* VIEWS */
+    #filmPageView, #catalogView, #personPageView, #profileView { display: none; }
+
+    /* CLEAN MINIMAL TRAILER HERO (NO CIRCLE, NO BLUR - JUST RAW TRIANGLE) */
     .film-hero {
-      position: relative; width: 100%; height: 75vh; min-height: 520px;
+      position: relative; width: 100%; height: 75vh; min-height: 480px;
       background: #000; overflow: hidden; display: flex; align-items: flex-end;
     }
     .trailer-video-frame {
@@ -213,36 +211,40 @@
     }
     .film-hero-gradient {
       position: absolute; inset: 0; pointer-events: none;
-      background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.4) 100%);
+      background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.15) 50%, rgba(0,0,0,0.4) 100%);
     }
     .film-hero-title-wrap {
       position: relative; z-index: 10; padding: 3.5rem 2.5rem; color: #fff; width: 100%;
       display: flex; justify-content: space-between; align-items: flex-end;
     }
     .film-hero-title {
-      font-size: clamp(3rem, 7vw, 6.2rem); font-weight: 900;
+      font-size: clamp(2.8rem, 6.5vw, 6.2rem); font-weight: 900;
       letter-spacing: -0.04em; line-height: 0.95; margin-bottom: 0.5rem;
     }
 
-    /* AUDIO / PLAY OVERLAY BUTTONS */
-    .hero-audio-btn {
-      background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.4);
-      color: #fff; border-radius: 50%; width: 52px; height: 52px;
-      display: flex; align-items: center; justify-content: center; cursor: pointer;
-      backdrop-filter: blur(8px); transition: transform 0.2s, background 0.2s;
-    }
-    .hero-audio-btn:hover { transform: scale(1.08); background: #000; }
-    .hero-audio-btn svg { width: 22px; height: 22px; fill: #fff; }
-
-    .center-play-triangle {
+    /* PURE TRIANGLE PLAY BUTTON */
+    .raw-triangle-btn {
       position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-      z-index: 15; width: 70px; height: 70px; border: 2px solid rgba(255,255,255,0.8);
-      border-radius: 50%; display: flex; align-items: center; justify-content: center;
-      cursor: pointer; backdrop-filter: blur(4px); transition: 0.2s;
+      z-index: 20; background: none; border: none; cursor: pointer; padding: 20px;
+      display: flex; align-items: center; justify-content: center;
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s;
     }
-    .center-play-triangle:hover { transform: translate(-50%, -50%) scale(1.1); background: rgba(255,255,255,0.15); }
-    .center-play-triangle svg { width: 24px; height: 24px; fill: #fff; margin-left: 3px; }
+    .raw-triangle-btn:hover { transform: translate(-50%, -50%) scale(1.18); }
+    .raw-triangle-btn svg { width: 56px; height: 56px; fill: #ffffff; filter: drop-shadow(0 2px 8px rgba(0,0,0,0.6)); }
 
+    /* TOMATOMETER & SCORES */
+    .scorecard-banner {
+      background: #0f0f0f; color: #fff; padding: 2rem 2.5rem;
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 1.5rem; align-items: center; border-bottom: 1px solid #222;
+    }
+    .tomatometer-badge {
+      display: flex; align-items: center; gap: 0.6rem; font-weight: 900; font-size: 1.5rem;
+    }
+    .score-stat h5 { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; color: #888; letter-spacing: 0.08em; }
+    .score-stat .val { font-size: 1.7rem; font-weight: 900; }
+
+    /* METADATA GRID */
     .film-meta-grid {
       padding: 3rem 2.5rem; display: grid; grid-template-columns: 1.2fr 1fr 1fr;
       gap: 3rem 2rem; border-bottom: 1px solid var(--border);
@@ -252,8 +254,11 @@
       letter-spacing: 0.1em; color: var(--muted); margin-bottom: 0.5rem;
     }
     .meta-block p, .meta-block div {
-      font-size: 1.6rem; font-weight: 900; letter-spacing: -0.02em; line-height: 1.2;
+      font-size: 1.5rem; font-weight: 900; letter-spacing: -0.02em; line-height: 1.2;
     }
+    .clickable-link { cursor: pointer; text-decoration: underline; }
+    .clickable-link:hover { opacity: 0.7; }
+
     .action-select-btn {
       width: 100%; border: 1px solid #000; padding: 1rem 1.2rem;
       font-size: 0.85rem; font-weight: 900; text-transform: uppercase;
@@ -262,52 +267,63 @@
     }
     .action-select-btn:hover { background: #000; color: #fff; }
 
-    /* SCORECARD BANNER */
-    .scorecard-banner {
-      background: #0f0f0f; color: #fff; padding: 2rem 2.5rem;
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 1.5rem; align-items: center; border-bottom: 1px solid #222;
-    }
-    .score-stat h5 { font-size: 0.7rem; font-weight: 800; text-transform: uppercase; color: #888; letter-spacing: 0.08em; }
-    .score-stat .val { font-size: 1.8rem; font-weight: 900; }
-
+    /* CREW & REVIEWS */
     .crew-department-grid {
-      padding: 3rem 2.5rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      padding: 3rem 2.5rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
       gap: 2.5rem 2rem; border-bottom: 1px solid var(--border);
     }
     .crew-item h5 {
       font-size: 0.72rem; font-weight: 800; text-transform: uppercase;
       color: var(--muted); letter-spacing: 0.08em; margin-bottom: 0.4rem;
     }
-    .crew-item p { font-size: 1.15rem; font-weight: 800; line-height: 1.3; }
+    .crew-item p { font-size: 1.1rem; font-weight: 800; line-height: 1.3; }
 
     .film-body-grid {
       padding: 3.5rem 2.5rem; display: grid; grid-template-columns: 2fr 1fr;
       gap: 3.5rem; border-bottom: 1px solid var(--border);
     }
-    .synopsis-text { font-size: 1.3rem; line-height: 1.6; font-weight: 500; }
+    .synopsis-text { font-size: 1.25rem; line-height: 1.6; font-weight: 500; }
     
-    /* GALLERY */
+    /* POSTER ARCHIVE */
     .gallery-section { padding: 3.5rem 2.5rem; }
     .section-heading { font-size: 1.4rem; font-weight: 900; letter-spacing: -0.02em; text-transform: uppercase; margin-bottom: 1.5rem; }
     .gallery-grid {
-      display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 1.5rem;
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 1.25rem;
     }
     .gallery-item {
       position: relative; background: #000; overflow: hidden; border: 1px solid var(--border);
-      cursor: pointer;
+      cursor: pointer; aspect-ratio: 2 / 3;
     }
     .gallery-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
     .gallery-label {
-      padding: 0.6rem; font-size: 0.7rem; font-weight: 800; text-transform: uppercase;
-      background: #fff; border-top: 1px solid var(--border); display: flex; justify-content: space-between;
+      position: absolute; bottom: 0; inset-inline: 0; padding: 0.4rem 0.6rem;
+      font-size: 0.68rem; font-weight: 800; text-transform: uppercase;
+      background: rgba(255,255,255,0.92); display: flex; justify-content: space-between;
+    }
+
+    /* PERSON DOSSIER */
+    .person-hero {
+      padding: 3.5rem 2.5rem; border-bottom: 1px solid var(--border);
+      display: grid; grid-template-columns: 280px 1fr; gap: 3rem; align-items: start;
+    }
+    .person-photo { width: 100%; aspect-ratio: 1 / 1.3; object-fit: cover; background: #000; }
+    .person-name { font-size: clamp(2.5rem, 5vw, 4.5rem); font-weight: 900; letter-spacing: -0.04em; margin-bottom: 0.75rem; }
+
+    /* PROFILE & RADAR CHART */
+    .profile-hero {
+      padding: 3.5rem 2.5rem; border-bottom: 1px solid var(--border);
+      display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center;
+    }
+    .radar-canvas-wrap {
+      display: flex; justify-content: center; align-items: center;
+      background: #fafafa; border: 1px solid var(--border); padding: 1.5rem;
     }
 
     /* MODAL */
     .modal-overlay {
-      position: fixed; inset: 0; background: rgba(0,0,0,0.7);
-      backdrop-filter: blur(5px); z-index: 400; display: flex;
+      position: fixed; inset: 0; background: rgba(0,0,0,0.75);
+      backdrop-filter: blur(6px); z-index: 400; display: flex;
       align-items: center; justify-content: center; opacity: 0;
       visibility: hidden; transition: 0.2s ease; padding: 1.5rem;
     }
@@ -347,8 +363,8 @@
     .art-thumb.selected { border-color: #000; opacity: 1; transform: scale(1.04); }
 
     .text-output-box {
-      width: 100%; height: 260px; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      font-size: 0.95rem; line-height: 1.5; background: #fafafa; border: 1px solid #000;
+      width: 100%; height: 240px; font-family: monospace;
+      font-size: 0.88rem; line-height: 1.5; background: #fafafa; border: 1px solid #000;
       padding: 1rem; margin: 1rem 0; resize: vertical; outline: none; white-space: pre-wrap;
     }
 
@@ -357,19 +373,28 @@
     .auth-input-group label { display: block; font-size: 0.75rem; font-weight: 800; text-transform: uppercase; margin-bottom: 0.4rem; }
     .auth-input-group input { width: 100%; border: 1px solid #000; padding: 0.8rem; font-size: 1rem; font-weight: 600; outline: none; }
 
-    /* RESPONSIVE */
-    @media (max-width: 1024px) {
-      .film-row-feed { grid-template-columns: repeat(2, 1fr); column-gap: 2rem; padding: 1.75rem; }
-    }
-    @media (max-width: 700px) {
-      header { padding: 0.9rem 1.25rem; }
-      .brand-logo-img { height: 26px; }
+    /* MOBILE TUNING */
+    @media (max-width: 800px) {
+      header {
+        padding: 0.85rem 1.25rem;
+        grid-template-columns: auto 1fr;
+      }
+      .brand-logo-img { display: none !important; }
+      .desktop-only { display: none !important; }
+      .header-actions { justify-self: end; }
+
       .controls, .filter-bar, .pagination-bar { padding: 1rem 1.25rem; }
-      .film-row-feed { grid-template-columns: 1fr; padding: 1.25rem; gap: 2.5rem; }
-      .film-name { font-size: 1.7rem; }
-      .film-hero { height: 50vh; min-height: 380px; }
-      .film-meta-grid, .film-body-grid, .gallery-section, .scorecard-banner, .crew-department-grid { padding-left: 1.25rem; padding-right: 1.25rem; }
-      .film-meta-grid, .film-body-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .film-row-feed {
+        grid-template-columns: repeat(2, 1fr);
+        padding: 1.25rem;
+        gap: 1.75rem 1.2rem;
+      }
+      .film-name { font-size: 1.25rem; }
+      .film-hero { height: 50vh; min-height: 360px; }
+      .film-meta-grid, .film-body-grid, .gallery-section, .scorecard-banner, .crew-department-grid, .person-hero, .profile-hero {
+        padding-left: 1.25rem; padding-right: 1.25rem;
+      }
+      .film-meta-grid, .film-body-grid, .person-hero, .profile-hero { grid-template-columns: 1fr; gap: 2rem; }
     }
   </style>
 </head>
@@ -385,30 +410,34 @@
     <div class="context-item danger" onclick="contextAction('delete')"><span>✕ Remove from Archive</span></div>
   </div>
 
-  <!-- SIDE MENU DRAWER -->
+  <!-- SIDE MENU DRAWER (ALL ACTIONS ON MOBILE) -->
   <div class="drawer-overlay" id="drawerOverlay" onclick="toggleDrawer(false)"></div>
   <aside class="side-drawer" id="sideDrawer">
     <div>
       <button class="drawer-close" onclick="toggleDrawer(false)">✕ CLOSE</button>
       <nav class="drawer-nav">
-        <a class="drawer-link" onclick="showCatalogView()">Explore All A24</a>
-        <a class="drawer-link" onclick="navigateHome('all')">My Archive</a>
-        <a class="drawer-link" onclick="navigateHome('watched')">Watched</a>
-        <a class="drawer-link" onclick="navigateHome('watchlist')">Watchlist</a>
-        <a class="drawer-link" onclick="navigateHome('top')">Top Ranked</a>
+        <a class="drawer-link" onclick="routerNavigate('catalog')">A24 Catalog</a>
+        <a class="drawer-link" onclick="routerNavigate('archive')">My Archive</a>
+        <a class="drawer-link" onclick="routerNavigate('profile')">Taste Profile</a>
+        <a class="drawer-link" onclick="routerNavigate('archive', 'watched')">Watched</a>
+        <a class="drawer-link" onclick="routerNavigate('archive', 'watchlist')">Watchlist</a>
+        <a class="drawer-link" onclick="routerNavigate('archive', 'top')">Top Ranked</a>
         <a class="drawer-link" onclick="openSearchModal(); toggleDrawer(false);">Search TMDB</a>
-        <a class="drawer-link" onclick="openExportModal(); toggleDrawer(false);">Export / Backup</a>
+        <a class="drawer-link" onclick="openExportModal(); toggleDrawer(false);">Export / List</a>
       </nav>
     </div>
     <div>
-      <div id="drawerUserBox" style="margin-bottom: 1rem;"></div>
-      <p style="font-size: 0.75rem; color: #666; text-transform: uppercase; letter-spacing: 0.06em;">© A24 FILM UNIVERSE</p>
+      <div id="drawerUserBox" style="margin-bottom: 1.2rem;"></div>
+      <button id="pwaInstallBtn" class="outline-btn" style="width:100%; margin-bottom:1rem; display:none; background:#fff; color:#000;" onclick="installPWA()">
+        ↓ Install A24 App
+      </button>
+      <p style="font-size: 0.72rem; color: #666; text-transform: uppercase; letter-spacing: 0.06em;">© A24 PSYCHOLOGICAL ARCHIVE</p>
     </div>
   </aside>
 
   <!-- HEADER -->
   <header>
-    <!-- 2-Line Minimal A24 Menu Button -->
+    <!-- 2-Line Minimal Menu Trigger -->
     <button class="menu-trigger" onclick="toggleDrawer(true)">
       <div class="hamburger-icon">
         <span></span>
@@ -417,19 +446,22 @@
       MENU
     </button>
     
-    <a href="#" onclick="showHomeView()">
+    <!-- Logo (Hidden on Mobile) -->
+    <a href="#/archive" onclick="routerNavigate('archive')">
       <img src="https://images.seeklogo.com/logo-png/31/2/a24-films-logo-png_seeklogo-316223.png" alt="A24" class="brand-logo-img">
     </a>
 
+    <!-- Header Actions (Only +Add on Mobile, full on Desktop) -->
     <div class="header-actions">
-      <div id="headerAuthArea"></div>
-      <button class="outline-btn" onclick="showCatalogView()">A24 Catalog</button>
-      <button class="outline-btn" onclick="openExportModal()">↓ Export</button>
+      <div class="desktop-only" id="headerAuthArea"></div>
+      <button class="outline-btn desktop-only" onclick="routerNavigate('catalog')">A24 Catalog</button>
+      <button class="outline-btn desktop-only" onclick="routerNavigate('profile')">Profile</button>
+      <button class="outline-btn desktop-only" onclick="openExportModal()">Export</button>
       <button class="log-btn" onclick="openSearchModal()">+ Add</button>
     </div>
   </header>
 
-  <!-- HOME VIEW (MY ARCHIVE) -->
+  <!-- 1. HOME VIEW (MY ARCHIVE) -->
   <div id="homeView">
     <section class="controls">
       <div>
@@ -446,19 +478,19 @@
     <main class="film-row-feed" id="filmGrid"></main>
   </div>
 
-  <!-- ALL A24 OFFICIAL FILMS DISCOVERY CATALOG -->
+  <!-- 2. OFFICIAL A24 CATALOG -->
   <div id="catalogView">
     <section class="controls">
       <div style="display:flex; align-items:center; gap: 1rem;">
-        <h2 style="font-size: 1.2rem; font-weight: 900; letter-spacing: -0.02em;">OFFICIAL A24 CATALOG</h2>
+        <h2 style="font-size: 1.15rem; font-weight: 900; letter-spacing: -0.02em;">OFFICIAL A24 CATALOG</h2>
         <span style="font-size:0.75rem; font-weight:800; color:var(--muted); text-transform:uppercase;" id="catalogTotalLabel">LOADING...</span>
       </div>
-      <button class="tab-btn active" onclick="showHomeView()">← Back to My Archive</button>
+      <button class="tab-btn active" onclick="routerNavigate('archive')">← Back to Archive</button>
     </section>
 
-    <!-- FILTERS -->
+    <!-- CATALOG FILTERS -->
     <div class="filter-bar">
-      <select id="catalogGenreFilter" class="filter-select" onchange="loadA24Catalog(1)">
+      <select id="catalogGenreFilter" class="filter-select" onchange="applyCatalogFilter()">
         <option value="">All Genres</option>
         <option value="27">Horror</option>
         <option value="53">Psychological / Thriller</option>
@@ -470,7 +502,7 @@
         <option value="99">Documentary</option>
       </select>
 
-      <select id="catalogYearFilter" class="filter-select" onchange="loadA24Catalog(1)">
+      <select id="catalogYearFilter" class="filter-select" onchange="applyCatalogFilter()">
         <option value="">All Years</option>
         <option value="2026">2026</option>
         <option value="2025">2025</option>
@@ -486,7 +518,7 @@
         <option value="2015">2015</option>
       </select>
 
-      <select id="catalogSortFilter" class="filter-select" onchange="loadA24Catalog(1)">
+      <select id="catalogSortFilter" class="filter-select" onchange="applyCatalogFilter()">
         <option value="popularity.desc">Most Popular</option>
         <option value="primary_release_date.desc">Newest First</option>
         <option value="primary_release_date.asc">Oldest First</option>
@@ -495,21 +527,45 @@
     </div>
 
     <main class="film-row-feed" id="catalogFeed"></main>
-
-    <!-- FULL PAGINATION CONTROLS -->
     <div class="pagination-bar" id="catalogPagination"></div>
   </div>
 
-  <!-- SINGLE DEDICATED FILM PAGE VIEW WITH TRAILER -->
+  <!-- 3. SINGLE DEDICATED FILM VIEW -->
   <div id="filmPageView"></div>
 
-  <!-- AUTHENTICATION MODAL (LOGIN / REGISTER) -->
+  <!-- 4. PERSON DOSSIER (DIRECTOR / ACTOR) -->
+  <div id="personPageView"></div>
+
+  <!-- 5. TASTE PROFILE VIEW (WITH CANVAS RADAR CHART) -->
+  <div id="profileView"></div>
+
+  <!-- POSTER INSPECTOR MODAL -->
+  <div class="modal-overlay" id="posterInspectorModal">
+    <div class="modal-content" style="max-width: 520px; text-align: center;">
+      <button class="modal-close" onclick="closeModal('posterInspectorModal')">✕</button>
+      <img id="inspectorImage" src="" style="width: 100%; max-height: 60vh; object-fit: contain; margin-bottom: 1.25rem; background: #000;">
+      <div style="display: flex; gap: 0.75rem;">
+        <button class="log-btn" style="flex:1;" onclick="confirmSetInspectedCover()">Set as Movie Cover</button>
+        <a id="inspectorDownloadLink" class="outline-btn" style="flex:1;" download target="_blank">Download High-Res</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- SOCIAL SHARE CARD MODAL -->
+  <div class="modal-overlay" id="shareCardModal">
+    <div class="modal-content" style="max-width: 480px; text-align: center;">
+      <button class="modal-close" onclick="closeModal('shareCardModal')">✕</button>
+      <h3 style="font-size: 1.2rem; font-weight: 900; text-transform: uppercase; margin-bottom: 1rem;">Curator Share Card</h3>
+      <canvas id="shareCardCanvas" width="1080" height="1920" style="width: 100%; max-height: 65vh; object-fit: contain; border: 1px solid #000; margin-bottom: 1rem;"></canvas>
+      <button class="log-btn" style="width: 100%;" onclick="downloadShareCard()">Download Story Card (PNG)</button>
+    </div>
+  </div>
+
+  <!-- AUTH MODAL -->
   <div class="modal-overlay" id="authModal">
-    <div class="modal-content" style="max-width: 440px;">
+    <div class="modal-content" style="max-width: 420px;">
       <button class="modal-close" onclick="closeModal('authModal')">✕</button>
       <h2 style="font-size: 1.4rem; font-weight: 900; margin-bottom: 0.5rem; text-transform: uppercase;" id="authModalTitle">Sign In</h2>
-      <p style="font-size: 0.8rem; color: var(--muted); margin-bottom: 1.5rem;">Access and sync your private A24 archive anywhere.</p>
-
       <form onsubmit="handleAuthSubmit(event)">
         <div class="auth-input-group">
           <label>Username</label>
@@ -519,11 +575,9 @@
           <label>Password</label>
           <input type="password" id="authPassword" required autocomplete="current-password">
         </div>
-
         <button type="submit" class="log-btn" style="width: 100%; padding: 0.9rem; margin-top: 0.5rem;" id="authSubmitBtn">LOG IN</button>
       </form>
-
-      <div style="margin-top: 1.2rem; text-align: center;">
+      <div style="margin-top: 1rem; text-align: center;">
         <button class="outline-btn" style="border:none; text-decoration: underline;" onclick="toggleAuthMode()" id="authSwitchBtn">
           Need an account? Register
         </button>
@@ -535,10 +589,10 @@
   <div class="modal-overlay" id="searchModal">
     <div class="modal-content">
       <button class="modal-close" onclick="closeModal('searchModal')">✕</button>
-      <h2 style="font-size: 1.4rem; font-weight: 900; margin-bottom: 1rem; text-transform: uppercase;">Search Global Film Database</h2>
+      <h2 style="font-size: 1.4rem; font-weight: 900; margin-bottom: 1rem; text-transform: uppercase;">Search Global Database</h2>
       <input type="text" class="api-search-box" id="tmdbQuery" placeholder="Type title: Hereditary, The Lighthouse, Tony..." oninput="handleTyping()">
       <div class="search-results" id="searchResults">
-        <p style="color: var(--muted); font-size: 0.85rem; text-transform: uppercase;">Start typing any movie title above...</p>
+        <p style="color: var(--muted); font-size: 0.85rem; text-transform: uppercase;">Start typing movie title above...</p>
       </div>
     </div>
   </div>
@@ -547,13 +601,7 @@
   <div class="modal-overlay" id="saveModal">
     <div class="modal-content">
       <button class="modal-close" onclick="closeModal('saveModal')">✕</button>
-      
       <div id="savePreview"></div>
-
-      <div style="margin: 1rem 0;">
-        <label style="font-weight: 800; font-size: 0.75rem; text-transform: uppercase; display: block; margin-bottom: 0.4rem;">Choose Display Artwork / Still</label>
-        <div class="art-picker-strip" id="modalArtPicker"></div>
-      </div>
 
       <div style="margin: 1.25rem 0;">
         <label style="font-weight: 800; font-size: 0.75rem; text-transform: uppercase; display: block; margin-bottom: 0.4rem;">Collection Status</label>
@@ -572,28 +620,22 @@
 
       <div id="watchedFields">
         <div style="border-top: 1px solid var(--border); padding-top: 1rem; margin-top: 1rem;">
-          <p style="font-size:0.75rem; font-weight:800; text-transform:uppercase; color:var(--muted); margin-bottom:0.5rem;">Psychological & Aesthetic Scoring</p>
-          
           <div class="slider-row">
             <label><span>Gut Rating</span><span id="gutVal">9.4 / 10</span></label>
             <input type="range" id="gutInput" min="5.0" max="10.0" step="0.1" value="9.4" oninput="document.getElementById('gutVal').innerText = parseFloat(this.value).toFixed(1) + ' / 10'">
           </div>
-
           <div class="slider-row">
             <label><span>Existential Dread & Tension</span><span id="dreadVal">9/10</span></label>
             <input type="range" id="dreadInput" min="1" max="10" value="9" oninput="document.getElementById('dreadVal').innerText = this.value + '/10'">
           </div>
-
           <div class="slider-row">
             <label><span>Atmosphere & Soundscape</span><span id="atmoVal">9/10</span></label>
             <input type="range" id="atmoInput" min="1" max="10" value="9" oninput="document.getElementById('atmoVal').innerText = this.value + '/10'">
           </div>
-
           <div class="slider-row">
             <label><span>Narrative Mindfuck / Obsession</span><span id="mindVal">8/10</span></label>
             <input type="range" id="mindInput" min="1" max="10" value="8" oninput="document.getElementById('mindVal').innerText = this.value + '/10'">
           </div>
-
           <div class="slider-row" style="background:#fafafa; border:1px dashed #000; padding:0.75rem;">
             <label><span>Curator Tie-Breaker Priority</span><span id="tieBreakVal">50</span></label>
             <input type="range" id="tieBreakInput" min="1" max="100" value="50" oninput="document.getElementById('tieBreakVal').innerText = this.value">
@@ -605,7 +647,7 @@
     </div>
   </div>
 
-  <!-- EXPORT MODAL (JSON + PLAIN TEXT NUMBERED LIST) -->
+  <!-- EXPORT MODAL -->
   <div class="modal-overlay" id="exportModal">
     <div class="modal-content">
       <button class="modal-close" onclick="closeModal('exportModal')">✕</button>
@@ -627,12 +669,7 @@
 
       <div style="display: flex; gap: 0.75rem; flex-wrap: wrap; margin-bottom: 1.5rem;">
         <button class="log-btn" style="flex:1;" onclick="downloadExportFile()">↓ Download File</button>
-        <button class="outline-btn" style="flex:1;" onclick="copyExportToClipboard()">⎘ Copy to Clipboard</button>
-      </div>
-
-      <div style="border-top: 1px solid var(--border); padding-top: 1.2rem;">
-        <h4 style="font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: var(--muted); margin-bottom: 0.5rem;">Restore Backup (JSON)</h4>
-        <input type="file" id="importFileInput" accept=".json" onchange="importJsonFile(event)">
+        <button class="outline-btn" style="flex:1;" onclick="copyExportToClipboard()">⎘ Copy List</button>
       </div>
     </div>
   </div>
@@ -655,23 +692,31 @@
         tieBreakPriority: 90,
         compositeScore: 97.5,
         trailerKey: "V6wWKNij_1M",
-        displayArtwork: "https://image.tmdb.org/t/p/w1280/yV04qP2u233P8x9P1p2iW3pL3O7.jpg"
+        criticsScore: 90,
+        audienceScore: 69,
+        displayArtwork: "https://image.tmdb.org/t/p/w780/yV04qP2u233P8x9P1p2iW3pL3O7.jpg"
       }
     ];
 
-    // STATE
     let currentUser = JSON.parse(localStorage.getItem('a24_current_user')) || null;
     let myFilms = getSavedFilms();
     let currentFilter = 'all';
     let currentExportScope = 'all';
-    let currentExportFormat = 'text'; // 'text' | 'json'
+    let currentExportFormat = 'text';
     let selectedFilm = null;
     let contextFilmId = null;
-    let activeArtworkChoice = "";
-    let isTrailerMuted = true;
+    let inspectedPosterUrl = "";
     let isAuthRegisterMode = false;
-    let catalogCurrentPage = 1;
+    let deferredPrompt = null;
     let debounceTimer;
+
+    // CATALOG PRESERVED STATE
+    let catalogState = {
+      page: 1,
+      genre: "",
+      year: "",
+      sort: "popularity.desc"
+    };
 
     function getStorageKey() {
       return currentUser ? `a24_saved_films_${currentUser.username}` : 'a24_saved_films';
@@ -686,7 +731,6 @@
       const key = getStorageKey();
       localStorage.setItem(key, JSON.stringify(myFilms));
       if (currentUser && currentUser.token) {
-        // Sync to cloud worker
         fetch(`${WORKER_URL}/api/sync`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -695,129 +739,75 @@
       }
     }
 
-    // AUTH FUNCTIONS
-    function updateAuthUI() {
-      const headerAuth = document.getElementById('headerAuthArea');
-      const drawerAuth = document.getElementById('drawerUserBox');
+    // DEEP LINKING & HASH ROUTER
+    function routerNavigate(view, param = null) {
+      toggleDrawer(false);
+      if (view === 'archive') {
+        location.hash = param ? `#/archive/${param}` : `#/archive`;
+      } else if (view === 'catalog') {
+        location.hash = `#/catalog?page=${catalogState.page}&genre=${catalogState.genre}&year=${catalogState.year}&sort=${catalogState.sort}`;
+      } else if (view === 'movie') {
+        location.hash = `#/movie/${param}`;
+      } else if (view === 'person') {
+        location.hash = `#/person/${param}`;
+      } else if (view === 'profile') {
+        location.hash = `#/profile`;
+      }
+    }
 
-      if (currentUser) {
-        const html = `
-          <div class="user-pill" onclick="logoutUser()" title="Click to Log Out">
-            <span>● ${currentUser.username.toUpperCase()}</span>
-            <span style="opacity:0.5;">[EXIT]</span>
-          </div>
-        `;
-        headerAuth.innerHTML = html;
-        drawerAuth.innerHTML = `<p style="color:#aaa; font-size:0.8rem; text-transform:uppercase;">Signed in as <b>${currentUser.username}</b></p><button class="outline-btn" style="margin-top:0.4rem; padding:0.4rem 0.8rem;" onclick="logoutUser()">Log Out</button>`;
+    window.addEventListener('hashchange', handleHashRouting);
+    window.addEventListener('load', handleHashRouting);
+
+    function handleHashRouting() {
+      const hash = location.hash || '#/archive';
+      const [route, queryStr] = hash.split('?');
+      const parts = route.replace('#/', '').split('/');
+      const main = parts[0] || 'archive';
+
+      hideAllViews();
+
+      if (main === 'catalog') {
+        document.getElementById('catalogView').style.display = 'block';
+        if (queryStr) {
+          const params = new URLSearchParams(queryStr);
+          catalogState.page = parseInt(params.get('page')) || 1;
+          catalogState.genre = params.get('genre') || "";
+          catalogState.year = params.get('year') || "";
+          catalogState.sort = params.get('sort') || "popularity.desc";
+          
+          document.getElementById('catalogGenreFilter').value = catalogState.genre;
+          document.getElementById('catalogYearFilter').value = catalogState.year;
+          document.getElementById('catalogSortFilter').value = catalogState.sort;
+        }
+        loadA24Catalog(catalogState.page);
+      } else if (main === 'movie') {
+        const id = parts[1];
+        if (id) renderFilmPage(id);
+      } else if (main === 'person') {
+        const id = parts[1];
+        if (id) renderPersonPage(id);
+      } else if (main === 'profile') {
+        renderProfilePage();
       } else {
-        headerAuth.innerHTML = `<button class="outline-btn" onclick="openAuthModal(false)">Log In</button>`;
-        drawerAuth.innerHTML = `<button class="log-btn" style="width:100%;" onclick="openAuthModal(false); toggleDrawer(false);">Log In / Register</button>`;
+        // Default: Archive
+        const filter = parts[1] || 'all';
+        document.getElementById('homeView').style.display = 'block';
+        setFilter(filter);
       }
     }
 
-    function openAuthModal(register = false) {
-      isAuthRegisterMode = register;
-      document.getElementById('authModalTitle').innerText = register ? 'Create Account' : 'Sign In';
-      document.getElementById('authSubmitBtn').innerText = register ? 'REGISTER' : 'LOG IN';
-      document.getElementById('authSwitchBtn').innerText = register ? 'Already have an account? Log In' : 'Need an account? Register';
-      document.getElementById('authModal').classList.add('active');
+    function hideAllViews() {
+      document.getElementById('homeView').style.display = 'none';
+      document.getElementById('catalogView').style.display = 'none';
+      document.getElementById('filmPageView').style.display = 'none';
+      document.getElementById('personPageView').style.display = 'none';
+      document.getElementById('profileView').style.display = 'none';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    function toggleAuthMode() {
-      openAuthModal(!isAuthRegisterMode);
-    }
-
-    async function handleAuthSubmit(e) {
-      e.preventDefault();
-      const u = document.getElementById('authUsername').value.trim();
-      const p = document.getElementById('authPassword').value;
-      if (!u || !p) return;
-
-      const endpoint = isAuthRegisterMode ? '/api/auth/register' : '/api/auth/login';
-
-      try {
-        const res = await fetch(`${WORKER_URL}${endpoint}`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ username: u, password: p })
-        });
-        const data = await res.json();
-
-        if (data.error) {
-          alert('Auth error: ' + data.error);
-          return;
-        }
-
-        currentUser = { username: data.username, token: data.token };
-        localStorage.setItem('a24_current_user', JSON.stringify(currentUser));
-        
-        if (Array.isArray(data.films) && data.films.length > 0) {
-          myFilms = data.films;
-        } else {
-          myFilms = getSavedFilms();
-        }
-        persistFilms();
-
-        closeModal('authModal');
-        updateAuthUI();
-        renderGrid();
-      } catch (err) {
-        // Fallback simple local auth if worker DB is offline
-        currentUser = { username: u, token: "local_" + btoa(u) };
-        localStorage.setItem('a24_current_user', JSON.stringify(currentUser));
-        myFilms = getSavedFilms();
-        closeModal('authModal');
-        updateAuthUI();
-        renderGrid();
-      }
-    }
-
-    function logoutUser() {
-      if (confirm('Log out from your A24 archive session?')) {
-        currentUser = null;
-        localStorage.removeItem('a24_current_user');
-        myFilms = DEFAULT_SEED_FILMS;
-        updateAuthUI();
-        renderGrid();
-      }
-    }
-
-    // NAVIGATION
     function toggleDrawer(open) {
       document.getElementById('sideDrawer').classList.toggle('active', open);
       document.getElementById('drawerOverlay').classList.toggle('active', open);
-    }
-
-    function navigateHome(filter = 'all') {
-      toggleDrawer(false);
-      showHomeView();
-      setFilter(filter);
-    }
-
-    function showHomeView() {
-      document.getElementById('catalogView').style.display = 'none';
-      document.getElementById('filmPageView').style.display = 'none';
-      document.getElementById('homeView').style.display = 'block';
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      renderGrid();
-    }
-
-    function showCatalogView() {
-      toggleDrawer(false);
-      document.getElementById('homeView').style.display = 'none';
-      document.getElementById('filmPageView').style.display = 'none';
-      document.getElementById('catalogView').style.display = 'block';
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      loadA24Catalog(1);
-    }
-
-    function openSearchModal() {
-      document.getElementById('searchModal').classList.add('active');
-      document.getElementById('tmdbQuery').focus();
-    }
-
-    function closeModal(id) {
-      document.getElementById(id).classList.remove('active');
     }
 
     function setFilter(filter) {
@@ -834,7 +824,7 @@
       document.getElementById('watchedFields').style.display = isWatchlist ? 'none' : 'block';
     }
 
-    // RIGHT-CLICK CONTEXT MENU
+    // CONTEXT MENU
     function setupContextMenu() {
       const menu = document.getElementById('customContextMenu');
       window.addEventListener('click', () => { menu.style.display = 'none'; });
@@ -856,7 +846,7 @@
       const film = myFilms.find(f => f.id === contextFilmId);
 
       if (action === 'open') {
-        openFilmPage(contextFilmId);
+        routerNavigate('movie', contextFilmId);
       } else if (action === 'make1') {
         if (!film) return;
         const maxP = Math.max(...myFilms.map(f => f.tieBreakPriority || 50), 50);
@@ -889,42 +879,46 @@
 
       const currentIndex = sortedWatched.findIndex(f => f.id === filmId);
       const targetIndex = currentIndex + direction;
-
       if (targetIndex < 0 || targetIndex >= sortedWatched.length) return;
 
       const currentFilm = sortedWatched[currentIndex];
       const targetFilm = sortedWatched[targetIndex];
-
       currentFilm.tieBreakPriority = (targetFilm.tieBreakPriority || 50) + (direction === -1 ? 1 : -1);
       persistFilms();
       renderGrid();
     }
 
     // SEARCH
+    function openSearchModal() {
+      document.getElementById('searchModal').classList.add('active');
+      document.getElementById('tmdbQuery').focus();
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).classList.remove('active');
+    }
+
     function handleTyping() {
       clearTimeout(debounceTimer);
       const query = document.getElementById('tmdbQuery').value.trim();
       const container = document.getElementById('searchResults');
       
       if (!query) {
-        container.innerHTML = '<p style="color:var(--muted); font-size:0.85rem; text-transform:uppercase;">Start typing any movie title above...</p>';
+        container.innerHTML = '<p style="color:var(--muted); font-size:0.85rem; text-transform:uppercase;">Start typing movie title above...</p>';
         return;
       }
-
-      container.innerHTML = '<p style="color:var(--muted); font-size:0.85rem; text-transform:uppercase;">Searching TMDB...</p>';
+      container.innerHTML = '<p style="color:var(--muted); font-size:0.85rem; text-transform:uppercase;">Searching Database...</p>';
 
       debounceTimer = setTimeout(async () => {
         try {
           const res = await fetch(`${WORKER_URL}/api/search?q=${encodeURIComponent(query)}`);
           const data = await res.json();
-
           if (!Array.isArray(data) || data.length === 0) {
             container.innerHTML = '<p style="color:var(--muted); font-size:0.85rem;">No films found.</p>';
             return;
           }
-
           container.innerHTML = data.slice(0, 10).map(m => `
-            <div class="search-item" onclick="openFilmPage('${m.id}')">
+            <div class="search-item" onclick="closeModal('searchModal'); routerNavigate('movie', '${m.id}')">
               <img src="${m.poster_path ? 'https://image.tmdb.org/t/p/w92' + m.poster_path : 'https://placehold.co/92x138/000/fff?text=No+Img'}">
               <div>
                 <strong style="font-size: 1.05rem; display:block;">${m.title}</strong>
@@ -938,24 +932,29 @@
       }, 300);
     }
 
-    // OFFICIAL A24 CATALOG (FULL 177+ TITLES WITH COMPLETE PAGINATION)
+    // A24 CATALOG
+    function applyCatalogFilter() {
+      catalogState.genre = document.getElementById('catalogGenreFilter').value;
+      catalogState.year = document.getElementById('catalogYearFilter').value;
+      catalogState.sort = document.getElementById('catalogSortFilter').value;
+      catalogState.page = 1;
+      routerNavigate('catalog');
+    }
+
     async function loadA24Catalog(page = 1) {
-      catalogCurrentPage = page;
+      catalogState.page = page;
       const feed = document.getElementById('catalogFeed');
       const totalLabel = document.getElementById('catalogTotalLabel');
       const pagination = document.getElementById('catalogPagination');
-      const genre = document.getElementById('catalogGenreFilter').value;
-      const year = document.getElementById('catalogYearFilter').value;
-      const sort = document.getElementById('catalogSortFilter').value;
 
-      feed.innerHTML = `<div style="grid-column:1/-1; padding:6rem; text-align:center; font-weight:800; letter-spacing:0.08em;">LOADING OFFICIAL A24 UNIVERSE...</div>`;
+      feed.innerHTML = `<div style="grid-column:1/-1; padding:6rem; text-align:center; font-weight:800; letter-spacing:0.08em;">LOADING OFFICIAL A24 ARCHIVE...</div>`;
 
       try {
-        const url = `${WORKER_URL}/api/a24-catalog?genre=${genre}&year=${year}&sort=${sort}&page=${page}`;
+        const url = `${WORKER_URL}/api/a24-catalog?genre=${catalogState.genre}&year=${catalogState.year}&sort=${catalogState.sort}&page=${page}`;
         const res = await fetch(url);
         const data = await res.json();
         const results = data.results || [];
-        const totalFilms = data.total_results || 177;
+        const totalFilms = data.total_results || 180;
         const totalPages = data.total_pages || Math.ceil(totalFilms / 20);
 
         totalLabel.innerText = `${totalFilms} A24 FILMS CATALOGED`;
@@ -967,70 +966,57 @@
         }
 
         feed.innerHTML = results.map(f => {
-          const img = f.backdrop_path ? `https://image.tmdb.org/t/p/w780${f.backdrop_path}` : (f.poster_path ? `https://image.tmdb.org/t/p/w780${f.poster_path}` : 'https://placehold.co/780x440/000/fff?text=A24');
+          const img = f.poster_path ? `https://image.tmdb.org/t/p/w780${f.poster_path}` : (f.backdrop_path ? `https://image.tmdb.org/t/p/w780${f.backdrop_path}` : 'https://placehold.co/780x1170/000/fff?text=A24');
           const releaseYear = f.release_date ? f.release_date.split('-')[0] : 'TBA';
 
           return `
-            <article class="film-item" onclick="openFilmPage('${f.id}')">
+            <article class="film-item" onclick="routerNavigate('movie', '${f.id}')">
               <div class="film-art-wrapper">
                 <img src="${img}" alt="${f.title}" loading="lazy">
               </div>
               <span class="film-year">${releaseYear}</span>
               <h2 class="film-name">${f.title}</h2>
               <div class="film-meta-bar">
-                <span>TMDB ★ ${f.vote_average ? f.vote_average.toFixed(1) : 'N/A'}</span>
+                <span>★ ${f.vote_average ? f.vote_average.toFixed(1) : 'N/A'}</span>
                 <span style="text-decoration:underline;">EXPLORE ↗</span>
               </div>
             </article>
           `;
         }).join('');
 
-        // RENDER PAGINATION
         pagination.innerHTML = `
-          <button class="outline-btn" ${page <= 1 ? 'disabled style="opacity:0.4;"' : ''} onclick="loadA24Catalog(${page - 1})">← Prev</button>
+          <button class="outline-btn" ${page <= 1 ? 'disabled style="opacity:0.4;"' : ''} onclick="catalogState.page=${page - 1}; routerNavigate('catalog')">← Prev</button>
           <span style="font-size:0.85rem; font-weight:900; letter-spacing:0.05em;">PAGE ${page} OF ${totalPages}</span>
-          <button class="outline-btn" ${page >= totalPages ? 'disabled style="opacity:0.4;"' : ''} onclick="loadA24Catalog(${page + 1})">Next →</button>
+          <button class="outline-btn" ${page >= totalPages ? 'disabled style="opacity:0.4;"' : ''} onclick="catalogState.page=${page + 1}; routerNavigate('catalog')">Next →</button>
         `;
       } catch (e) {
-        feed.innerHTML = `<div style="grid-column:1/-1; padding:4rem; color:red;">Failed loading A24 library: ${e.message}</div>`;
+        feed.innerHTML = `<div style="grid-column:1/-1; padding:4rem; color:red;">Failed loading library: ${e.message}</div>`;
       }
     }
 
-    // DEDICATED FILM VIEW WITH AUTOPLAY TRAILER & MUTE TOGGLE
-    async function openFilmPage(tmdbId) {
-      closeModal('searchModal');
-      toggleDrawer(false);
-
-      const filmPageView = document.getElementById('filmPageView');
-      const homeView = document.getElementById('homeView');
-      const catalogView = document.getElementById('catalogView');
-
-      homeView.style.display = 'none';
-      catalogView.style.display = 'none';
-      filmPageView.style.display = 'block';
-      filmPageView.innerHTML = `<div style="padding: 8rem 2rem; text-align: center; font-weight: 800; letter-spacing:0.1em;">ACCESSING ARCHIVE RECORD...</div>`;
-      window.scrollTo(0, 0);
+    // FILM PAGE (WITH RAW PLAY TRIANGLE & PERSON DOSSIER LINKS)
+    async function renderFilmPage(tmdbId) {
+      const view = document.getElementById('filmPageView');
+      view.style.display = 'block';
+      view.innerHTML = `<div style="padding: 8rem 2rem; text-align: center; font-weight: 800; letter-spacing:0.1em;">ACCESSING ARCHIVE RECORD...</div>`;
 
       try {
         const res = await fetch(`${WORKER_URL}/api/fetch-movie/${tmdbId}`);
         const film = await res.json();
         selectedFilm = film;
-        activeArtworkChoice = film.displayArtwork || film.heroBackdrop || film.poster;
-        isTrailerMuted = true;
-
         const saved = myFilms.find(f => f.id === film.id);
 
-        filmPageView.innerHTML = `
-          <!-- HERO SECTION WITH TRAILER OR BACKDROP -->
+        view.innerHTML = `
+          <!-- HERO WITH RAW TRIANGLE -->
           <section class="film-hero">
             ${film.trailerKey ? `
               <iframe id="heroTrailerFrame" class="trailer-video-frame" 
                 src="https://www.youtube.com/embed/${film.trailerKey}?autoplay=1&mute=1&controls=0&loop=1&playlist=${film.trailerKey}&enablejsapi=1" 
                 allow="autoplay; encrypted-media" allowfullscreen>
               </iframe>
-              <div class="center-play-triangle" onclick="toggleHeroSound()">
+              <button class="raw-triangle-btn" onclick="togglePlayAudio('${film.trailerKey}')" title="Play with Audio">
                 <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-              </div>
+              </button>
             ` : `
               <img src="${film.heroBackdrop || film.poster}" class="film-hero-bg" alt="${film.title}">
             `}
@@ -1042,21 +1028,46 @@
                 <h1 class="film-hero-title">${film.title}</h1>
                 ${film.tagline ? `<p style="font-size:1.15rem; font-style:italic; opacity:0.88;">“${film.tagline}”</p>` : ''}
               </div>
-
-              ${film.trailerKey ? `
-                <button class="hero-audio-btn" id="soundToggleBtn" onclick="toggleHeroSound()" title="Toggle Sound">
-                  <svg id="volumeIconMuted" viewBox="0 0 24 24"><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/></svg>
-                  <svg id="volumeIconAudible" style="display:none;" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
-                </button>
-              ` : ''}
             </div>
           </section>
 
-          <!-- 3-COLUMN METADATA -->
+          <!-- SCORECARD & TOMATOMETER CRITICS / AUDIENCE -->
+          <div class="scorecard-banner">
+            <div class="tomatometer-badge">
+              <span style="color:#fa320a;">🍅</span>
+              <div>
+                <div style="font-size:1.4rem; line-height:1;">${film.criticsScore}%</div>
+                <span style="font-size:0.65rem; color:#888; text-transform:uppercase;">Critics Score</span>
+              </div>
+            </div>
+            <div class="tomatometer-badge">
+              <span style="color:#ffd700;">🍿</span>
+              <div>
+                <div style="font-size:1.4rem; line-height:1;">${film.audienceScore}%</div>
+                <span style="font-size:0.65rem; color:#888; text-transform:uppercase;">Audience Score</span>
+              </div>
+            </div>
+            ${saved && saved.status === 'watched' ? `
+              <div class="score-stat">
+                <h5>Archive Index</h5>
+                <div class="val">${saved.compositeScore} / 100</div>
+              </div>
+              <div class="score-stat">
+                <h5>Dread Level</h5>
+                <div class="val">${saved.dreadScore}/10</div>
+              </div>
+            ` : ''}
+          </div>
+
+          <!-- METADATA -->
           <section class="film-meta-grid">
             <div class="meta-block">
               <h4>DIRECTED BY</h4>
-              <p>${film.directors || film.director}</p>
+              <div>
+                ${(film.directorsList && film.directorsList.length) 
+                  ? film.directorsList.map(d => `<span class="clickable-link" onclick="routerNavigate('person', '${d.id}')">${d.name}</span>`).join(', ')
+                  : film.directors}
+              </div>
             </div>
             
             <div class="meta-block">
@@ -1074,42 +1085,26 @@
 
             <div class="meta-block" style="grid-column: 1 / span 2;">
               <h4>STARRING</h4>
-              <div style="font-size: 1.4rem; font-weight: 800;">${film.starring}</div>
+              <div style="font-size: 1.25rem; font-weight: 800;">
+                ${(film.castDetails || []).map(c => `<span class="clickable-link" onclick="routerNavigate('person', '${c.id}')">${c.name}</span>`).join(' &nbsp;•&nbsp; ')}
+              </div>
             </div>
 
             <div class="meta-block">
               <h4>GENRE / RUNTIME</h4>
-              <div style="font-size: 1.1rem; font-weight:700;">${film.genres || 'Drama'} • ${film.runtime ? film.runtime + ' MIN' : 'N/A'}</div>
+              <div style="font-size: 1.05rem; font-weight:700;">${film.genres || 'Drama'} • ${film.runtime ? film.runtime + ' MIN' : 'N/A'}</div>
             </div>
           </section>
 
-          <!-- SCORECARD -->
-          ${saved && saved.status === 'watched' ? `
-            <div class="scorecard-banner">
-              <div class="score-stat">
-                <h5>Composite Rank Index</h5>
-                <div class="val">${saved.compositeScore} / 100</div>
-              </div>
-              <div class="score-stat">
-                <h5>Gut Rating</h5>
-                <div class="val">${saved.gutRating} / 10</div>
-              </div>
-              <div class="score-stat">
-                <h5>Dread & Tension</h5>
-                <div class="val">${saved.dreadScore} / 10</div>
-              </div>
-              <div class="score-stat">
-                <h5>Atmosphere</h5>
-                <div class="val">${saved.atmoScore} / 10</div>
-              </div>
-              <div class="score-stat">
-                <h5>Mindfuck Impact</h5>
-                <div class="val">${saved.mindScore} / 10</div>
-              </div>
-            </div>
-          ` : ''}
+          <!-- VINYL & SOUNDTRACK / BESPOKE A24 LOGO / SOCIAL CARD ACTION BAR -->
+          <div style="padding: 1.5rem 2.5rem; background:#fafafa; border-bottom: 1px solid var(--border); display:flex; gap:1rem; flex-wrap:wrap; align-items:center;">
+            <a href="https://music.youtube.com/search?q=${encodeURIComponent(film.title + ' original motion picture soundtrack vinyl score')}" target="_blank" class="outline-btn">
+              ♫ Vinyl / YouTube Music Score ↗
+            </a>
+            <button class="outline-btn" onclick="generateShareCard()">⎘ Share Story Card</button>
+          </div>
 
-          <!-- CREW & CREATIVE DEPARTMENT -->
+          <!-- EXTENDED CREW -->
           <section class="crew-department-grid">
             <div class="crew-item">
               <h5>Screenplay & Writers</h5>
@@ -1120,7 +1115,7 @@
               <p>${film.cinematography || 'N/A'}</p>
             </div>
             <div class="crew-item">
-              <h5>Original Score / Music</h5>
+              <h5>Original Score / Composer</h5>
               <p>${film.music || 'N/A'}</p>
             </div>
             <div class="crew-item">
@@ -1129,19 +1124,25 @@
             </div>
           </section>
 
-          <!-- SYNOPSIS & DETAILED CAST -->
+          <!-- SYNOPSIS & REVIEWS -->
           <section class="film-body-grid">
             <div>
               <h4 style="font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: var(--muted); margin-bottom: 1rem;">SYNOPSIS</h4>
               <p class="synopsis-text">${film.synopsis}</p>
-              
-              <h4 style="font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: var(--muted); margin: 2rem 0 0.8rem;">FEATURED CAST & CHARACTERS</h4>
-              <div style="font-size:0.95rem; line-height:1.7;">
-                ${(film.castDetails && film.castDetails.length) 
-                  ? film.castDetails.map(c => `<b>${c.name}</b> as <i>${c.character || 'Self'}</i>`).join(' &nbsp;•&nbsp; ')
-                  : film.starring}
-              </div>
+
+              ${(film.reviews && film.reviews.length) ? `
+                <h4 style="font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: var(--muted); margin: 2.5rem 0 1rem;">CRITICAL REVIEWS</h4>
+                <div style="display:flex; flex-direction:column; gap:1rem;">
+                  ${film.reviews.map(r => `
+                    <div style="background:#fafafa; border:1px solid var(--border); padding:1rem;">
+                      <p style="font-size:0.92rem; font-style:italic; margin-bottom:0.4rem;">“${r.content}”</p>
+                      <span style="font-size:0.75rem; font-weight:800; text-transform:uppercase; color:var(--muted);">— ${r.author}</span>
+                    </div>
+                  `).join('')}
+                </div>
+              ` : ''}
             </div>
+
             <div style="display:flex; flex-direction:column; gap:1.2rem;">
               <div style="border-bottom:1px solid var(--border); padding-bottom:0.6rem;">
                 <span style="font-size:0.75rem; font-weight:800; text-transform:uppercase; color:var(--muted); display:block;">Production</span>
@@ -1158,18 +1159,18 @@
             </div>
           </section>
 
-          <!-- POSTER ARCHIVE -->
+          <!-- POSTER ARCHIVE (TAPPING OPENS INSPECTOR WINDOW) -->
           <section class="gallery-section">
-            <h3 class="section-heading">Poster & Key Art Archive (${(film.posters || []).length + (film.backdrops || []).length} VARIANTS)</h3>
-            <p style="font-size:0.85rem; color:var(--muted); margin-bottom:1.5rem;">Click any artwork below to set it as this movie's cover on your main archive feed.</p>
+            <h3 class="section-heading">Poster & Key Art Archive (${(film.posters || []).length} VARIANTS)</h3>
+            <p style="font-size:0.85rem; color:var(--muted); margin-bottom:1.5rem;">Tap any poster to inspect high-res, download, or set as your archive cover.</p>
             
             <div class="gallery-grid">
-              ${[...(film.posters || []), ...(film.backdrops || [])].map((imgUrl, i) => `
-                <div class="gallery-item" onclick="setCoverArtwork('${imgUrl}')">
+              ${(film.posters || []).map((imgUrl, i) => `
+                <div class="gallery-item" onclick="openPosterInspector('${imgUrl}')">
                   <img src="${imgUrl}" loading="lazy">
                   <div class="gallery-label">
-                    <span>Option #${i+1}</span>
-                    <span style="font-weight:900; text-decoration:underline;">SET COVER</span>
+                    <span>#${i+1}</span>
+                    <span>INSPECT ↗</span>
                   </div>
                 </div>
               `).join('')}
@@ -1177,61 +1178,357 @@
           </section>
         `;
       } catch (err) {
-        filmPageView.innerHTML = `<div style="padding: 4rem; color: red;">Failed to load film: ${err.message}</div>`;
+        view.innerHTML = `<div style="padding: 4rem; color: red;">Failed to load film record: ${err.message}</div>`;
       }
     }
 
-    function toggleHeroSound() {
+    function togglePlayAudio(trailerKey) {
       const frame = document.getElementById('heroTrailerFrame');
-      if (!frame || !selectedFilm?.trailerKey) return;
-
-      isTrailerMuted = !isTrailerMuted;
-      const muteParam = isTrailerMuted ? '1' : '0';
-      frame.src = `https://www.youtube.com/embed/${selectedFilm.trailerKey}?autoplay=1&mute=${muteParam}&controls=0&loop=1&playlist=${selectedFilm.trailerKey}`;
-
-      const iconMuted = document.getElementById('volumeIconMuted');
-      const iconAudible = document.getElementById('volumeIconAudible');
-      if (iconMuted && iconAudible) {
-        iconMuted.style.display = isTrailerMuted ? 'block' : 'none';
-        iconAudible.style.display = isTrailerMuted ? 'none' : 'block';
+      if (frame && trailerKey) {
+        frame.src = `https://www.youtube.com/embed/${trailerKey}?autoplay=1&mute=0&controls=1&loop=1&playlist=${trailerKey}`;
       }
     }
 
-    function setCoverArtwork(imgUrl) {
-      activeArtworkChoice = imgUrl;
-      if (selectedFilm) {
-        selectedFilm.displayArtwork = imgUrl;
+    // POSTER INSPECTOR MODAL
+    function openPosterInspector(url) {
+      inspectedPosterUrl = url;
+      document.getElementById('inspectorImage').src = url;
+      document.getElementById('inspectorDownloadLink').href = url;
+      document.getElementById('posterInspectorModal').classList.add('active');
+    }
+
+    function confirmSetInspectedCover() {
+      if (selectedFilm && inspectedPosterUrl) {
+        selectedFilm.displayArtwork = inspectedPosterUrl;
         const saved = myFilms.find(f => f.id === selectedFilm.id);
         if (saved) {
-          saved.displayArtwork = imgUrl;
+          saved.displayArtwork = inspectedPosterUrl;
           persistFilms();
-          alert('Artwork updated for your archive feed!');
+          alert('Updated cover artwork!');
         } else {
+          closeModal('posterInspectorModal');
           openSaveModal();
+          return;
         }
+      }
+      closeModal('posterInspectorModal');
+    }
+
+    // PERSON / DIRECTOR / ACTOR DOSSIER VIEW
+    async function renderPersonPage(personId) {
+      const view = document.getElementById('personPageView');
+      view.style.display = 'block';
+      view.innerHTML = `<div style="padding: 8rem 2rem; text-align: center; font-weight: 800; letter-spacing:0.1em;">ACCESSING CREATIVE DOSSIER...</div>`;
+
+      try {
+        const res = await fetch(`${WORKER_URL}/api/person/${personId}`);
+        const p = await res.json();
+
+        view.innerHTML = `
+          <section class="person-hero">
+            <img src="${p.profile_path || 'https://placehold.co/400x520/000/fff?text=No+Photo'}" class="person-photo" alt="${p.name}">
+            <div>
+              <span style="font-size:0.75rem; font-weight:800; text-transform:uppercase; color:var(--muted);">${p.known_for_department}</span>
+              <h1 class="person-name">${p.name}</h1>
+              <p style="font-size:0.85rem; font-weight:800; color:var(--muted); margin-bottom:1.2rem;">Born: ${p.birthday} • ${p.place_of_birth}</p>
+              <p style="font-size:1.05rem; line-height:1.6; max-height:180px; overflow-y:auto;">${p.biography}</p>
+            </div>
+          </section>
+
+          <section class="gallery-section">
+            <h3 class="section-heading">Collaborative Filmography (${(p.directingCredits || []).length + (p.castCredits || []).length} TITLES)</h3>
+            <div class="film-row-feed" style="padding:0;">
+              ${[...(p.directingCredits || []), ...(p.castCredits || [])].map(m => `
+                <article class="film-item" onclick="routerNavigate('movie', '${m.id}')">
+                  <div class="film-art-wrapper">
+                    <img src="${m.poster || 'https://placehold.co/500x750/000/fff?text=A24'}" loading="lazy">
+                  </div>
+                  <span class="film-year">${m.year || 'N/A'}</span>
+                  <h2 class="film-name" style="font-size:1.4rem;">${m.title}</h2>
+                  ${m.character ? `<p style="font-size:0.75rem; font-weight:800; color:var(--muted); text-transform:uppercase;">As ${m.character}</p>` : ''}
+                </article>
+              `).join('')}
+            </div>
+          </section>
+        `;
+      } catch (err) {
+        view.innerHTML = `<div style="padding: 4rem; color: red;">Failed to load person dossier: ${err.message}</div>`;
       }
     }
 
+    // PROFILE & SPIDER RADAR CHART VIEW
+    function renderProfilePage() {
+      const view = document.getElementById('profileView');
+      view.style.display = 'block';
+
+      const watched = myFilms.filter(f => f.status === 'watched');
+      const avgGut = watched.length ? (watched.reduce((a,b)=>a+(b.gutRating||9),0)/watched.length).toFixed(1) : 9.2;
+      const avgDread = watched.length ? (watched.reduce((a,b)=>a+(b.dreadScore||8),0)/watched.length).toFixed(1) : 8.8;
+      const avgAtmo = watched.length ? (watched.reduce((a,b)=>a+(b.atmoScore||9),0)/watched.length).toFixed(1) : 9.4;
+      const avgMind = watched.length ? (watched.reduce((a,b)=>a+(b.mindScore||8),0)/watched.length).toFixed(1) : 8.5;
+
+      view.innerHTML = `
+        <section class="profile-hero">
+          <div>
+            <span style="font-size:0.75rem; font-weight:800; text-transform:uppercase; color:var(--muted);">CURATOR DOSSIER</span>
+            <h1 style="font-size: clamp(2.5rem, 5vw, 4rem); font-weight:900; letter-spacing:-0.04em; margin-bottom:1rem;">
+              ${currentUser ? currentUser.username.toUpperCase() : 'ANONYMOUS ARCHIVIST'}
+            </h1>
+            <div style="background:#fafafa; border:1px dashed #000; padding:1.25rem; margin-bottom:1.5rem;">
+              <h4 style="font-size:0.75rem; font-weight:800; text-transform:uppercase; color:var(--muted); margin-bottom:0.4rem;">Archive Taste Profile</h4>
+              <p style="font-size:1.3rem; font-weight:900; line-height:1.2;">
+                ${avgDread > 8.5 ? 'EXISTENTIAL DREAD & PSYCHO-HORROR DOMINANT' : 'ATMOSPHERIC SLOW-BURN & SURREALIST'}
+              </p>
+              <span style="font-size:0.8rem; font-weight:700; color:var(--muted); display:block; margin-top:0.3rem;">
+                ${watched.length} Watched Records • ${myFilms.length - watched.length} Anticipated Watchlist
+              </span>
+            </div>
+
+            <div style="font-size:0.95rem; font-style:italic; color:#444; border-left:3px solid #000; padding-left:1rem;">
+              “There is no terror in the bang, only in the anticipation of it.”
+            </div>
+          </div>
+
+          <div class="radar-canvas-wrap">
+            <canvas id="radarChartCanvas" width="340" height="340"></canvas>
+          </div>
+        </section>
+
+        <section class="gallery-section">
+          <h3 class="section-heading">Top Ranked Masterpieces</h3>
+          <div class="film-row-feed" style="padding:0;">
+            ${watched.slice(0, 3).map((f, i) => `
+              <article class="film-item" onclick="routerNavigate('movie', '${f.id}')">
+                <div class="film-art-wrapper">
+                  <img src="${f.displayArtwork || f.poster}">
+                </div>
+                <span class="film-year">RANK #${i+1} • ${f.year}</span>
+                <h2 class="film-name">${f.title}</h2>
+                <div class="film-meta-bar">
+                  <span>${f.compositeScore} INDEX</span>
+                  <span>★ ${f.gutRating}/10</span>
+                </div>
+              </article>
+            `).join('')}
+          </div>
+        </section>
+      `;
+
+      drawRadarChart(avgGut, avgDread, avgAtmo, avgMind);
+    }
+
+    function drawRadarChart(gut, dread, atmo, mind) {
+      const canvas = document.getElementById('radarChartCanvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const w = canvas.width, h = canvas.height;
+      const cx = w / 2, cy = h / 2, radius = 110;
+
+      ctx.clearRect(0, 0, w, h);
+
+      const labels = ["Gut Rating", "Dread", "Atmosphere", "Mindfuck", "Aesthetic"];
+      const rawValues = [gut / 10, dread / 10, atmo / 10, mind / 10, 0.92];
+      const count = labels.length;
+
+      // Draw Web Rings
+      for (let r = 0.25; r <= 1.0; r += 0.25) {
+        ctx.beginPath();
+        ctx.strokeStyle = "#e0e0e0";
+        ctx.lineWidth = 1;
+        for (let i = 0; i < count; i++) {
+          const angle = (Math.PI * 2 / count) * i - Math.PI / 2;
+          const x = cx + Math.cos(angle) * (radius * r);
+          const y = cy + Math.sin(angle) * (radius * r);
+          if (i === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        }
+        ctx.closePath();
+        ctx.stroke();
+      }
+
+      // Draw Spokes & Labels
+      ctx.font = "bold 10px Inter, sans-serif";
+      ctx.fillStyle = "#000";
+      ctx.textAlign = "center";
+
+      for (let i = 0; i < count; i++) {
+        const angle = (Math.PI * 2 / count) * i - Math.PI / 2;
+        const x = cx + Math.cos(angle) * radius;
+        const y = cy + Math.sin(angle) * radius;
+        ctx.beginPath();
+        ctx.strokeStyle = "#ddd";
+        ctx.moveTo(cx, cy);
+        ctx.lineTo(x, y);
+        ctx.stroke();
+
+        const lx = cx + Math.cos(angle) * (radius + 20);
+        const ly = cy + Math.sin(angle) * (radius + 16);
+        ctx.fillText(labels[i].toUpperCase(), lx, ly);
+      }
+
+      // Draw Filled Shape
+      ctx.beginPath();
+      ctx.fillStyle = "rgba(0, 0, 0, 0.25)";
+      ctx.strokeStyle = "#000000";
+      ctx.lineWidth = 2;
+
+      for (let i = 0; i < count; i++) {
+        const val = rawValues[i];
+        const angle = (Math.PI * 2 / count) * i - Math.PI / 2;
+        const x = cx + Math.cos(angle) * (radius * val);
+        const y = cy + Math.sin(angle) * (radius * val);
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      }
+      ctx.closePath();
+      ctx.fill();
+      ctx.stroke();
+    }
+
+    // SOCIAL MEDIA CARD GENERATOR (Instagram Story 9:16 Canvas)
+    function generateShareCard() {
+      if (!selectedFilm) return;
+      const modal = document.getElementById('shareCardModal');
+      const canvas = document.getElementById('shareCardCanvas');
+      const ctx = canvas.getContext('2d');
+
+      // Draw 1080x1920 Poster Card
+      ctx.fillStyle = "#0a0a0a";
+      ctx.fillRect(0, 0, 1080, 1920);
+
+      const img = new Image();
+      img.crossOrigin = "anonymous";
+      img.src = selectedFilm.displayArtwork || selectedFilm.poster;
+      img.onload = () => {
+        // Draw Header Poster Art
+        ctx.drawImage(img, 60, 180, 960, 1200);
+
+        // Frame
+        ctx.strokeStyle = "#ffffff";
+        ctx.lineWidth = 4;
+        ctx.strokeRect(60, 180, 960, 1200);
+
+        // A24 Logo Text
+        ctx.fillStyle = "#ffffff";
+        ctx.font = "900 64px Inter";
+        ctx.fillText("A24", 70, 120);
+
+        ctx.font = "700 24px Inter";
+        ctx.fillStyle = "#888";
+        ctx.fillText("PSYCHOLOGICAL ARCHIVE", 210, 115);
+
+        // Title
+        ctx.font = "900 76px Inter";
+        ctx.fillStyle = "#ffffff";
+        ctx.fillText(selectedFilm.title.toUpperCase(), 70, 1480);
+
+        // Director & Stats
+        ctx.font = "800 32px Inter";
+        ctx.fillStyle = "#888888";
+        ctx.fillText(`DIR. ${selectedFilm.director.toUpperCase()} • ${selectedFilm.year}`, 70, 1540);
+
+        const saved = myFilms.find(f => f.id === selectedFilm.id);
+        const score = saved?.compositeScore || (selectedFilm.criticsScore ? selectedFilm.criticsScore + ".0" : "96.0");
+
+        ctx.font = "900 90px Inter";
+        ctx.fillStyle = "#ffffff";
+        ctx.fillText(`${score} INDEX`, 70, 1680);
+
+        modal.classList.add('active');
+      };
+    }
+
+    function downloadShareCard() {
+      const canvas = document.getElementById('shareCardCanvas');
+      const link = document.createElement('a');
+      link.download = `A24-${selectedFilm?.title || 'Story'}-Card.png`;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    }
+
+    // AUTH
+    function updateAuthUI() {
+      const headerAuth = document.getElementById('headerAuthArea');
+      const drawerAuth = document.getElementById('drawerUserBox');
+
+      if (currentUser) {
+        headerAuth.innerHTML = `<button class="outline-btn" onclick="routerNavigate('profile')">● ${currentUser.username.toUpperCase()}</button>`;
+        drawerAuth.innerHTML = `<p style="color:#aaa; font-size:0.8rem; text-transform:uppercase;">Signed in as <b>${currentUser.username}</b></p><button class="outline-btn" style="margin-top:0.4rem; padding:0.4rem 0.8rem;" onclick="logoutUser()">Log Out</button>`;
+      } else {
+        headerAuth.innerHTML = `<button class="outline-btn" onclick="openAuthModal(false)">Log In</button>`;
+        drawerAuth.innerHTML = `<button class="log-btn" style="width:100%;" onclick="openAuthModal(false); toggleDrawer(false);">Log In / Register</button>`;
+      }
+    }
+
+    function openAuthModal(register = false) {
+      isAuthRegisterMode = register;
+      document.getElementById('authModalTitle').innerText = register ? 'Create Account' : 'Sign In';
+      document.getElementById('authSubmitBtn').innerText = register ? 'REGISTER' : 'LOG IN';
+      document.getElementById('authSwitchBtn').innerText = register ? 'Already have an account? Log In' : 'Need an account? Register';
+      document.getElementById('authModal').classList.add('active');
+    }
+
+    function toggleAuthMode() { openAuthModal(!isAuthRegisterMode); }
+
+    async function handleAuthSubmit(e) {
+      e.preventDefault();
+      const u = document.getElementById('authUsername').value.trim();
+      const p = document.getElementById('authPassword').value;
+      if (!u || !p) return;
+
+      const endpoint = isAuthRegisterMode ? '/api/auth/register' : '/api/auth/login';
+      try {
+        const res = await fetch(`${WORKER_URL}${endpoint}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username: u, password: p })
+        });
+        const data = await res.json();
+        if (data.error) { alert('Auth error: ' + data.error); return; }
+
+        currentUser = { username: data.username, token: data.token };
+        localStorage.setItem('a24_current_user', JSON.stringify(currentUser));
+        if (Array.isArray(data.films) && data.films.length > 0) myFilms = data.films;
+        else myFilms = getSavedFilms();
+
+        persistFilms();
+        closeModal('authModal');
+        updateAuthUI();
+        renderGrid();
+      } catch (err) {
+        currentUser = { username: u, token: "local_" + btoa(u) };
+        localStorage.setItem('a24_current_user', JSON.stringify(currentUser));
+        myFilms = getSavedFilms();
+        closeModal('authModal');
+        updateAuthUI();
+        renderGrid();
+      }
+    }
+
+    function logoutUser() {
+      if (confirm('Log out from archive session?')) {
+        currentUser = null;
+        localStorage.removeItem('a24_current_user');
+        myFilms = DEFAULT_SEED_FILMS;
+        updateAuthUI();
+        renderGrid();
+      }
+    }
+
+    // SAVE MODAL
     function openSaveModal() {
       if (!selectedFilm) return;
       const saved = myFilms.find(f => f.id === selectedFilm.id) || selectedFilm;
 
-      activeArtworkChoice = saved.displayArtwork || selectedFilm.displayArtwork || selectedFilm.poster;
-
       document.getElementById('savePreview').innerHTML = `
         <div style="display:flex; gap: 1.2rem; align-items:center; margin-bottom: 1.2rem;">
-          <img src="${activeArtworkChoice}" id="modalActiveCoverPreview" style="width: 100px; height: 65px; object-fit: cover;">
+          <img src="${saved.displayArtwork || selectedFilm.poster}" style="width: 80px; height: 110px; object-fit: cover;">
           <div>
             <h3 style="font-size: 1.25rem; font-weight: 900;">${selectedFilm.title} (${selectedFilm.year})</h3>
             <p style="font-size: 0.8rem; color: var(--muted);">Dir. ${selectedFilm.directors || selectedFilm.director}</p>
           </div>
         </div>
       `;
-
-      const allImages = [...(selectedFilm.posters || []), ...(selectedFilm.backdrops || [])];
-      document.getElementById('modalArtPicker').innerHTML = allImages.map(img => `
-        <img src="${img}" class="art-thumb ${img === activeArtworkChoice ? 'selected' : ''}" onclick="selectModalArtwork('${img}', this)">
-      `).join('');
 
       if (saved.status) document.getElementById('saveStatus').value = saved.status;
       if (saved.gutRating) {
@@ -1259,13 +1556,6 @@
       document.getElementById('saveModal').classList.add('active');
     }
 
-    function selectModalArtwork(url, el) {
-      activeArtworkChoice = url;
-      document.querySelectorAll('.art-thumb').forEach(t => t.classList.remove('selected'));
-      el.classList.add('selected');
-      document.getElementById('modalActiveCoverPreview').src = url;
-    }
-
     function confirmSaveFilm() {
       const status = document.getElementById('saveStatus').value;
       const gutRating = parseFloat(document.getElementById('gutInput').value);
@@ -1281,7 +1571,7 @@
 
       const film = {
         ...selectedFilm,
-        displayArtwork: activeArtworkChoice || selectedFilm.poster,
+        displayArtwork: selectedFilm.displayArtwork || selectedFilm.poster,
         status: status,
         gutRating: gutRating,
         dreadScore: dreadScore,
@@ -1297,10 +1587,10 @@
       persistFilms();
 
       closeModal('saveModal');
-      openFilmPage(film.id);
+      renderFilmPage(film.id);
     }
 
-    // EXPORT HANDLER (NUMBERED TEXT LIST & JSON)
+    // EXPORT
     function openExportModal() {
       renderExportOutput();
       document.getElementById('exportModal').classList.add('active');
@@ -1338,18 +1628,9 @@
       const outputArea = document.getElementById('exportOutputArea');
 
       if (currentExportFormat === 'text') {
-        // Plain text numbered list: 1. Title (Year)
-        const textList = films.map((f, i) => `${i + 1}. ${f.title}`).join('\n');
-        outputArea.value = textList || "No films in selected view.";
+        outputArea.value = films.map((f, i) => `${i + 1}. ${f.title}`).join('\n') || "No films in selected view.";
       } else {
-        // JSON format
-        const jsonPayload = {
-          exportDate: new Date().toISOString(),
-          scope: currentExportScope,
-          total: films.length,
-          films: films
-        };
-        outputArea.value = JSON.stringify(jsonPayload, null, 2);
+        outputArea.value = JSON.stringify({ exportDate: new Date().toISOString(), total: films.length, films }, null, 2);
       }
     }
 
@@ -1360,7 +1641,7 @@
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = `A24-List-${currentExportScope}-${new Date().toISOString().split('T')[0]}.${isJson ? 'json' : 'txt'}`;
+      a.download = `A24-Archive-${currentExportScope}.${isJson ? 'json' : 'txt'}`;
       a.click();
       URL.revokeObjectURL(url);
     }
@@ -1370,30 +1651,7 @@
       alert('Copied to clipboard!');
     }
 
-    function importJsonFile(event) {
-      const file = event.target.files[0];
-      if (!file) return;
-
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        try {
-          const parsed = JSON.parse(e.target.result);
-          const importedFilms = Array.isArray(parsed) ? parsed : (parsed.films || []);
-          if (!Array.isArray(importedFilms)) throw new Error('Invalid JSON format');
-
-          myFilms = importedFilms;
-          persistFilms();
-          alert(`Successfully imported ${myFilms.length} films!`);
-          closeModal('exportModal');
-          renderGrid();
-        } catch (err) {
-          alert('Failed to import JSON: ' + err.message);
-        }
-      };
-      reader.readAsText(file);
-    }
-
-    // MAIN FEED RENDER
+    // MAIN ARCHIVE GRID
     function renderGrid() {
       const grid = document.getElementById('filmGrid');
       const countLabel = document.getElementById('itemCountLabel');
@@ -1403,9 +1661,8 @@
       if (currentFilter === 'watchlist') list = list.filter(f => f.status === 'watchlist');
       if (currentFilter === 'top') {
         list = list.filter(f => f.status === 'watched').sort((a,b) => {
-          const scoreDiff = (b.compositeScore || 0) - (a.compositeScore || 0);
-          if (scoreDiff !== 0) return scoreDiff;
-          return (b.tieBreakPriority || 50) - (a.tieBreakPriority || 50);
+          const diff = (b.compositeScore || 0) - (a.compositeScore || 0);
+          return diff !== 0 ? diff : (b.tieBreakPriority || 50) - (a.tieBreakPriority || 50);
         });
       }
 
@@ -1417,7 +1674,7 @@
       }
 
       grid.innerHTML = list.map((f, idx) => `
-        <article class="film-item" onclick="openFilmPage('${f.id}')" oncontextmenu="openContextMenuOnCard(event, '${f.id}')">
+        <article class="film-item" onclick="routerNavigate('movie', '${f.id}')" oncontextmenu="openContextMenuOnCard(event, '${f.id}')">
           <div class="film-art-wrapper">
             <img src="${f.displayArtwork || f.poster}" alt="${f.title}" loading="lazy">
           </div>
@@ -1431,7 +1688,24 @@
       `).join('');
     }
 
-    // INIT
+    // PWA INSTALL LOGIC
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      const installBtn = document.getElementById('pwaInstallBtn');
+      if (installBtn) installBtn.style.display = 'block';
+    });
+
+    function installPWA() {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then(() => {
+          deferredPrompt = null;
+          document.getElementById('pwaInstallBtn').style.display = 'none';
+        });
+      }
+    }
+
     setupContextMenu();
     updateAuthUI();
     renderGrid();
