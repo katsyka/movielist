@@ -842,6 +842,7 @@
 
     // DEEP LINKING & URL ROUTING HANDLER
     function handleRoute() {
+      syncFromCloud();
       const hash = window.location.hash || '#/home';
       const [route, param] = hash.replace('#/', '').split('/');
 
@@ -868,7 +869,22 @@
     }
 
     window.addEventListener('hashchange', handleRoute);
-
+    
+    async function syncFromCloud() {
+      if (!currentUser) return;
+      try {
+        const res = await fetch(`${WORKER_URL}/api/ai/archive?status=all`, {
+          headers: { "X-Username": currentUser.username, "X-Password": currentUser.password || "" }
+        });
+        const data = await res.json();
+        if (data.films && data.films.length > 0) {
+          myFilms = data.films;
+          localStorage.setItem(getStorageKey(), JSON.stringify(myFilms));
+          renderGrid();
+        }
+      } catch (e) {}
+    }
+    
     function navigate(view, param) {
       toggleDrawer(false);
       window.location.hash = `#/${view}${param ? '/' + param : ''}`;
