@@ -811,15 +811,24 @@
       return JSON.parse(localStorage.getItem(key)) || DEFAULT_SEED_FILMS;
     }
 
-    function persistFilms() {
+    async function persistFilms() {
       const key = getStorageKey();
       localStorage.setItem(key, JSON.stringify(myFilms));
+      
       if (currentUser && currentUser.token) {
-        fetch(`${WORKER_URL}/api/sync`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ username: currentUser.username, token: currentUser.token, films: myFilms })
-        }).catch(()=>{});
+        try {
+          await fetch(`${WORKER_URL}/api/sync`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+              username: currentUser.username, 
+              token: currentUser.token, 
+              films: myFilms 
+            })
+          });
+        } catch (e) {
+          console.warn("Cloud sync failed, saved locally:", e);
+        }
       }
     }
 
@@ -873,11 +882,13 @@
     async function syncFromCloud() {
       if (!currentUser) return;
       try {
-        const res = await fetch(`${WORKER_URL}/api/ai/archive?status=all`, {
-          headers: { "X-Username": currentUser.username, "X-Password": currentUser.password || "" }
+        const res = await fetch(`${WORKER_URL}/api/sync-load`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ username: currentUser.username, token: currentUser.token })
         });
         const data = await res.json();
-        if (data.films && data.films.length > 0) {
+        if (data.films && Array.isArray(data.films)) {
           myFilms = data.films;
           localStorage.setItem(getStorageKey(), JSON.stringify(myFilms));
           renderGrid();
@@ -1562,25 +1573,43 @@
     // SAVE & SCORING MODAL
     function openSaveModal() {
       if (!selectedFilm) return;
-      const saved = myFilms.find(f => f.id === selectedFilm.id) || selectedFilm;
+      // Use loose equality (==) or String conversion to prevent ID mismatch
+      const saved = myFilms.find(f => String(f.id) === String(selectedFilm.id)) || selectedFilm;
       activeArtworkChoice = saved.displayArtwork || selectedFilm.displayArtwork || selectedFilm.poster;
-
+    
       document.getElementById('savePreview').innerHTML = `
         <div style="display:flex; gap: 1.2rem; align-items:center; margin-bottom: 1.2rem;">
           <img src="${activeArtworkChoice}" id="modalActiveCoverPreview" style="width: 80px; height: 110px; object-fit: cover;">
           <div>
             <h3 style="font-size: 1.25rem; font-weight: 900;">${selectedFilm.title} (${selectedFilm.year})</h3>
-            <p style="font-size: 0.8rem; color: var(--muted);">Dir. ${selectedFilm.director}</p>
+            <p style="font-size: 0.8rem; color: var(--muted);">Dir. ${selectedFilm.director || 'A24'}</p>
           </div>
         </div>
       `;
-
-      const allImages = [...(selectedFilm.posters || []).map(p=>p.thumb||p.url), ...(selectedFilm.backdrops || []).map(b=>b.thumb||b.url)];
+    
+      const allImages = [
+        ...(selectedFilm.posters || []).map(p => p.thumb || p.url),
+        ...(selectedFilm.backdrops || []).map(b => b.thumb || b.url)
+      ];
       document.getElementById('modalArtPicker').innerHTML = allImages.map(img => `
         <img src="${img}" class="art-thumb ${img === activeArtworkChoice ? 'selected' : ''}" onclick="selectModalArtwork('${img}', this)">
       `).join('');
-
-      if (saved.status) document.getElementById('saveStatus').value = saved.status;
+    
+      // Pre-fill Status
+      if (saved.status) {
+        document.getElementById('saveStatus').value = saved.status;
+      }
+      
+      // Pre-fill Watchlist Hype Score (Fixes Watchlist not reflecting saved hype)
+      if (saved.hypeScore !== undefined) {
+        document.getElementById('hypeInput').value = saved.hypeScore;
+        document.getElementById('hypeVal').innerText = saved.hypeScore + '/10';
+      } else {
+        document.getElementById('hypeInput').value = 9;
+        document.getElementById('hypeVal').innerText = '9/10';
+      }
+    
+      // Pre-fill Watched Scores
       if (saved.gutRating) {
         document.getElementById('gutInput').value = saved.gutRating;
         document.getElementById('gutVal').innerText = parseFloat(saved.gutRating).toFixed(1) + ' / 10';
@@ -1601,7 +1630,7 @@
         document.getElementById('tieBreakInput').value = saved.tieBreakPriority;
         document.getElementById('tieBreakVal').innerText = saved.tieBreakPriority;
       }
-
+    
       toggleStatusFields();
       document.getElementById('saveModal').classList.add('active');
     }
@@ -1613,7 +1642,7 @@
       document.getElementById('modalActiveCoverPreview').src = url;
     }
 
-    function confirmSaveFilm() {
+    async function confirmSaveFilm() {
       const status = document.getElementById('saveStatus').value;
       const gutRating = parseFloat(document.getElementById('gutInput').value);
       const dreadScore = parseInt(document.getElementById('dreadInput').value);
@@ -1621,13 +1650,14 @@
       const mindScore = parseInt(document.getElementById('mindInput').value);
       const hypeScore = parseInt(document.getElementById('hypeInput').value);
       const tieBreakPriority = parseInt(document.getElementById('tieBreakInput').value) || 50;
-
+    
       const compositeScore = status === 'watched' 
         ? parseFloat(((gutRating * 4.0) + (dreadScore * 2.0) + (atmoScore * 2.0) + (mindScore * 2.0)).toFixed(1))
         : 0;
-
+    
       const film = {
         ...selectedFilm,
+        id: String(selectedFilm.id),
         displayArtwork: activeArtworkChoice || selectedFilm.poster,
         status: status,
         gutRating: gutRating,
@@ -1638,13 +1668,22 @@
         tieBreakPriority: tieBreakPriority,
         compositeScore: compositeScore
       };
-
-      myFilms = myFilms.filter(f => f.id !== film.id);
+    
+      // Remove existing entry (if updating) and unshift new one
+      myFilms = myFilms.filter(f => String(f.id) !== String(film.id));
       myFilms.unshift(film);
-      persistFilms();
-
+    
+      // Await saving to prevent sync race condition
+      await persistFilms();
+    
       closeModal('saveModal');
-      navigate('movie', film.id);
+      
+      // Re-render current view or navigate
+      if (window.location.hash.includes('movie/')) {
+        renderFilmPageView(film.id);
+      } else {
+        renderGrid();
+      }
     }
 
     // EXPORT
